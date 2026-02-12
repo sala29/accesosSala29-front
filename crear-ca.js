@@ -11,7 +11,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
         // 1️⃣ Registrar CA
-        const resRegistro = await fetch('${API_BASE}/registro-ca', {
+        const resRegistro = await fetch(`${API_BASE}/registro-ca`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, password })
@@ -26,7 +26,7 @@ form.addEventListener('submit', async (e) => {
         }
 
         // 2️⃣ Login automático
-        const resLogin = await fetch('${API_BASE}/login', {
+        const resLogin = await fetch(`${API_BASE}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, password })

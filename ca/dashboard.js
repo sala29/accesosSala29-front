@@ -42,7 +42,7 @@ document.getElementById('guardarEvento').addEventListener('click', async () => {
     }
 
     try {
-        const res = await fetch('${API_BASE}/eventos', {
+        const res = await fetch(`${API_BASE}/eventos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ async function cargarEventos() {
     lista.innerHTML = '';
 
     try {
-        const res = await fetch('${API_BASE}/eventos', {
+        const res = await fetch(`${API_BASE}/eventos`, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

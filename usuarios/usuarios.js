@@ -121,7 +121,7 @@ document.getElementById('confirmarRegistro').onclick = async () => {
     mensajeFinalConfirmacion.innerText = '';
 
     try {
-        const res = await fetch('${API_BASE}/registro', {
+        const res = await fetch(`${API_BASE}/registro`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosRegistro)
@@ -180,7 +180,7 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
     if (fechaNacimiento) payload.fecha_nacimiento = fechaNacimiento;
 
     try {
-        const res = await fetch('${API_BASE}/usuarios/login', {
+        const res = await fetch(`${API_BASE}/usuarios/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

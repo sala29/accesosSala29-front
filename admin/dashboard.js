@@ -19,7 +19,7 @@ async function cargarUsuarios() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('${API_BASE}/usuarios', {
+        const res = await fetch(`${API_BASE}/usuarios`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         
@@ -186,7 +186,7 @@ async function cargarEventos() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('${API_BASE}/eventos', {
+        const res = await fetch(`${API_BASE}/eventos`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const eventos = await res.json();
@@ -334,7 +334,7 @@ async function crearCA() {
     }
 
     try {
-        const res = await fetch('${API_BASE}/registro-ca', {
+        const res = await fetch(`${API_BASE}/registro-ca`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -366,7 +366,7 @@ async function cargarCA() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('${API_BASE}/ca', {
+        const res = await fetch(`${API_BASE}/ca`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const cas = await res.json();
@@ -477,7 +477,7 @@ async function cargarAdmins(){
     const tbody = document.querySelector('#tablaAdmins tbody');
     tbody.innerHTML='';
 
-    const res = await fetch('${API_BASE}/admins',{
+    const res = await fetch(`${API_BASE}/admins`,{
         headers:{ 'Authorization':'Bearer '+token }
     });
     const admins = await res.json();
@@ -531,7 +531,7 @@ async function crearAdmin(){
     const password = adminPassword.value.trim();
     if(!usuario || !password) return alert('Datos obligatorios');
 
-    const res = await fetch('${API_BASE}/registro-admin',{
+    const res = await fetch(`${API_BASE}/registro-admin`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json',
