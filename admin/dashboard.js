@@ -1,4 +1,6 @@
 const token = localStorage.getItem('token');
+const API_BASE = "https://accesossala29.onrender.com";
+
 
 if (!token) {
     alert('No estás logueado');
@@ -17,7 +19,7 @@ async function cargarUsuarios() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('http://localhost:3000/usuarios', {
+        const res = await fetch('${API_BASE}/usuarios', {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         
@@ -55,7 +57,7 @@ async function cargarUsuarios() {
 
 // Funciones usuario
 async function verificar(id) {
-    await fetch(`http://localhost:3000/usuario/${id}/verificar`, {
+    await fetch(`${API_BASE}/usuario/${id}/verificar`, {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -63,7 +65,7 @@ async function verificar(id) {
 }
 
 async function bloquear(id) {
-    await fetch(`http://localhost:3000/usuarios/${id}/bloquear`, {
+    await fetch(`${API_BASE}/usuarios/${id}/bloquear`, {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -71,7 +73,7 @@ async function bloquear(id) {
 }
 
 async function desbloquear(id) {
-    await fetch(`http://localhost:3000/usuarios/${id}/desbloquear`, {
+    await fetch(`${API_BASE}/usuarios/${id}/desbloquear`, {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -80,7 +82,7 @@ async function desbloquear(id) {
 
 async function eliminarUsuario(id) {
     if(!confirm('¿Seguro que quieres eliminar este usuario?')) return;
-    await fetch(`http://localhost:3000/usuarios/${id}`, {
+    await fetch(`${API_BASE}/usuarios/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -89,7 +91,7 @@ async function eliminarUsuario(id) {
 
 // EDITAR USUARIO (modal completo)
 function editarUsuario(id) {
-    fetch(`http://localhost:3000/usuario/${id}`, {
+    fetch(`${API_BASE}/usuario/${id}`, {
         headers: { 'Authorization': 'Bearer ' + token }
     })
     .then(res => res.json())
@@ -160,7 +162,7 @@ document.getElementById('formEditarUsuario').addEventListener('submit', async e 
 
 async function enviarActualizacion(id, body){
     try {
-        const res = await fetch(`http://localhost:3000/usuarios/${id}`, {
+        const res = await fetch(`${API_BASE}/usuarios/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,7 +186,7 @@ async function cargarEventos() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('http://localhost:3000/eventos', {
+        const res = await fetch('${API_BASE}/eventos', {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const eventos = await res.json();
@@ -210,7 +212,7 @@ async function cargarEventos() {
 }
 
 async function activarEvento(id){
-    await fetch(`http://localhost:3000/eventos/${id}/activar`, {
+    await fetch(`${API_BASE}/eventos/${id}/activar`, {
         method:'POST',
         headers:{ 'Authorization':'Bearer '+token }
     });
@@ -218,7 +220,7 @@ async function activarEvento(id){
 }
 
 async function desactivarEvento(id){
-    await fetch(`http://localhost:3000/eventos/${id}/desactivar`, {
+    await fetch(`${API_BASE}/eventos/${id}/desactivar`, {
         method:'POST',
         headers:{ 'Authorization':'Bearer '+token }
     });
@@ -227,7 +229,7 @@ async function desactivarEvento(id){
 
 async function eliminarEvento(id){
     if(!confirm('¿Seguro que quieres eliminar este evento?')) return;
-    await fetch(`http://localhost:3000/eventos/${id}`, {
+    await fetch(`${API_BASE}/eventos/${id}`, {
         method:'DELETE',
         headers:{ 'Authorization':'Bearer '+token }
     });
@@ -239,7 +241,7 @@ async function eliminarEvento(id){
 // Abrir widget de eventos de un usuario
 async function verEventosUsuario(userId){
     try {
-        const res = await fetch(`http://localhost:3000/usuarios/${userId}/accesos`, {
+        const res = await fetch(`${API_BASE}/usuarios/${userId}/accesos`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const eventos = await res.json();
@@ -266,7 +268,7 @@ async function verEventosUsuario(userId){
 // Abrir widget de asistentes de un evento
 async function verAsistentesEvento(eventId){
     try {
-        const res = await fetch(`http://localhost:3000/eventos/${eventId}/accesos`, {
+        const res = await fetch(`${API_BASE}/eventos/${eventId}/accesos`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const users = await res.json();
@@ -332,7 +334,7 @@ async function crearCA() {
     }
 
     try {
-        const res = await fetch('http://localhost:3000/registro-ca', {
+        const res = await fetch('${API_BASE}/registro-ca', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -364,7 +366,7 @@ async function cargarCA() {
     tbody.innerHTML = '';
 
     try {
-        const res = await fetch('http://localhost:3000/ca', {
+        const res = await fetch('${API_BASE}/ca', {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const cas = await res.json();
@@ -403,7 +405,7 @@ async function cargarCA() {
 }
 
 async function activarCA(id) {
-    await fetch(`http://localhost:3000/ca/${id}/activar`, {
+    await fetch(`${API_BASE}/ca/${id}/activar`, {
         method: 'PUT',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -411,7 +413,7 @@ async function activarCA(id) {
 }
 
 async function desactivarCA(id) {
-    await fetch(`http://localhost:3000/ca/${id}/desactivar`, {
+    await fetch(`${API_BASE}/ca/${id}/desactivar`, {
         method: 'PUT',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -421,7 +423,7 @@ async function desactivarCA(id) {
 async function eliminarCA(id) {
     if (!confirm('¿Eliminar definitivamente este CA?')) return;
 
-    await fetch(`http://localhost:3000/ca/${id}`, {
+    await fetch(`${API_BASE}/ca/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -445,7 +447,7 @@ document.getElementById('guardarPasswordCa').addEventListener('click', async () 
 
     if (!password) return alert('Introduce una contraseña');
 
-    await fetch(`http://localhost:3000/ca/${id}/password`, {
+    await fetch(`${API_BASE}/ca/${id}/password`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -475,7 +477,7 @@ async function cargarAdmins(){
     const tbody = document.querySelector('#tablaAdmins tbody');
     tbody.innerHTML='';
 
-    const res = await fetch('http://localhost:3000/admins',{
+    const res = await fetch('${API_BASE}/admins',{
         headers:{ 'Authorization':'Bearer '+token }
     });
     const admins = await res.json();
@@ -529,7 +531,7 @@ async function crearAdmin(){
     const password = adminPassword.value.trim();
     if(!usuario || !password) return alert('Datos obligatorios');
 
-    const res = await fetch('http://localhost:3000/registro-admin',{
+    const res = await fetch('${API_BASE}/registro-admin',{
         method:'POST',
         headers:{
             'Content-Type':'application/json',

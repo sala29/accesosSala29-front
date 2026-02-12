@@ -3,6 +3,7 @@
    ========================= */
 const mensajeFinalConfirmacion = document.getElementById('mensajeFinal'); // screenConfirmacion
 const mensajeFinalPerfil = document.querySelector('#screenPerfil .mensaje'); // screenPerfil
+const API_BASE = "https://accesossala29.onrender.com";
 
 /* =========================
    SCREENS
@@ -120,7 +121,7 @@ document.getElementById('confirmarRegistro').onclick = async () => {
     mensajeFinalConfirmacion.innerText = '';
 
     try {
-        const res = await fetch('http://localhost:3000/registro', {
+        const res = await fetch('${API_BASE}/registro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosRegistro)
@@ -179,7 +180,7 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
     if (fechaNacimiento) payload.fecha_nacimiento = fechaNacimiento;
 
     try {
-        const res = await fetch('http://localhost:3000/usuarios/login', {
+        const res = await fetch('${API_BASE}/usuarios/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -214,7 +215,7 @@ async function mostrarPerfilUsuario(id) {
         const token = localStorage.getItem('token');
 
         // 1️⃣ Pedir datos del usuario
-        const res = await fetch(`http://localhost:3000/usuario/${id}`, {
+        const res = await fetch(`${API_BASE}/usuario/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
@@ -243,7 +244,7 @@ async function mostrarPerfilUsuario(id) {
         document.getElementById("volverInicioPerfil").onclick = () => mostrar("inicio");
 
         // 2️⃣ PEDIR QR
-        const qrRes = await fetch(`http://localhost:3000/usuario/${u.id}/qr`, {
+        const qrRes = await fetch(`${API_BASE}/usuario/${u.id}/qr`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -343,7 +344,7 @@ editarLinks.forEach(link => {
 
                 try {
                     const token = localStorage.getItem('token');
-                    const res = await fetch(`http://localhost:3000/usuarios/${userId}`, {
+                    const res = await fetch(`${API_BASE}/usuarios/${userId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -390,7 +391,7 @@ editarLinks.forEach(link => {
 
                 try {
                     const token = localStorage.getItem('token');
-                    const res = await fetch(`http://localhost:3000/usuarios/${userId}`, {
+                    const res = await fetch(`${API_BASE}/usuarios/${userId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

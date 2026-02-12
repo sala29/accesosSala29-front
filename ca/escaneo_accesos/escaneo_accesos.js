@@ -1,4 +1,5 @@
 const token = localStorage.getItem('token');
+const API_BASE = "https://accesossala29.onrender.com";
 
 let html5QrCode = null;
 let escaneando = false;
@@ -95,7 +96,7 @@ document.getElementById('buscarDniBtn').addEventListener('click', async () => {
     input.value = ''; // 👈 LIMPIAR CAMPO
 
     try {
-        const res = await fetch(`http://localhost:3000/usuario/dni/${dni}`, {
+        const res = await fetch(`${API_BASE}/usuario/dni/${dni}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -127,7 +128,7 @@ document.getElementById('buscarIdBtn').addEventListener('click', async () => {
     input.value = ''; // 👈 LIMPIAR CAMPO
 
     try {
-        const res = await fetch(`http://localhost:3000/usuario/${id}`, {
+        const res = await fetch(`${API_BASE}/usuario/${id}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -230,7 +231,7 @@ document.getElementById('cancelarQrBtn').addEventListener('click', cerrarEscaner
 
 async function buscarUsuarioPorId(id) {
     try {
-        const res = await fetch(`http://localhost:3000/usuario/${id}`, {
+        const res = await fetch(`${API_BASE}/usuario/${id}`, {
             headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -308,7 +309,7 @@ function renderUsuario(u) {
 
             try {
                 const res = await fetch(
-                    `http://localhost:3000/eventos/${eventId}/acceso`,
+                    `${API_BASE}/eventos/${eventId}/acceso`,
                     {
                         method: 'POST',
                         headers: {
@@ -366,7 +367,7 @@ document.getElementById('verificarBtn').addEventListener('click', async () => {
 
     try {
         const res = await fetch(
-            `http://localhost:3000/usuario/${usuarioActual.id}/verificar`,
+            `${API_BASE}/usuario/${usuarioActual.id}/verificar`,
             {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + token }

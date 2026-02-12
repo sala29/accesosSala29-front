@@ -1,4 +1,5 @@
 const token = localStorage.getItem('token');
+const API_BASE = "https://accesossala29.onrender.com";
 
 if (!token) {
     alert('No estás logueado');
@@ -41,7 +42,7 @@ document.getElementById('guardarEvento').addEventListener('click', async () => {
     }
 
     try {
-        const res = await fetch('http://localhost:3000/eventos', {
+        const res = await fetch('${API_BASE}/eventos', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ async function cargarEventos() {
     lista.innerHTML = '';
 
     try {
-        const res = await fetch('http://localhost:3000/eventos', {
+        const res = await fetch('${API_BASE}/eventos', {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -135,7 +136,7 @@ async function cargarEventos() {
 
                 try {
                     const res = await fetch(
-                        `http://localhost:3000/eventos/${evento.id}/validar`,
+                        `${API_BASE}/eventos/${evento.id}/validar`,
                         {
                             method: 'POST',
                             headers: {

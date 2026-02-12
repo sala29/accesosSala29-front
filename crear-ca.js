@@ -1,5 +1,7 @@
 const form = document.getElementById('crearCaForm');
 const mensaje = document.getElementById('mensaje');
+const API_BASE = "https://accesossala29.onrender.com";
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -9,7 +11,7 @@ form.addEventListener('submit', async (e) => {
 
     try {
         // 1️⃣ Registrar CA
-        const resRegistro = await fetch('http://localhost:3000/registro-ca', {
+        const resRegistro = await fetch('${API_BASE}/registro-ca', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, password })
@@ -24,7 +26,7 @@ form.addEventListener('submit', async (e) => {
         }
 
         // 2️⃣ Login automático
-        const resLogin = await fetch('http://localhost:3000/login', {
+        const resLogin = await fetch('${API_BASE}/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, password })
