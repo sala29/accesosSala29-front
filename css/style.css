@@ -1,0 +1,155 @@
+/* GENERAL */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    color: #ffffff;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 2px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+/* BOTONES */
+button:hover {
+    transform: scale(1.05);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* COLORES POR FUNCIONALIDAD */
+button.verificar { background-color: #4caf50; color: #fff; }
+button.bloquear { background-color: #f44336; color: #fff; }
+button.desbloquear { background-color: #2196f3; color: #fff; }
+button.editar { background-color: #ff9800; color: #fff; }
+button.eliminar { background-color: #9c27b0; color: #fff; }
+
+/* TABLAS */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background-color: #272727;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+tr:nth-child(even) {
+    background-color: #1b1b1b;
+}
+
+/* MODAL */
+#editarUsuarioModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#editarUsuarioModal form {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+}
+
+#editarUsuarioModal h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #fff;
+    text-align: center;
+}
+
+#editarUsuarioModal input {
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background-color: #272727;
+    color: #fff;
+}
+
+#editarUsuarioModal input::placeholder {
+    color: #bbb;
+}
+
+#editarUsuarioModal .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+#editarUsuarioModal .modal-buttons button {
+    flex: 1;
+    margin: 0 5px;
+}
+
+/* BOTON CERRAR SESION */
+#cerrarSesion {
+    background-color: #f44336;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* HOVER BUTTONS DE EVENTOS */
+button:hover {
+    filter: brightness(1.2);
+}
+
+/* INPUTS FOCUS */
+input:focus {
+    outline: 2px solid #ff9800;
+}
+
+/* SCROLL BARS OSCURAS */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}

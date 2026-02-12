@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Controlador - Sala 29</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <header class="header">
+        <h1>Controlador <span>Sala 29</span></h1>
+        <button id="cerrarSesion" class="btn ghost small">Cerrar sesión</button>
+    </header>
+
+    <button id="crearEventoBtn" class="btn primary create-btn">
+        Crear evento
+    </button>
+
+    <!-- Crear evento -->
+    <div id="crearEventoForm" class="crearForm">
+        <div class="form-group">
+            <label for="nuevoNombre">Nombre del evento</label>
+            <input type="text" id="nuevoNombre" placeholder="Nombre del evento">
+        </div>
+        <div class="form-group">
+            <label for="nuevoPassword">Contraseña del evento</label>
+            <input type="password" id="nuevoPassword" placeholder="Contraseña del evento">
+        </div>
+
+        <div class="formBtns">
+            <button id="guardarEvento" class="btn primary small">Guardar</button>
+            <button id="cancelarCrear" class="btn ghost small">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="listaEventos" class="listaEventos"></div>
+
+</div>
+
+<script src="dashboard.js"></script>
+<script>
+    // JS para dar foco al input al abrir desplegable
+    document.addEventListener('click', function(e){
+        if(e.target.closest('.evento')) {
+            const input = e.target.closest('.evento').querySelector('.desplegable input');
+            if(input) {
+                setTimeout(() => input.focus(), 300); // espera a animación
+            }
+        }
+    });
+</script>
+</body>
+</html>

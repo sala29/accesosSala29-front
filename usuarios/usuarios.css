@@ -1,0 +1,391 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #0b1d2d, #050b12);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+}
+
+/* ================= SCREENS ================= */
+.screen {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    animation: fade .35s ease;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ================= HEADINGS ================= */
+.logo {
+    font-size: 3rem;
+    text-align: center;
+    letter-spacing: 4px;
+    color: #2aa3ff;
+}
+
+h2 {
+    text-align: center;
+    color: #2aa3ff;
+}
+
+/* ================= INPUTS ================= */
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #0f2538;
+    color: #7aaad6;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: all 0.35s ease;
+}
+
+input::placeholder {
+    color: #93c1ec;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 12px rgba(42,163,255,0.6), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+/* ================= BUTTONS ================= */
+button {
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.primary {
+    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+}
+
+.primary:hover {
+    box-shadow: 0 8px 28px rgba(42,163,255,0.6);
+    transform: translateY(-2px);
+}
+
+.primary:active {
+    transform: scale(0.97);
+}
+
+.secondary {
+    background: transparent;
+    border: 1px solid #2aa3ff;
+    color: #2aa3ff;
+}
+
+.secondary:hover {
+    background: rgba(42,163,255,0.08);
+}
+
+.secondary:active {
+    transform: scale(0.97);
+}
+
+/* ================= CONFIRM BOX ================= */
+.confirm-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.confirm-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.confirm-box li {
+    margin-bottom: 8px;
+}
+
+.mensaje {
+    text-align: center;
+    margin-top: 10px;
+    color: #5dff8f;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= LOGIN ================= */
+.login-info {
+    text-align: center;
+    font-size: 0.95rem;
+    color: #9cc8f0;
+    margin-bottom: 10px;
+}
+
+/* ================= PERFIL ================= */
+.perfil-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    background: linear-gradient(180deg, #0f2034, #070b1a);
+    padding: 28px;
+    border-radius: 28px;
+    box-shadow: 0 18px 60px rgba(0,0,0,0.85);
+    transition: all 0.5s ease;
+}
+
+.info-no-edit,
+.info-editable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ================= CAMPOS FLEX ================= */
+.campo-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.15);
+    transition: all 0.45s ease, box-shadow 0.45s ease, transform 0.35s ease;
+}
+
+.campo-flex:hover {
+    background: rgba(42,163,255,0.08);
+    box-shadow: 0 0 20px rgba(42,163,255,0.45), inset 0 0 0 1px rgba(42,163,255,0.25);
+    transform: translateY(-2px);
+}
+
+.campo-flex .label {
+    font-weight: 600;
+    color: #2aa3ff;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.campo-flex .valor {
+    color: #fff;
+    flex: 1;
+    word-break: break-word;
+}
+
+.campo-flex img {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    object-fit: contain; /* ← cambiar cover por contain */
+    background-color: #f0f0f0; /* opcional: relleno si no llena todo */
+    border: 1px solid #2aa3ff;
+    margin-left: auto;
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+
+.qr-campo img {
+    width: 120px; /* QR grande */
+    height: 120px;
+    border-radius: 18px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.editar-link {
+    font-size: 0.88rem;
+    color: #93c1ec;
+    text-decoration: underline;
+    margin-left: 12px;
+    flex-shrink: 0;
+    transition: all 0.35s ease, text-shadow 0.35s ease;
+}
+
+.editar-link:hover {
+    color: #2aa3ff;
+    text-shadow: 0 0 10px rgba(42,163,255,0.8);
+}
+
+/* ================= EDIT FORM ================= */
+.editar-form-container {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+    transition: all 0.45s ease;
+}
+
+.editar-form-container input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: #0f2538;
+    color: #7aaad6;
+    font-size: 1rem;
+    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.3);
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.editar-form-container input:focus {
+    outline: none;
+    box-shadow: 0 0 16px rgba(42,163,255,0.7), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+.editar-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: flex-end;
+}
+
+.editar-btns button {
+    width: 48%;
+    border-radius: 16px;
+    font-size: 1rem;
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.editar-btns button:hover {
+    box-shadow: 0 0 20px rgba(42,163,255,0.5);
+}
+
+/* ================= DIVIDER ================= */
+.perfil-divider {
+    border: none;
+    border-top: 1px solid rgba(42,163,255,0.2);
+    margin: 20px 0;
+    transition: all 0.35s ease;
+}
+
+/* ================= BOTONES ESPECIALES PARA FOTO ================= */
+.editar-foto-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* espacio entre botones y campo URL */
+}
+
+.editar-foto-container button {
+    padding: 14px;
+    border-radius: 16px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+}
+
+.editar-foto-container button:hover {
+    box-shadow: 0 8px 28px rgba(42,163,255,0.6);
+    transform: translateY(-2px);
+}
+
+.editar-foto-container button:active {
+    transform: scale(0.97);
+}
+
+/* Campo URL de la foto */
+.editar-foto-container input[type="url"] {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: #0f2538;
+    color: #7aaad6;
+    font-size: 1rem;
+    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.3);
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.editar-foto-container input[type="url"]:focus {
+    outline: none;
+    box-shadow: 0 0 16px rgba(42,163,255,0.7), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+
+.qr-campo {
+    display: flex;
+    flex-direction: column; /* título arriba, imagen abajo */
+    align-items: center;    /* centrar contenido horizontalmente */
+    gap: 12px;              /* espacio entre título y QR */
+}
+
+.qr-campo .label {
+    font-weight: 600;
+    color: #2aa3ff;
+    font-size: 1rem;
+}
+
+.qr-campo img {
+    width: 100%;           /* ocupar todo el ancho del widget */
+    max-width: 300px;      /* opcional: límite para no desbordar en móviles */
+    height: auto;          /* mantener proporción */
+    border-radius: 18px;
+    margin: 0;
+    display: block;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.qr-campo img {
+    border: 2px solid #2aa3ff;
+    padding: 4px;
+    background: #0f2034;
+}
+
+input:-webkit-autofill:focus {
+    box-shadow: 
+        0 0 16px rgba(42,163,255,0.7),
+        inset 0 0 0 1px rgba(42,163,255,0.6),
+        0 0 0px 1000px #0f2538 inset;
+}
+
+
+
+.btn-volver {
+    align-self: flex-start;
+    margin-bottom: 16px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+}
+
+#screenPerfil h2 {
+    margin-top: 2;
+}
+
+
+
+/* ===== FIX AUTOFILL CHROME / SAFARI ===== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #7aaad6 !important;
+    -webkit-box-shadow: 
+        0 0 0px 1000px #0f2538 inset,
+        0 0 12px rgba(42,163,255,0.6);
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #7aaad6;
+}
+

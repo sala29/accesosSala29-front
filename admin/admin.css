@@ -1,0 +1,500 @@
+/* ================= RESET ================= */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: radial-gradient(circle at top, #0a1738, #02040a 75%);
+    color: #e6ecff;
+}
+
+/* ================= LAYOUT ================= */
+
+.dashboard-container {
+    min-height: 100vh;
+    padding: 24px 20px 40px;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 34px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.9em;
+    font-weight: 700;
+}
+
+h1 span {
+    color: #4ea1ff;
+}
+
+h2 {
+    margin: 0 0 18px;
+    font-size: 1.05em;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+/* ================= PANELS ================= */
+
+.panel {
+    background: linear-gradient(180deg, #0b1433, #070d22);
+    border-radius: 22px;
+    padding: 24px;
+    margin-bottom: 34px;
+    box-shadow:
+        inset 0 0 0 1px rgba(78,161,255,0.12),
+        0 18px 42px rgba(0,0,0,0.75);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+/* ================= BUTTONS ================= */
+
+.btn {
+    border: none;
+    border-radius: 14px;
+    padding: 12px 18px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, #1e6bff, #4ea1ff);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(30,107,255,0.45);
+}
+
+.btn.ghost {
+    background: rgba(78,161,255,0.08);
+    color: #9fbaff;
+    border: 1px solid rgba(78,161,255,0.25);
+}
+
+.btn:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 10px 30px rgba(78,161,255,0.45);
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+/* ================= TABLES ================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 0.85em;
+}
+
+th {
+    font-weight: 600;
+    opacity: 0.55;
+}
+
+tr {
+    border-bottom: 1px solid rgba(78,161,255,0.12);
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+tr:hover {
+    background: rgba(78,161,255,0.06);
+    transform: translateY(-1px);
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+/* ================= ICON STATES ================= */
+
+.icon {
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.icon.ok {
+    color: #3dffb2;
+    text-shadow: 0 0 8px #3dffb2;
+}
+
+.icon.no {
+    color: #ff3d3d;
+    text-shadow: 0 0 8px #ff3d3d;
+}
+
+.icon.lock {
+    opacity: 0.85;
+}
+
+/* ================= STATUS COLORS ================= */
+
+.estado-verde {
+    color: #3dffb2;
+    text-shadow: 0 0 8px rgba(61,255,178,0.6);
+}
+
+.estado-rojo {
+    color: #ff3d3d;
+    text-shadow: 0 0 8px rgba(255,61,61,0.6);
+}
+
+/* ================= MODAL ================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    animation: fadeBg 0.3s ease;
+}
+
+.modal-content {
+    width: 420px;
+    background: linear-gradient(180deg, #0a1433, #070d22);
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: 0 22px 55px rgba(0,0,0,0.85);
+    animation: scaleIn 0.35s ease;
+}
+
+.modal-content h3 {
+    margin: 0 0 20px;
+    font-size: 1.15em;
+}
+
+/* ================= FORMS ================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 0.75em;
+    opacity: 0.7;
+}
+
+.form-group input {
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: #050b22;
+    color: #fff;
+    font-size: 0.9em;
+    box-shadow: inset 0 0 0 1px rgba(78,161,255,0.25);
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 2px rgba(78,161,255,0.6),
+        inset 0 0 0 1px rgba(78,161,255,0.6);
+}
+
+.foto-preview {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 10px 0 18px;
+    box-shadow: inset 0 0 0 1px rgba(78,161,255,0.3);
+}
+
+/* ================= FORM BUTTONS ================= */
+
+.formBtns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050b22;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e6bff, #4ea1ff);
+    border-radius: 10px;
+}
+
+/* ================= ANIMATIONS ================= */
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.94);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeBg {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ================= TABLE ACTION BUTTONS ================= */
+
+/* Contenedor natural de botones en celdas */
+td button {
+    border: none;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(78,161,255,0.12);
+    color: #9fbaff;
+    box-shadow:
+        inset 0 0 0 1px rgba(78,161,255,0.25),
+        0 4px 14px rgba(0,0,0,0.4);
+    transition: all 0.25s ease;
+}
+
+/* Hover premium */
+td button:hover {
+    background: linear-gradient(135deg, #1e6bff, #4ea1ff);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(30,107,255,0.55);
+    transform: translateY(-1px);
+}
+
+/* Click feedback */
+td button:active {
+    transform: scale(0.95);
+}
+
+/* Separación automática si hay varios botones */
+td button + button {
+    margin-left: 8px;
+}
+
+/* Botones de acción destructiva (si JS pone texto tipo 'Eliminar') */
+td button[data-danger],
+td button.eliminar {
+    background: rgba(255,61,61,0.15);
+    color: #ff9a9a;
+    box-shadow: inset 0 0 0 1px rgba(255,61,61,0.35);
+}
+
+td button[data-danger]:hover,
+td button.eliminar:hover {
+    background: linear-gradient(135deg, #ff3d3d, #ff6b6b);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(255,61,61,0.55);
+}
+
+/* ================= MODAL FIX (PRODUCCIÓN) ================= */
+
+/* Modal ocupa pantalla pero permite scroll interno */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: flex-start; /* IMPORTANTE */
+    padding: 40px 16px;      /* espacio para móviles */
+    overflow-y: auto;        /* SCROLL GLOBAL */
+    z-index: 9999;
+}
+
+/* Caja del modal nunca supera la pantalla */
+.modal-content {
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 80px); /* nunca se sale */
+    overflow-y: auto;               /* SCROLL INTERNO */
+    background: linear-gradient(180deg, #0a1433, #070d22);
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: 0 22px 55px rgba(0,0,0,0.85);
+    animation: scaleIn 0.35s ease;
+}
+
+/* Scroll bonito dentro del modal */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e6bff, #4ea1ff);
+    border-radius: 10px;
+}
+
+/* Botones del modal siempre visibles */
+/* ================= MODAL BUTTONS FIX ================= */
+
+.formBtns {
+    position: static;        /* vuelve a flujo normal */
+    margin-top: 24px;        /* separación clara del contenido */
+    padding-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    background: none;        /* evita superposición visual */
+}
+
+/* ================= MODAL AVATAR FIJO ================= */
+.avatar {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 12px 0 18px;
+    border-radius: 18px;
+    background: #050b22;
+    box-shadow: inset 0 0 0 1px rgba(78,161,255,0.3);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Imagen usuario */
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* no hay src → invisible */
+}
+
+/* Placeholder 👤 */
+.avatar-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6em; /* tamaño visible y elegante */
+    color: rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+}
+
+/* Cuando JS asigna src, se muestra la imagen */
+.avatar img[src]:not([src=""]) {
+    display: block;
+}
+
+/* Oculta el placeholder cuando hay imagen */
+.avatar img[src]:not([src=""]) + .avatar-placeholder {
+    display: none;
+}
+
+/* ================= WIDGET SUPERPUESTO ================= */
+.widget-overlay {
+    display: none;               
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+    z-index: 10000;              
+}
+
+.widget-content {
+    width: 100%;
+    max-width: 600px;
+    background: linear-gradient(180deg, #0a1433, #070d22);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 22px 55px rgba(0,0,0,0.85);
+    animation: scaleIn 0.35s ease;
+}
+
+.widget-content h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #4ea1ff;
+}
+
+.widget-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.widget-content table th,
+.widget-content table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(78,161,255,0.2);
+}
+
+.widget-content table th {
+    color: #4ea1ff;
+    font-weight: 600;
+}
+
+.widget-content table td {
+    color: #e6ecff;
+}
+
+.widget-content button {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #1e6bff, #4ea1ff);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(30,107,255,0.5);
+    transition: all 0.25s ease;
+    margin-top: 16px;
+}
+
+.widget-content button:hover {
+    transform: translateY(-1px);
+}
+
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}

@@ -1,0 +1,176 @@
+const token = localStorage.getItem('token');
+
+if (!token) {
+    alert('No estás logueado');
+    window.location.href = '../index.html';
+}
+
+// ===============================
+// CERRAR SESIÓN
+// ===============================
+document.getElementById('cerrarSesion').addEventListener('click', () => {
+    localStorage.removeItem('token');
+    window.location.href = '../index.html';
+});
+
+// ===============================
+// CREAR EVENTO (DESPLEGABLE)
+// ===============================
+const crearBtn = document.getElementById('crearEventoBtn');
+const crearForm = document.getElementById('crearEventoForm');
+const cancelarCrear = document.getElementById('cancelarCrear');
+
+crearBtn.addEventListener('click', () => {
+    crearForm.style.display = 'flex';
+});
+
+cancelarCrear.addEventListener('click', () => {
+    crearForm.style.display = 'none';
+});
+
+// ===============================
+// GUARDAR NUEVO EVENTO
+// ===============================
+document.getElementById('guardarEvento').addEventListener('click', async () => {
+    const nombre = document.getElementById('nuevoNombre').value.trim();
+    const password = document.getElementById('nuevoPassword').value.trim();
+
+    if (!nombre || !password) {
+        alert('Nombre y contraseña obligatorios');
+        return;
+    }
+
+    try {
+        const res = await fetch('http://localhost:3000/eventos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ nombre, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error || 'Error al crear evento');
+            return;
+        }
+
+        // Redirigir directamente al escaneo
+        window.location.href =
+            `escaneo_accesos/escaneo_accesos.html?eventId=${data.id}&nombre=${encodeURIComponent(nombre)}`;
+
+    } catch (err) {
+        console.error(err);
+        alert('Error de conexión');
+    }
+});
+
+// ===============================
+// CARGAR EVENTOS
+// ===============================
+async function cargarEventos() {
+    const lista = document.getElementById('listaEventos');
+    lista.innerHTML = '';
+
+    try {
+        const res = await fetch('http://localhost:3000/eventos', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const eventos = await res.json();
+
+        eventos.forEach(evento => {
+            const div = document.createElement('div');
+            div.className = 'evento';
+
+            div.innerHTML = `
+                <div class="evento-info">
+                    <div class="status-circle ${evento.activo ? 'activo' : 'inactivo'}"></div>
+                    <div class="nombreEvento">${evento.nombre}</div>
+                    <div class="candado">${evento.activo ? '🔓' : '🔒'}</div>
+                </div>
+
+                <div class="desplegable">
+                    <input 
+                        type="password" 
+                        placeholder="Contraseña del evento"
+                        ${evento.activo ? '' : 'disabled'}
+                    >
+                    <button ${evento.activo ? '' : 'disabled'}>
+                        Escanear accesos
+                    </button>
+                </div>
+            `;
+
+            lista.appendChild(div);
+
+            const desplegable = div.querySelector('.desplegable');
+            const inputPass = desplegable.querySelector('input');
+            const botonEscanear = desplegable.querySelector('button');
+
+            // -------------------------------
+            // ABRIR / CERRAR DESPLEGABLE
+            // -------------------------------
+            div.querySelector('.evento-info').addEventListener('click', () => {
+                if (!evento.activo) return;
+
+                desplegable.style.display =
+                    desplegable.style.display === 'flex' ? 'none' : 'flex';
+            });
+
+            // -------------------------------
+            // VALIDAR CONTRASEÑA AL PULSAR
+            // -------------------------------
+            botonEscanear.addEventListener('click', async () => {
+                const password = inputPass.value.trim();
+
+                if (!password) {
+                    alert('Introduce la contraseña del evento');
+                    return;
+                }
+
+                try {
+                    const res = await fetch(
+                        `http://localhost:3000/eventos/${evento.id}/validar`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + token
+                            },
+                            body: JSON.stringify({ password })
+                        }
+                    );
+
+                    const data = await res.json();
+
+                    if (!res.ok || !data.valido) {
+                        alert('Contraseña incorrecta');
+                        return;
+                    }
+
+                    // Contraseña correcta → ir al escáner
+                    window.location.href =
+                        `escaneo_accesos/escaneo_accesos.html?eventId=${evento.id}&nombre=${encodeURIComponent(evento.nombre)}`;
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Error validando la contraseña');
+                }
+            });
+        });
+
+    } catch (err) {
+        console.error(err);
+        alert('Error al cargar eventos');
+    }
+}
+
+// ===============================
+// INIT
+// ===============================
+cargarEventos();

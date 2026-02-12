@@ -1,0 +1,148 @@
+/* ===== LOGIN PREMIUM NOCTURNO ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #020305; /* negro absoluto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Fondo animado sutil */
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, #001933, #020305 70%);
+    animation: rotateBG 30s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotateBG {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.login-container {
+    position: relative;
+    background-color: #0a0d1e; /* panel azul muy oscuro */
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    width: 400px;
+    text-align: center;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 70px rgba(0, 34, 77, 0.7);
+}
+
+.login-container h1 {
+    font-size: 3.5rem;
+    color: #003366; /* azul profundo elegante */
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(0, 51, 102, 0.7);
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 16px 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    border: none;
+    background-color: #0d1133; /* azul noche profundo */
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.login-container input::placeholder {
+    color: #7a8bb0;
+}
+
+.login-container input:focus {
+    outline: none;
+    background-color: #0a0d2a;
+    box-shadow: 0 0 12px #003366;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 16px 0;
+    margin-top: 25px;
+    border-radius: 12px;
+    border: none;
+    background-color: #003366; /* azul profundo */
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #001f4d;
+    box-shadow: 0 0 20px #003366;
+}
+
+.login-container .login-error {
+    color: #ff4d4d;
+    margin-top: 10px;
+    font-size: 0.95rem;
+}
+
+.login-container p {
+    color: #7a8bb0;
+    font-size: 0.95rem;
+    margin-top: 10px;
+}
+
+/* Animación suave del panel */
+.login-container {
+    animation: fadeInPanel 1s ease-out forwards;
+}
+
+/* ===== FIX AUTOFILL CHROME / SAFARI ===== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #7aaad6 !important;
+    -webkit-box-shadow: 
+        0 0 0px 1000px #0f2538 inset,
+        0 0 12px rgba(42,163,255,0.6);
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #7aaad6;
+}
+
+.crear-ca-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #7a8bb0;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.crear-ca-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px #003366;
+}
+
+
+@keyframes fadeInPanel {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

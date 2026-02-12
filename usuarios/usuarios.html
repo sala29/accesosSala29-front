@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sala 29 · Usuarios</title>
+    <link rel="stylesheet" href="usuarios.css">
+</head>
+<body>
+
+<div class="app">
+
+    <!-- SCREEN 1: INICIO -->
+    <section id="screenInicio" class="screen active">
+        <h1 class="logo">SALA 29</h1>
+        <button class="primary" id="btnRegistro">Registrarse</button>
+        <button class="secondary" id="btnVerQr">Ver QR / Editar datos</button>
+    </section>
+
+    <!-- SCREEN 1.5: LOGIN -->
+    <section id="screenLogin" class="screen">
+        <h2>Acceder a mi perfil</h2>
+        <p class="login-info">
+            Identifícate con tu DNI y uno de los siguientes datos.
+        </p>
+        <input type="text" id="loginDni" placeholder="DNI *">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="tel" id="loginTelefono" placeholder="Teléfono">
+        <input type="date" id="loginFecha">
+        <button class="primary" id="btnLoginPerfil">Acceder al perfil</button>
+        <button class="secondary" id="volverInicioLogin">Volver</button>
+    </section>
+
+    <!-- SCREEN 2: REGISTRO -->
+    <section id="screenRegistro" class="screen">
+        <h2>Registro de usuario</h2>
+        <form id="registroForm">
+            <input type="text" id="nombre" placeholder="Nombre completo *" required>
+            <input type="text" id="dni" maxlength="9" placeholder="DNI *" required>
+            <input type="email" id="email" placeholder="Email *" required>
+            <input type="tel" id="telefono" maxlength="9" placeholder="Teléfono">
+            <input type="date" id="fechaNacimiento" required>
+            <button type="submit" class="primary">Continuar</button>
+            <button type="button" class="secondary" id="volverInicio1">Volver</button>
+        </form>
+    </section>
+
+    <!-- SCREEN 3: CONFIRMACIÓN -->
+    <section id="screenConfirmacion" class="screen">
+        <h2>Confirmación</h2>
+        <div class="confirm-box">
+            <p>
+                Verifica que tus datos son correctos.<br>
+                <strong>Especialmente el DNI</strong>, ya que será usado para el acceso.
+            </p>
+            <ul>
+                <li><strong>Nombre:</strong> <span id="cNombre"></span></li>
+                <li><strong>DNI:</strong> <span id="cDni"></span></li>
+                <li><strong>Email:</strong> <span id="cEmail"></span></li>
+                <li><strong>Fecha nacimiento:</strong> <span id="cFecha"></span></li>
+            </ul>
+            <button class="primary" id="confirmarRegistro">Confirmar registro</button>
+            <button class="secondary" id="volverRegistro">Volver</button>
+        </div>
+        <div id="mensajeFinalConfirmacion" class="mensaje"></div>
+    </section>
+
+    <!-- SCREEN 4: PERFIL USUARIO -->
+    <section id="screenPerfil" class="screen">
+        <button class="secondary btn-volver" id="volverInicioPerfil">Volver</button>
+        <h2>Perfil de Usuario</h2>
+        <div class="perfil-container">
+
+            <!-- INFO NO EDITABLE -->
+            <div class="info-no-edit">
+                <div class="campo-flex">
+                    <span class="label">Nombre:</span>
+                    <span class="valor" id="nombreUsuario"></span>
+                    <a href="#" class="editar-link" data-campo="nombre">Editar</a>
+                </div>
+                <div class="campo-flex">
+                    <span class="label">DNI:</span>
+                    <span class="valor" id="dniUsuario"></span>
+                </div>
+                <div class="campo-flex">
+                    <span class="label">ID:</span>
+                    <span class="valor" id="idUsuario"></span>
+                </div>
+                <div class="campo-flex">
+                    <span class="label">Verificado:</span>
+                    <span class="valor" id="verificadoUsuario"></span>
+                </div>
+                <div class="qr-campo">
+                    <span class="label">QR:</span>
+                    <img id="qrUsuario" alt="QR usuario">
+                </div>
+            </div>
+
+            <hr class="perfil-divider">
+
+            <!-- INFO EDITABLE -->
+            <div class="info-editable">
+                <div class="campo-flex">
+                    <span class="label">Email:</span>
+                    <span class="valor" id="emailUsuario"></span>
+                    <a href="#" class="editar-link" data-campo="email">Editar</a>
+                </div>
+                <div class="campo-flex">
+                    <span class="label">Teléfono:</span>
+                    <span class="valor" id="telefonoUsuario"></span>
+                    <a href="#" class="editar-link" data-campo="telefono">Editar</a>
+                </div>
+                <div class="campo-flex foto-campo">
+                    <span class="label">Foto:</span>
+                    <img id="fotoUsuario" alt="Foto usuario">
+                    <a href="#" class="editar-link" data-campo="foto">Editar</a>
+                </div>
+            </div>
+
+            <!-- FORMULARIO EDITAR -->
+            <div id="editarContainer" class="editar-form-container"></div>
+
+            <div id="mensajeFinalPerfil" class="mensaje"></div>
+        </div>
+    </section>
+
+</div>
+
+<script src="usuarios.js"></script>
+</body>
+</html>

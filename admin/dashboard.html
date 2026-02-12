@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin - Sala 29</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="dashboard.js" defer></script>
+</head>
+<body>
+<div class="dashboard-container">
+
+    <header class="header">
+        <h1>Dashboard <span>Admin</span></h1>
+        <button id="cerrarSesion" class="btn ghost">Cerrar sesión</button>
+    </header>
+
+    <section class="panel">
+        <h2>Usuarios</h2>
+        <div class="table-wrapper">
+            <table id="tablaUsuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Teléfono</th>
+                        <th>✔</th>
+                        <th>🔒</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Eventos</h2>
+        <div class="table-wrapper">
+            <table id="tablaEventos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Administradores</h2>
+            <button class="btn primary" onclick="abrirModalCrearAdmin()">+ Crear admin</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="tablaAdmins">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>CA</h2>
+            <button class="btn primary" onclick="abrirModalCrearCA()">
+                + Crear CA
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="tablaCA">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<!-- Modal editar usuario -->
+<div id="editarUsuarioModal" class="modal">
+    <div class="modal-content">
+        <h3>Editar usuario</h3>
+        <form id="formEditarUsuario">
+            <input type="hidden" id="userId">
+
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>DNI</label>
+                <input type="text" id="dni" required>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="telefono" required>
+            </div>
+
+            <div class="form-group">
+                <label>Foto (archivo)</label>
+                <input type="file" id="fotoFile" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>O URL</label>
+                <input type="text" id="fotoURL">
+            </div>
+
+            <div class="avatar">
+                <img id="fotoPreview" alt="">
+                <div class="avatar-placeholder">👤</div>
+            </div>
+
+
+            <div class="formBtns">
+                <button type="submit" class="btn primary">Guardar</button>
+                <button type="button" id="cancelarEditar" class="btn ghost">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Widget: Eventos de un usuario -->
+<div id="userEventsWidget" class="widget-overlay">
+    <div class="widget-content">
+        <h3>Eventos del usuario</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="cerrarWidget('userEventsWidget')">Atrás</button>
+    </div>
+</div>
+
+<!-- Widget: Asistentes de un evento -->
+<div id="eventUsersWidget" class="widget-overlay">
+    <div class="widget-content">
+        <h3>Asistentes del evento</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button onclick="cerrarWidget('eventUsersWidget')">Atrás</button>
+    </div>
+</div>
+
+<!-- Crear CA -->
+<div id="crearCaModal" class="modal">
+    <div class="modal-content">
+        <h3>Crear nuevo CA</h3>
+
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" id="nuevoCaUsuario" required>
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="nuevoCaPassword" required>
+        </div>
+
+        <div class="formBtns">
+            <button class="btn primary" onclick="crearCA()">Crear</button>
+            <button class="btn ghost" onclick="cerrarModalCrearCA()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Cambiar contraseña CA -->
+<div id="passwordCaModal" class="modal">
+    <div class="modal-content">
+        <h3>Cambiar contraseña CA</h3>
+
+        <input type="hidden" id="caPasswordId">
+
+        <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" id="caNewPassword" required>
+        </div>
+
+        <div class="formBtns">
+            <button id="guardarPasswordCa" class="btn primary">Guardar</button>
+            <button onclick="cerrarModalPasswordCa()" class="btn ghost">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Crear ADMIN -->
+<div id="crearAdminModal" class="modal">
+    <div class="modal-content">
+        <h3>Crear administrador</h3>
+
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" id="adminUsuario">
+        </div>
+
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" id="adminPassword">
+        </div>
+
+        <div class="formBtns">
+            <button class="btn primary" onclick="crearAdmin()">Crear</button>
+            <button class="btn ghost" onclick="cerrarModalCrearAdmin()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Cambiar contraseña ADMIN -->
+<div id="passwordAdminModal" class="modal">
+    <div class="modal-content">
+        <h3>Cambiar contraseña</h3>
+
+        <input type="hidden" id="adminPasswordId">
+
+        <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" id="adminNuevaPassword">
+        </div>
+
+        <div class="formBtns">
+            <button class="btn primary" onclick="guardarPasswordAdmin()">Guardar</button>
+            <button class="btn ghost" onclick="cerrarModalPasswordAdmin()">Cancelar</button>
+        </div>
+    </div>
+</div>

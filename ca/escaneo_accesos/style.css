@@ -1,0 +1,320 @@
+/* ================= GLOBAL ================= */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, #0b1b3a 0%, #05070c 45%, #02040a 100%);
+    color: #ffffff;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+}
+
+.header h1 {
+    font-size: 26px;
+    color: #2b6cff;
+}
+
+.salir {
+    position: absolute;
+    right: 20px;
+    background: #b11226;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+}
+
+/* ================= SCANNER ================= */
+
+.scanner-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.scan-btn {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    font-size: 80px;
+    border: none;
+    background: radial-gradient(circle, #2b6cff, #0b1b3a);
+    color: white;
+}
+
+/* ================= ACCESO ID / DNI ================= */
+
+.dni-section {
+    margin: 40px 20px;
+    text-align: center;
+}
+
+.dni-section h2 {
+    margin-bottom: 10px;
+}
+
+.dni-section input {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.dni-section button {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px;
+    background: #2b6cff;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* ================= OVERLAY ================= */
+
+.sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+}
+
+/* ================= BOTTOM SHEET ================= */
+
+.sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 90%;
+    background: linear-gradient(180deg, #0b1020, #070a14);
+    border-radius: 24px 24px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+    z-index: 101;
+}
+
+.sheet.open {
+    transform: translateY(0);
+}
+
+/* Drag handle */
+
+.sheet-handle {
+    width: 48px;
+    height: 5px;
+    background: #2a3cff;
+    border-radius: 10px;
+    margin: 10px auto;
+}
+
+/* ================= CONTENT ================= */
+
+.sheet-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px 20px 80px; /* espacio inferior PRO */
+}
+
+.sheet-content::after {
+    content: "";
+    display: block;
+    height: 80px;
+}
+
+.sheet-content {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+
+/* ================= HEADER USUARIO ================= */
+
+.sheet-header {
+    text-align: center;
+    padding-bottom: 24px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #111;
+    border: 3px solid #2a3cff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder {
+    font-size: 64px;
+    color: #2a3cff;
+}
+
+.muted {
+    opacity: 0.6;
+    font-size: 14px;
+}
+
+/* ================= ESTADO ================= */
+
+.estado span {
+    display: inline-block;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+.ok { color: #3cff8f; }
+.warn { color: #ffb347; }
+
+/* ================= INFO GRID ================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.info-grid div {
+    background: rgba(255,255,255,0.04);
+    padding: 14px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.info-grid span {
+    display: block;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 4px;
+}
+
+.info-grid strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ================= ACCIONES ================= */
+
+.acciones {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.btn-principal {
+    background: linear-gradient(135deg, #1b2bff, #3b5bff);
+    border: none;
+    color: white;
+    padding: 18px;
+    font-size: 18px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(43,108,255,0.4);
+}
+
+.btn-principal:disabled {
+    opacity: 0.4;
+    box-shadow: none;
+}
+
+.btn-secundario {
+    background: transparent;
+    border: 1px solid #2a3cff;
+    color: #2a3cff;
+    padding: 16px;
+    border-radius: 18px;
+}
+
+/* ================= FEEDBACK ================= */
+
+.feedback {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+}
+
+.feedback.ok {
+    background: #103d2a;
+    color: #3cff8f;
+}
+
+.feedback.warn {
+    background: #3d2f10;
+    color: #ffb347;
+}
+
+/* ================= ESCANER QR ================= */
+.qr-screen {
+    position: fixed;
+    inset: 0;
+    background: #000; /* fondo oscuro */
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+}
+
+.qr-header {
+    padding: 12px;
+    color: #2b6cff; /* azul de tu header */
+    text-align: center;
+    font-size: 22px;
+}
+
+#qr-reader {
+    flex: 1;
+    width: 100%;
+    position: relative;
+}
+
+/* CUADRADO GUIA QR */
+#qr-reader::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 250px;
+    transform: translate(-50%, -50%);
+    border: 3px solid #2b6cff;
+    border-radius: 16px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+/* BOTÓN CANCELAR */
+.cancelar-qr {
+    padding: 18px;
+    font-size: 20px;
+    border: none;
+    background: #b11226;
+    color: white;
+    border-radius: 12px;
+    margin: 12px 20px;
+}
