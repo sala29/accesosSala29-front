@@ -82,6 +82,10 @@ async function cargarEventos() {
             }
         });
 
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+
         const eventos = await res.json();
 
         eventos.forEach(evento => {
@@ -113,6 +117,35 @@ async function cargarEventos() {
             const desplegable = div.querySelector('.desplegable');
             const inputPass = desplegable.querySelector('input');
             const botonEscanear = desplegable.querySelector('button');
+
+            // ===============================
+            // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
+            // ===============================
+            div.addEventListener('click', function (e) {
+
+                // Si clicas dentro del desplegable (input o botón), no hacer toggle
+                if (e.target.closest('.desplegable')) return;
+
+                if (!evento.activo) return;
+
+                const estaAbierto = desplegable.style.display === 'flex';
+
+                // Cerrar todos los desplegables
+                document.querySelectorAll('.desplegable').forEach(d => {
+                    d.style.display = 'none';
+                });
+
+                // Si estaba cerrado → abrir
+                if (!estaAbierto) {
+                    desplegable.style.display = 'flex';
+
+                    // Forzar foco real (funciona en móvil)
+                    setTimeout(() => {
+                        inputPass.focus();
+                        inputPass.click(); // necesario en iOS
+                    }, 100);
+                }
+            });
 
             
             // -------------------------------
@@ -155,35 +188,6 @@ async function cargarEventos() {
                     alert('Error validando la contraseña');
                 }
             });
-        });
-
-        // ===============================
-        // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
-        // ===============================
-        div.addEventListener('click', function (e) {
-
-            // Si clicas dentro del desplegable (input o botón), no hacer toggle
-            if (e.target.closest('.desplegable')) return;
-
-            if (!evento.activo) return;
-
-            const estaAbierto = desplegable.style.display === 'flex';
-
-            // Cerrar todos los desplegables
-            document.querySelectorAll('.desplegable').forEach(d => {
-                d.style.display = 'none';
-            });
-
-            // Si estaba cerrado → abrir
-            if (!estaAbierto) {
-                desplegable.style.display = 'flex';
-
-                // Forzar foco real (funciona en móvil)
-                setTimeout(() => {
-                    inputPass.focus();
-                    inputPass.click(); // necesario en iOS
-                }, 100);
-            }
         });
 
 
