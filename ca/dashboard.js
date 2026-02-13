@@ -103,6 +103,7 @@ async function cargarEventos() {
                 <div class="desplegable">
                     <input 
                         type="password" 
+                        inputmode="text"
                         placeholder="Contraseña del evento"
                         ${evento.activo ? '' : 'disabled'}
                     >
@@ -125,28 +126,35 @@ async function cargarEventos() {
             // ===============================
             // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
             // ===============================
-            div.addEventListener('pointerup', function (e) {
+            div.addEventListener('click', function (e) {
 
-                // Si clicas dentro del desplegable (input o botón), no hacer toggle
+                // Si clic dentro del desplegable (input o botón), no hacer nada
                 if (e.target.closest('.desplegable')) return;
 
                 if (!evento.activo) return;
 
-                const estaAbierto = desplegable.style.display === 'flex';
+                const estaAbierto = desplegable.classList.contains('abierto');
 
                 // Cerrar todos los desplegables
                 document.querySelectorAll('.desplegable').forEach(d => {
+                    d.classList.remove('abierto');
                     d.style.display = 'none';
                 });
 
-                // Foco inmediato (clave en móvil)
-                inputPass.focus();
+                // Si estaba cerrado → abrirlo
+                if (!estaAbierto) {
+                    desplegable.style.display = 'flex';
+                    desplegable.classList.add('abierto');
 
-                // Truco extra para iOS
-                inputPass.setSelectionRange(
-                    inputPass.value.length,
-                    inputPass.value.length
-                );
+                    // Foco inmediato (clave para móvil)
+                    inputPass.focus();
+
+                    // Fix iOS para mostrar teclado
+                    inputPass.setSelectionRange(
+                        inputPass.value.length,
+                        inputPass.value.length
+                    );
+                }
             });
 
             
