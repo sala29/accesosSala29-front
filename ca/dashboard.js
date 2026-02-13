@@ -125,7 +125,7 @@ async function cargarEventos() {
             // ===============================
             // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
             // ===============================
-            div.addEventListener('click', function (e) {
+            div.addEventListener('pointerup', function (e) {
 
                 // Si clicas dentro del desplegable (input o botón), no hacer toggle
                 if (e.target.closest('.desplegable')) return;
@@ -139,16 +139,14 @@ async function cargarEventos() {
                     d.style.display = 'none';
                 });
 
-                // Si estaba cerrado → abrir
-                if (!estaAbierto) {
-                    desplegable.style.display = 'flex';
+                // Foco inmediato (clave en móvil)
+                inputPass.focus();
 
-                    // Forzar foco real (funciona en móvil)
-                    setTimeout(() => {
-                        inputPass.focus();
-                        inputPass.click(); // necesario en iOS
-                    }, 100);
-                }
+                // Truco extra para iOS
+                inputPass.setSelectionRange(
+                    inputPass.value.length,
+                    inputPass.value.length
+                );
             });
 
             
