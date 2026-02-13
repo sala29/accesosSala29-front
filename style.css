@@ -8,8 +8,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+
+    /* CAMBIO PROFESIONAL */
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
     position: relative;
 }
 
@@ -32,13 +36,20 @@ body::before {
 .login-container {
     position: relative;
     background-color: #0a0d1e; /* panel azul muy oscuro */
-    padding: 50px 40px;
+    padding: 30px 20px;
     border-radius: 20px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
-    width: 400px;
+
+    width: 100%;
+    max-width: 400px;
+
+    /* IMPORTANTE */
+    box-sizing: border-box;
+
     text-align: center;
     z-index: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInPanel 1s ease-out forwards;
 }
 
 .login-container:hover {
@@ -48,12 +59,11 @@ body::before {
 
 .login-container h1 {
     font-size: 3.5rem;
-    color: #003366; /* azul profundo elegante */
+    color: #003366;
     margin-bottom: 40px;
     font-weight: 700;
     letter-spacing: 3px;
     text-shadow: 0 0 15px rgba(0, 51, 102, 0.7);
-    font-family: 'Poppins', sans-serif;
 }
 
 .login-container input {
@@ -62,7 +72,7 @@ body::before {
     margin: 15px 0;
     border-radius: 12px;
     border: none;
-    background-color: #0d1133; /* azul noche profundo */
+    background-color: #0d1133;
     color: #ffffff;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -84,7 +94,7 @@ body::before {
     margin-top: 25px;
     border-radius: 12px;
     border: none;
-    background-color: #003366; /* azul profundo */
+    background-color: #003366;
     color: #fff;
     font-size: 1.3rem;
     font-weight: 700;
@@ -103,15 +113,18 @@ body::before {
     font-size: 0.95rem;
 }
 
-.login-container p {
+.crear-ca-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 0.9rem;
     color: #7a8bb0;
-    font-size: 0.95rem;
-    margin-top: 10px;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Animación suave del panel */
-.login-container {
-    animation: fadeInPanel 1s ease-out forwards;
+.crear-ca-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 10px #003366;
 }
 
 /* ===== FIX AUTOFILL CHROME / SAFARI ===== */
@@ -127,22 +140,15 @@ input:-webkit-autofill:active {
     caret-color: #7aaad6;
 }
 
-.crear-ca-link {
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 0.9rem;
-    color: #7a8bb0;
-    text-decoration: none;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-}
-
-.crear-ca-link:hover {
-    color: #ffffff;
-    text-shadow: 0 0 10px #003366;
-}
-
-
+/* Animación suave del panel */
 @keyframes fadeInPanel {
     0% { opacity: 0; transform: translateY(20px); }
     100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== AJUSTE SOLO PARA MOVIL ===== */
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+    }
 }

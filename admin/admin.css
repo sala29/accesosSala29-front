@@ -498,3 +498,135 @@ td button.eliminar:hover {
     from { opacity: 0; transform: scale(0.95); }
     to   { opacity: 1; transform: scale(1); }
 }
+
+/* ================= DESKTOP CENTER PRO ================= */
+
+@media (min-width: 1100px) {
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 32px 60px;
+    }
+
+}
+
+/* ================= MOBILE TABLE RESTRUCTURE ================= */
+
+@media (max-width: 768px) {
+
+    .panel {
+        padding: 18px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        border-radius: 16px;
+    }
+
+    table {
+        min-width: 720px; /* evita colapso de columnas */
+    }
+
+    th, td {
+        padding: 12px 10px;
+        font-size: 0.8em;
+        white-space: nowrap;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    tr {
+        background: rgba(255,255,255,0.02);
+    }
+
+    tr:hover {
+        transform: none;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .panel-header .btn {
+        width: 100%;
+    }
+
+}
+
+@media (min-width: 1024px) {
+
+    th {
+        font-size: 0.9em;
+    }
+
+    td {
+        font-size: 0.88em;
+    }
+
+    tr:hover {
+        background: rgba(78,161,255,0.08);
+        transform: translateY(-2px);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .modal {
+        align-items: stretch;
+        padding: 0;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        padding: 24px 20px 40px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .widget-content {
+        max-width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+}
+
+/* Mejor transición general */
+button, td button, .panel {
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+/* Panel hover solo desktop */
+@media (min-width: 1024px) {
+    .panel:hover {
+        box-shadow:
+            inset 0 0 0 1px rgba(78,161,255,0.18),
+            0 24px 60px rgba(0,0,0,0.85);
+    }
+}
+
+/* Scroll elegante interno tablas */
+.table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #1e6bff, #4ea1ff);
+    border-radius: 10px;
+}

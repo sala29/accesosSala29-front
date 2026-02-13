@@ -8,10 +8,15 @@ body {
     min-height: 100vh;
     background: radial-gradient(circle at top, #0b1d2d, #050b12);
     color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
+    overflow-x: hidden;
+    overflow-y: auto; /* PERMITE SCROLL EN MÓVIL */
 }
+
 
 .app {
     width: 100%;
@@ -354,6 +359,12 @@ button {
     background: #0f2034;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
 input:-webkit-autofill:focus {
     box-shadow: 
         0 0 16px rgba(42,163,255,0.7),
@@ -388,4 +399,16 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     caret-color: #7aaad6;
 }
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+        align-items: flex-start; /* mejor comportamiento cuando hay mucho contenido */
+    }
+
+    .app {
+        padding: 0;
+    }
+}
+
 
