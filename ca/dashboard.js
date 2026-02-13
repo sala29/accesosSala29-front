@@ -11,102 +11,85 @@ document.getElementById('cerrarSesion').addEventListener('click', () => {
     window.location.href = '../index.html';
 });
 
+const crearBtn = document.getElementById('crearEventoBtn');
+const crearForm = document.getElementById('crearEventoForm');
+const cancelarCrear = document.getElementById('cancelarCrear');
+
+crearBtn.addEventListener('click', () => {
+    crearForm.style.display = 'flex';
+});
+
+cancelarCrear.addEventListener('click', () => {
+    crearForm.style.display = 'none';
+});
+
+document.getElementById('guardarEvento').addEventListener('click', async () => {
+    const nombre = document.getElementById('nuevoNombre').value.trim();
+    const password = document.getElementById('nuevoPassword').value.trim();
+
+    if (!nombre || !password) {
+        alert('Nombre y contraseña obligatorios');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/eventos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ nombre, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error || 'Error al crear evento');
+            return;
+        }
+
+        window.location.href =
+            `escaneo_accesos/escaneo_accesos.html?eventId=${data.id}&nombre=${encodeURIComponent(nombre)}`;
+
+    } catch (err) {
+        alert('Error de conexión');
+    }
+});
+
+/* ================= BOTTOM SHEET CONTROL ================= */
+
 const overlay = document.getElementById('overlay');
 const bottomSheet = document.getElementById('bottomSheet');
 const sheetTitulo = document.getElementById('sheetTitulo');
 const sheetPassword = document.getElementById('sheetPassword');
 const sheetEscanear = document.getElementById('sheetEscanear');
 const cerrarSheet = document.getElementById('cerrarSheet');
-const lista = document.getElementById('listaEventos');
 
 let eventoActual = null;
-let cardActual = null;
 
-/* ================= HAPTIC ================= */
-
-function vibrar() {
-    if (navigator.vibrate) {
-        navigator.vibrate(15);
-    }
-}
-
-/* ================= OPEN ================= */
-
-function abrirSheet(evento, card) {
-
+function abrirSheet(evento) {
     eventoActual = evento;
-    cardActual = card;
-
-    document.querySelectorAll('.evento').forEach(e => e.classList.remove('selected'));
-    card.classList.add('selected');
-
     sheetTitulo.textContent = evento.nombre;
     sheetPassword.value = '';
 
     overlay.classList.add('active');
     bottomSheet.classList.add('active');
 
-    vibrar();
-
     setTimeout(() => {
         sheetPassword.focus();
-    }, 300);
+        sheetPassword.setSelectionRange(0, 0);
+    }, 200);
 }
 
-/* ================= CLOSE ================= */
-
 function cerrarSheetFunc() {
-
     eventoActual = null;
-
     overlay.classList.remove('active');
     bottomSheet.classList.remove('active');
-
-    if (cardActual) {
-        cardActual.classList.remove('selected');
-    }
-
-    cardActual = null;
 }
 
 overlay.addEventListener('click', cerrarSheetFunc);
 cerrarSheet.addEventListener('click', cerrarSheetFunc);
-
-/* ================= DRAG DOWN ================= */
-
-let startY = 0;
-let currentY = 0;
-let dragging = false;
-
-bottomSheet.addEventListener('pointerdown', (e) => {
-    startY = e.clientY;
-    dragging = true;
-});
-
-bottomSheet.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-
-    currentY = e.clientY;
-    let diff = currentY - startY;
-
-    if (diff > 0) {
-        bottomSheet.style.transform = `translateY(${diff}px)`;
-    }
-});
-
-bottomSheet.addEventListener('pointerup', () => {
-    dragging = false;
-
-    const diff = currentY - startY;
-
-    bottomSheet.style.transform = '';
-
-    if (diff > 120) {
-        cerrarSheetFunc();
-    }
-});
-
-/* ================= VALIDAR ================= */
 
 sheetEscanear.addEventListener('click', async () => {
 
@@ -135,7 +118,6 @@ sheetEscanear.addEventListener('click', async () => {
         const data = await res.json();
 
         if (!res.ok || !data.valido) {
-            vibrar();
             alert('Contraseña incorrecta');
             return;
         }
@@ -152,6 +134,7 @@ sheetEscanear.addEventListener('click', async () => {
 
 async function cargarEventos() {
 
+    const lista = document.getElementById('listaEventos');
     lista.innerHTML = '';
 
     try {
@@ -177,15 +160,13 @@ async function cargarEventos() {
             `;
 
             div.addEventListener('click', () => {
-
                 if (!evento.activo) return;
 
                 if (eventoActual && eventoActual.id === evento.id) {
                     cerrarSheetFunc();
                 } else {
-                    abrirSheet(evento, div);
+                    abrirSheet(evento);
                 }
-
             });
 
             lista.appendChild(div);
