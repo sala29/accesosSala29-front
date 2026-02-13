@@ -85,6 +85,7 @@ async function cargarEventos() {
         const eventos = await res.json();
 
         eventos.forEach(evento => {
+            evento.activo = evento.activo === true || evento.activo === 1 || evento.activo === "true";
             const div = document.createElement('div');
             div.className = 'evento';
 
@@ -116,12 +117,20 @@ async function cargarEventos() {
             // -------------------------------
             // ABRIR / CERRAR DESPLEGABLE
             // -------------------------------
-            div.querySelector('.evento-info').addEventListener('click', () => {
-                if (!evento.activo) return;
+            const eventoInfo = div.querySelector('.evento-info');
 
-                desplegable.style.display =
-                    desplegable.style.display === 'flex' ? 'none' : 'flex';
+            ['click', 'touchstart'].forEach(evtType => {
+                eventoInfo.addEventListener(evtType, () => {
+                    if (!evento.activo) return;
+                    desplegable.style.display =
+                        desplegable.style.display === 'flex' ? 'none' : 'flex';
+
+                    // Enfocar input después de abrir
+                    const input = desplegable.querySelector('input');
+                    if(input) setTimeout(() => input.focus(), 200);
+                });
             });
+
 
             // -------------------------------
             // VALIDAR CONTRASEÑA AL PULSAR
