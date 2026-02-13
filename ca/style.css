@@ -413,3 +413,18 @@ button:focus-visible {
     transform: translateY(-1px);
     box-shadow: 0 10px 26px rgba(30,107,255,0.6);
 }
+
+/* ================= CLICK FIX ================= */
+
+.evento {
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+/* Evita que los hijos bloqueen el click */
+.evento-info *,
+.status-circle,
+.nombreEvento,
+.candado {
+    pointer-events: none;
+}

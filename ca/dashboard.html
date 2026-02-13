@@ -41,16 +41,5 @@
 </div>
 
 <script src="dashboard.js"></script>
-<script>
-    // JS para dar foco al input al abrir desplegable
-    document.addEventListener('click', function(e){
-        if(e.target.closest('.evento')) {
-            const input = e.target.closest('.evento').querySelector('.desplegable input');
-            if(input) {
-                setTimeout(() => input.focus(), 300); // espera a animación
-            }
-        }
-    });
-</script>
 </body>
 </html>

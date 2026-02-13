@@ -114,24 +114,7 @@ async function cargarEventos() {
             const inputPass = desplegable.querySelector('input');
             const botonEscanear = desplegable.querySelector('button');
 
-            // -------------------------------
-            // ABRIR / CERRAR DESPLEGABLE
-            // -------------------------------
-            const eventoInfo = div.querySelector('.evento-info');
-
-            ['click', 'touchstart'].forEach(evtType => {
-                eventoInfo.addEventListener(evtType, () => {
-                    if (!evento.activo) return;
-                    desplegable.style.display =
-                        desplegable.style.display === 'flex' ? 'none' : 'flex';
-
-                    // Enfocar input después de abrir
-                    const input = desplegable.querySelector('input');
-                    if(input) setTimeout(() => input.focus(), 200);
-                });
-            });
-
-
+            
             // -------------------------------
             // VALIDAR CONTRASEÑA AL PULSAR
             // -------------------------------
@@ -173,6 +156,36 @@ async function cargarEventos() {
                 }
             });
         });
+
+        // ===============================
+        // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
+        // ===============================
+        div.addEventListener('click', function (e) {
+
+            // Si clicas dentro del desplegable (input o botón), no hacer toggle
+            if (e.target.closest('.desplegable')) return;
+
+            if (!evento.activo) return;
+
+            const estaAbierto = desplegable.style.display === 'flex';
+
+            // Cerrar todos los desplegables
+            document.querySelectorAll('.desplegable').forEach(d => {
+                d.style.display = 'none';
+            });
+
+            // Si estaba cerrado → abrir
+            if (!estaAbierto) {
+                desplegable.style.display = 'flex';
+
+                // Forzar foco real (funciona en móvil)
+                setTimeout(() => {
+                    inputPass.focus();
+                    inputPass.click(); // necesario en iOS
+                }, 100);
+            }
+        });
+
 
     } catch (err) {
         console.error(err);
