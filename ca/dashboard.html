@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Controlador - Sala 29</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +19,6 @@
         Crear evento
     </button>
 
-    <!-- Crear evento -->
     <div id="crearEventoForm" class="crearForm">
         <div class="form-group">
             <label for="nuevoNombre">Nombre del evento</label>
@@ -29,7 +28,6 @@
             <label for="nuevoPassword">Contraseña del evento</label>
             <input type="password" id="nuevoPassword" placeholder="Contraseña del evento">
         </div>
-
         <div class="formBtns">
             <button id="guardarEvento" class="btn primary small">Guardar</button>
             <button id="cancelarCrear" class="btn ghost small">Cancelar</button>
@@ -38,6 +36,31 @@
 
     <div id="listaEventos" class="listaEventos"></div>
 
+</div>
+
+<!-- ================= BOTTOM SHEET PREMIUM ================= -->
+
+<div id="overlay" class="overlay"></div>
+
+<div id="bottomSheet" class="bottomSheet">
+    <div class="sheet-header">
+        <div id="sheetTitulo" class="sheet-title"></div>
+        <button id="cerrarSheet" class="close-btn">✕</button>
+    </div>
+
+    <div class="sheet-body">
+        <input 
+            type="password"
+            id="sheetPassword"
+            placeholder="Contraseña del evento"
+            autocomplete="off"
+            inputmode="text"
+        >
+
+        <button id="sheetEscanear" class="btn primary">
+            Escanear accesos
+        </button>
+    </div>
 </div>
 
 <script src="dashboard.js"></script>

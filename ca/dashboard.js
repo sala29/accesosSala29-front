@@ -6,17 +6,11 @@ if (!token) {
     window.location.href = '../index.html';
 }
 
-// ===============================
-// CERRAR SESIÓN
-// ===============================
 document.getElementById('cerrarSesion').addEventListener('click', () => {
     localStorage.removeItem('token');
     window.location.href = '../index.html';
 });
 
-// ===============================
-// CREAR EVENTO (DESPLEGABLE)
-// ===============================
 const crearBtn = document.getElementById('crearEventoBtn');
 const crearForm = document.getElementById('crearEventoForm');
 const cancelarCrear = document.getElementById('cancelarCrear');
@@ -29,9 +23,6 @@ cancelarCrear.addEventListener('click', () => {
     crearForm.style.display = 'none';
 });
 
-// ===============================
-// GUARDAR NUEVO EVENTO
-// ===============================
 document.getElementById('guardarEvento').addEventListener('click', async () => {
     const nombre = document.getElementById('nuevoNombre').value.trim();
     const password = document.getElementById('nuevoPassword').value.trim();
@@ -58,38 +49,105 @@ document.getElementById('guardarEvento').addEventListener('click', async () => {
             return;
         }
 
-        // Redirigir directamente al escaneo
         window.location.href =
             `escaneo_accesos/escaneo_accesos.html?eventId=${data.id}&nombre=${encodeURIComponent(nombre)}`;
 
     } catch (err) {
-        console.error(err);
         alert('Error de conexión');
     }
 });
 
-// ===============================
-// CARGAR EVENTOS
-// ===============================
+/* ================= BOTTOM SHEET CONTROL ================= */
+
+const overlay = document.getElementById('overlay');
+const bottomSheet = document.getElementById('bottomSheet');
+const sheetTitulo = document.getElementById('sheetTitulo');
+const sheetPassword = document.getElementById('sheetPassword');
+const sheetEscanear = document.getElementById('sheetEscanear');
+const cerrarSheet = document.getElementById('cerrarSheet');
+
+let eventoActual = null;
+
+function abrirSheet(evento) {
+    eventoActual = evento;
+    sheetTitulo.textContent = evento.nombre;
+    sheetPassword.value = '';
+
+    overlay.classList.add('active');
+    bottomSheet.classList.add('active');
+
+    setTimeout(() => {
+        sheetPassword.focus();
+        sheetPassword.setSelectionRange(0, 0);
+    }, 200);
+}
+
+function cerrarSheetFunc() {
+    eventoActual = null;
+    overlay.classList.remove('active');
+    bottomSheet.classList.remove('active');
+}
+
+overlay.addEventListener('click', cerrarSheetFunc);
+cerrarSheet.addEventListener('click', cerrarSheetFunc);
+
+sheetEscanear.addEventListener('click', async () => {
+
+    if (!eventoActual) return;
+
+    const password = sheetPassword.value.trim();
+
+    if (!password) {
+        alert('Introduce la contraseña del evento');
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `${API_BASE}/eventos/${eventoActual.id}/validar`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ password })
+            }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok || !data.valido) {
+            alert('Contraseña incorrecta');
+            return;
+        }
+
+        window.location.href =
+            `escaneo_accesos/escaneo_accesos.html?eventId=${eventoActual.id}&nombre=${encodeURIComponent(eventoActual.nombre)}`;
+
+    } catch (err) {
+        alert('Error validando la contraseña');
+    }
+});
+
+/* ================= CARGAR EVENTOS ================= */
+
 async function cargarEventos() {
+
     const lista = document.getElementById('listaEventos');
     lista.innerHTML = '';
 
     try {
         const res = await fetch(`${API_BASE}/eventos`, {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
+            headers: { 'Authorization': 'Bearer ' + token }
         });
-
-        if (!res.ok) {
-            throw new Error(`HTTP ${res.status}`);
-        }
 
         const eventos = await res.json();
 
         eventos.forEach(evento => {
+
             evento.activo = evento.activo === true || evento.activo === 1 || evento.activo === "true";
+
             const div = document.createElement('div');
             div.className = 'evento';
 
@@ -99,116 +157,24 @@ async function cargarEventos() {
                     <div class="nombreEvento">${evento.nombre}</div>
                     <div class="candado">${evento.activo ? '🔓' : '🔒'}</div>
                 </div>
-
-                <div class="desplegable">
-                    <input 
-                        type="password" 
-                        inputmode="text"
-                        placeholder="Contraseña del evento"
-                        ${evento.activo ? '' : 'disabled'}
-                    >
-                    <button ${evento.activo ? '' : 'disabled'}>
-                        Escanear accesos
-                    </button>
-                </div>
             `;
 
-            lista.appendChild(div);
-
-            const desplegable = div.querySelector('.desplegable');
-            const inputPass = desplegable.querySelector('input');
-            const botonEscanear = desplegable.querySelector('button');
-
-            inputPass.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            // ===============================
-            // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
-            // ===============================
-            div.addEventListener('click', function (e) {
-
-                // Si clic dentro del desplegable (input o botón), no hacer nada
-                if (e.target.closest('.desplegable')) return;
-
+            div.addEventListener('click', () => {
                 if (!evento.activo) return;
 
-                const estaAbierto = desplegable.classList.contains('abierto');
-
-                // Cerrar todos los desplegables
-                document.querySelectorAll('.desplegable').forEach(d => {
-                    d.classList.remove('abierto');
-                    d.style.display = 'none';
-                });
-
-                // Si estaba cerrado → abrirlo
-                if (!estaAbierto) {
-                    desplegable.style.display = 'flex';
-                    desplegable.classList.add('abierto');
-
-                    // Foco inmediato (clave para móvil)
-                    inputPass.focus();
-
-                    // Fix iOS para mostrar teclado
-                    inputPass.setSelectionRange(
-                        inputPass.value.length,
-                        inputPass.value.length
-                    );
+                if (eventoActual && eventoActual.id === evento.id) {
+                    cerrarSheetFunc();
+                } else {
+                    abrirSheet(evento);
                 }
             });
 
-            
-            // -------------------------------
-            // VALIDAR CONTRASEÑA AL PULSAR
-            // -------------------------------
-            botonEscanear.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const password = inputPass.value.trim();
-
-                if (!password) {
-                    alert('Introduce la contraseña del evento');
-                    return;
-                }
-
-                try {
-                    const res = await fetch(
-                        `${API_BASE}/eventos/${evento.id}/validar`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': 'Bearer ' + token
-                            },
-                            body: JSON.stringify({ password })
-                        }
-                    );
-
-                    const data = await res.json();
-
-                    if (!res.ok || !data.valido) {
-                        alert('Contraseña incorrecta');
-                        return;
-                    }
-
-                    // Contraseña correcta → ir al escáner
-                    window.location.href =
-                        `escaneo_accesos/escaneo_accesos.html?eventId=${evento.id}&nombre=${encodeURIComponent(evento.nombre)}`;
-
-                } catch (err) {
-                    console.error(err);
-                    alert('Error validando la contraseña');
-                }
-            });
+            lista.appendChild(div);
         });
 
-
     } catch (err) {
-        console.error(err);
         alert('Error al cargar eventos');
     }
 }
 
-// ===============================
-// INIT
-// ===============================
 cargarEventos();
