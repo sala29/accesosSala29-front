@@ -118,6 +118,10 @@ async function cargarEventos() {
             const inputPass = desplegable.querySelector('input');
             const botonEscanear = desplegable.querySelector('button');
 
+            inputPass.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
             // ===============================
             // ABRIR / CERRAR DESPLEGABLE (VERSIÓN PRO)
             // ===============================
@@ -151,7 +155,8 @@ async function cargarEventos() {
             // -------------------------------
             // VALIDAR CONTRASEÑA AL PULSAR
             // -------------------------------
-            botonEscanear.addEventListener('click', async () => {
+            botonEscanear.addEventListener('click', async (e) => {
+                e.stopPropagation();
                 const password = inputPass.value.trim();
 
                 if (!password) {
