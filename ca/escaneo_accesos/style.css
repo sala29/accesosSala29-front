@@ -297,7 +297,10 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    min-height: 300px; /* visible en móvil */
+    width: 100%;
 }
+
 
 
 /* CUADRADO GUIA QR */

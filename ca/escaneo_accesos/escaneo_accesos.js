@@ -90,7 +90,7 @@ let usuarioActual = null;
 
 document.getElementById('buscarDniBtn').addEventListener('click', async () => {
     const input = document.getElementById('dniInput');
-    const dni = input.value.trim();
+    const dni = input.value.trim().toUpperCase();
     if (!dni) return alert('Introduce un DNI');
 
     input.value = ''; // 👈 LIMPIAR CAMPO
@@ -122,8 +122,9 @@ document.getElementById('buscarDniBtn').addEventListener('click', async () => {
 ========================= */
 document.getElementById('buscarIdBtn').addEventListener('click', async () => {
     const input = document.getElementById('idInput');
-    const id = input.value.trim();
-    if (!id) return alert('Introduce un ID');
+    const id = parseInt(input.value.trim(), 10);
+    if (isNaN(id)) return alert('Introduce un ID válido');
+
 
     input.value = ''; // 👈 LIMPIAR CAMPO
 
@@ -203,13 +204,14 @@ function onQrSuccess(text) {
 
     cerrarEscanerQR();
 
-    const id = text.trim(); // asumimos que el QR contiene solo el ID
-    if (!/^\d+$/.test(id)) {
+    const id = parseInt(text.trim(), 10);
+    if (isNaN(id)) {
         alert('QR inválido');
         return;
     }
 
     buscarUsuarioPorId(id);
+
 }
 
 function onQrError(err) {
