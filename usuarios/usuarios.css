@@ -411,4 +411,17 @@ input:-webkit-autofill:active {
     }
 }
 
+#screenRegistro form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* espacio entre inputs */
+}
 
+#screenRegistro input[type="date"] {
+    width: 100%;
+    display: block;
+}
+
+#dni {
+    text-transform: uppercase;
+}

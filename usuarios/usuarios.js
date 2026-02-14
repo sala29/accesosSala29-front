@@ -1,7 +1,7 @@
 /* =========================
    ELEMENTOS COMUNES
    ========================= */
-const mensajeFinalConfirmacion = document.getElementById('mensajeFinalConfirmación'); // screenConfirmacion
+const mensajeFinalConfirmacion = document.getElementById('mensajeFinalConfirmacion'); // screenConfirmacion
 const mensajeFinalPerfil = document.querySelector('#screenPerfil .mensaje'); // screenPerfil
 const API_BASE = "https://accesossala29.onrender.com";
 
