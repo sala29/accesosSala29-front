@@ -203,7 +203,7 @@ function onQrSuccess(text) {
     cerrarEscanerQR();
 
     const id = text.trim(); // asumimos que el QR contiene solo el ID
-    if (!id) {
+    if (!/^\d+$/.test(id)) {
         alert('QR inválido');
         return;
     }

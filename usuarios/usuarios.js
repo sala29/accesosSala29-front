@@ -1,7 +1,7 @@
 /* =========================
    ELEMENTOS COMUNES
    ========================= */
-const mensajeFinalConfirmacion = document.getElementById('mensajeFinal'); // screenConfirmacion
+const mensajeFinalConfirmacion = document.getElementById('mensajeFinalConfirmación'); // screenConfirmacion
 const mensajeFinalPerfil = document.querySelector('#screenPerfil .mensaje'); // screenPerfil
 const API_BASE = "https://accesossala29.onrender.com";
 
@@ -117,8 +117,12 @@ document.getElementById('registroForm').addEventListener('submit', e => {
 /* =========================
    CONFIRMAR REGISTRO
    ========================= */
-document.getElementById('confirmarRegistro').onclick = async () => {
+document.getElementById('confirmarRegistro').onclick = async (e) => {
+    const btn = e.target;
+
     mensajeFinalConfirmacion.innerText = '';
+    btn.disabled = true;
+    btn.innerText = "Registrando...";
 
     try {
         const res = await fetch(`${API_BASE}/registro`, {
@@ -130,25 +134,35 @@ document.getElementById('confirmarRegistro').onclick = async () => {
         const data = await res.json();
 
         if (res.ok) {
+
             mensajeFinalConfirmacion.style.color = '#5dff8f';
             mensajeFinalConfirmacion.innerText =
-                'Registro completado con éxito. Revisa tu email para recibir el QR.';
+                'Registro completado con éxito.';
 
             userId = data.userId;
             userToken = data.token;
+
             localStorage.setItem('userId', userId);
             localStorage.setItem('token', userToken);
 
-            setTimeout(() => mostrarPerfilUsuario(userId), 2000);
+            await mostrarPerfilUsuario(userId);
+
         } else {
             mensajeFinalConfirmacion.style.color = 'red';
             mensajeFinalConfirmacion.innerText = data.error || 'Error en el registro';
+            btn.disabled = false;
+            btn.innerText = "Confirmar registro";
         }
+
     } catch (err) {
         mensajeFinalConfirmacion.style.color = 'red';
-        mensajeFinalConfirmacion.innerText = 'Error de conexión con el servidor';
+        mensajeFinalConfirmacion.innerText = 'Error de conexión';
+        btn.disabled = false;
+        btn.innerText = "Confirmar registro";
     }
 };
+
+
 
 /* =========================
    LOGIN USUARIO
