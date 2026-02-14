@@ -173,6 +173,7 @@ document.getElementById('scanBtn').addEventListener('click', abrirEscanerQR);
 function abrirEscanerQR() {
     const qrScreen = document.getElementById('qrScreen');
     qrScreen.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 
     html5QrCode = new Html5Qrcode("qr-reader");
 
@@ -218,6 +219,7 @@ function onQrError(err) {
 function cerrarEscanerQR() {
     const qrScreen = document.getElementById('qrScreen');
     qrScreen.style.display = 'none';
+    document.body.style.overflow = 'hidden';
 
     if (html5QrCode) {
         html5QrCode.stop().then(() => {
