@@ -120,10 +120,14 @@ document.getElementById('buscarDniBtn').addEventListener('click', async () => {
 /* =========================
    BUSCAR POR ID
 ========================= */
+document.getElementById('idInput').addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/\D/g, ''); // elimina todo menos dígitos
+});
+
 document.getElementById('buscarIdBtn').addEventListener('click', async () => {
     const input = document.getElementById('idInput');
-    const id = parseInt(input.value.trim(), 10);
-    if (isNaN(id)) return alert('Introduce un ID válido');
+    const id = input.value.trim();
+    if (!/^\d+$/.test(id)) return alert('Introduce un ID válido');
 
 
     input.value = ''; // 👈 LIMPIAR CAMPO

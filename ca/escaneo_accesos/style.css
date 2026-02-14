@@ -414,6 +414,11 @@ button, input, .sheet, .scan-btn {
     transform: translateY(-2px);
 }
 
+#dniInput {
+    text-transform: uppercase;
+}
+
+
 /* ================= OVERLAY MEJORADO ================= */
 
 .sheet-overlay {
