@@ -5,120 +5,63 @@
     <title>Escanear accesos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* ── SOLO LAYOUT SIN SCROLL ── no toca colores ni componentes existentes */
-
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-
-        /* Contenedor principal: columna que ocupa exactamente la pantalla */
-        .main-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100dvh;                          /* dynamic viewport height */
-            padding-bottom: env(safe-area-inset-bottom, 0px);
-        }
-
-        /* Header: tamaño fijo */
-        .header {
-            flex-shrink: 0;
-            padding: 14px 20px;                      /* reducido del original 20px */
-        }
-
-        /* Zona del botón cámara: ocupa el espacio sobrante */
-        .scanner-container {
-            flex: 1 1 0;
-            min-height: 0;
-            margin-top: 0;                           /* anula el margin-top:40px original */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Reducimos el botón en pantallas pequeñas para que quepan los inputs */
-        @media (max-height: 680px) {
-            .scan-btn {
-                width: 150px !important;
-                height: 150px !important;
-                font-size: 50px !important;
-            }
-        }
-        @media (min-height: 681px) and (max-height: 780px) {
-            .scan-btn {
-                width: 180px !important;
-                height: 180px !important;
-                font-size: 60px !important;
-            }
-        }
-
-        /* Sección DNI/ID: tamaño fijo, sin margen extra */
-        .dni-section {
-            flex-shrink: 0;
-            margin: 0 20px 12px;                     /* anula margin:40px original */
-            text-align: center;
-        }
-
-        .dni-section h2 {
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
-
-        .dni-section input {
-            padding: 11px 14px;                      /* un poco menos que los 14px originales */
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .dni-section button {
-            padding: 11px 14px;
-            font-size: 15px;
-        }
-    </style>
 </head>
 <body>
 
-<!-- Envolvemos header + scanner + secciones en un flex column -->
 <div class="main-layout">
 
+    <!-- HEADER -->
     <div class="header">
         <h1 id="nombreEvento">Evento</h1>
         <button id="salirBtn" class="salir">Salir</button>
     </div>
 
-    <div class="scanner-container">
+    <!-- CARD CÁMARA -->
+    <div class="cam-card">
         <button id="scanBtn" class="scan-btn">📷</button>
+        <span class="cam-label">Escanear QR</span>
     </div>
 
-    <!-- Acceso por Núm Socio -->
-    <div class="dni-section">
-        <h2>Acceder con Núm Socio</h2>
-        <input
-            type="number"
-            id="idInput"
-            placeholder="Ej: 42"
-            autocomplete="off"
-            inputmode="numeric"
-        >
-        <button id="buscarIdBtn">BUSCAR USUARIO</button>
-    </div>
+    <!-- CARD BÚSQUEDAS -->
+    <div class="search-card">
 
-    <!-- Acceso por DNI -->
-    <div class="dni-section">
-        <h2>Acceder con DNI</h2>
-        <input
-            type="text"
-            id="dniInput"
-            placeholder="Ej: 12345678A"
-            inputmode="text"
-            autocomplete="off"
-        >
-        <button id="buscarDniBtn">BUSCAR USUARIO</button>
+        <div class="search-block">
+            <label class="search-title">Núm. Socio</label>
+            <div class="search-row">
+                <input
+                    type="number"
+                    id="idInput"
+                    placeholder="Ej: 42"
+                    autocomplete="off"
+                    inputmode="numeric"
+                >
+                <button id="buscarIdBtn" class="search-btn" aria-label="Buscar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="search-divider"></div>
+
+        <div class="search-block">
+            <label class="search-title">DNI</label>
+            <div class="search-row">
+                <input
+                    type="text"
+                    id="dniInput"
+                    placeholder="Ej: 12345678A"
+                    inputmode="text"
+                    autocomplete="off"
+                >
+                <button id="buscarDniBtn" class="search-btn" aria-label="Buscar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+            </div>
+        </div>
+
     </div>
 
 </div>
-<!-- fin main-layout -->
 
 
 <!-- ── TODO LO DEMÁS SIN TOCAR ── -->
@@ -128,7 +71,6 @@
 <div id="userSheet" class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-content">
-
         <div class="sheet-header">
             <div class="avatar">
                 <img id="uFoto">
@@ -141,21 +83,17 @@
                 <span id="estadoBloqueado"></span>
             </div>
         </div>
-
         <div class="info-grid">
             <div><span>ID</span><strong id="uId"></strong></div>
             <div><span>Nacimiento</span><strong id="uNacimiento"></strong></div>
             <div><span>Email</span><strong id="uEmail"></strong></div>
             <div><span>Móvil</span><strong id="uTelefono"></strong></div>
         </div>
-
         <div id="feedback" class="feedback"></div>
-
         <div class="acciones">
             <button id="verificarBtn" class="btn-secundario">Verificar usuario</button>
             <button id="accesoBtn" class="btn-principal">ACCESO</button>
         </div>
-
     </div>
 </div>
 
