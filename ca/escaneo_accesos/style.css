@@ -63,7 +63,7 @@ html, body {
 /* ================= CARD CÁMARA ================= */
 
 .cam-card {
-    flex: 1 1 0;
+    flex: 0.55 1 0;
     min-height: 0;
     display: flex;
     flex-direction: column;
@@ -76,7 +76,7 @@ html, body {
 }
 
 .cam-label {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: rgba(255,255,255,.3);
@@ -110,11 +110,11 @@ html, body {
 /* ================= CARD BÚSQUEDAS ================= */
 
 .search-card {
-    flex-shrink: 0;
+    flex: 0.45 1 0;
     background: rgba(255,255,255,.03);
     border: 1px solid rgba(255,255,255,.07);
     border-radius: 20px;
-    padding: 6px 16px 10px;
+    padding: 10px 16px 14px;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -125,11 +125,11 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: 12px 0;
+    padding: 16px 0;
 }
 
 .search-title {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 1.8px;
     text-transform: uppercase;
@@ -145,13 +145,13 @@ html, body {
 
 .search-row input {
     flex: 1;
-    height: 52px;
+    height: 60px;
     background: rgba(255,255,255,.05);
     border: 1px solid rgba(43,108,255,.3);
     border-radius: 12px;
     color: #fff;
     font-family: 'Segoe UI', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
     padding: 0 16px;
     outline: none;
     transition: all 0.25s cubic-bezier(.4,0,.2,1);
@@ -172,8 +172,8 @@ html, body {
 /* Botón flecha */
 .search-btn {
     flex-shrink: 0;
-    width: 52px;
-    height: 52px;
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
     border: none;
     background: linear-gradient(135deg, #2b6cff, #3b8dff);
@@ -187,8 +187,8 @@ html, body {
 }
 
 .search-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     display: block;
 }
 
