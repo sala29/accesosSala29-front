@@ -282,7 +282,11 @@ function renderUsuario(u) {
 
     document.getElementById('uId').innerText = u.id;
     document.getElementById('uNacimiento').innerText = u.fecha_nacimiento
-        ? u.fecha_nacimiento.split('-').reverse().join('-')
+        ? new Date(u.fecha_nacimiento).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        })
         : '—';
     document.getElementById('uEmail').innerText = u.email || '—';
     document.getElementById('uTelefono').innerText = u.telefono || '—';
