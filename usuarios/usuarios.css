@@ -209,12 +209,11 @@ button {
 
 
 .qr-campo img {
-    width: 120px; /* QR grande */
-    height: 120px;
-    border-radius: 18px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    border: 2px solid #2aa3ff;
+    padding: 12px;           /* más margen blanco alrededor */
+    background: #FFFFFF;     /* fondo blanco, no oscuro */
+    border-radius: 8px;      /* poco redondeo, no tocar esquinas */
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
 }
 
 .editar-link {
@@ -342,22 +341,6 @@ button {
     font-size: 1rem;
 }
 
-.qr-campo img {
-    width: 100%;           /* ocupar todo el ancho del widget */
-    max-width: 300px;      /* opcional: límite para no desbordar en móviles */
-    height: auto;          /* mantener proporción */
-    border-radius: 18px;
-    margin: 0;
-    display: block;
-    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
-    transition: all 0.35s ease, box-shadow 0.35s ease;
-}
-
-.qr-campo img {
-    border: 2px solid #2aa3ff;
-    padding: 4px;
-    background: #0f2034;
-}
 
 img {
     max-width: 100%;
