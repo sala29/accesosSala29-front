@@ -202,11 +202,9 @@ function abrirEscanerQR() {
     });
 }
 
-function onQrSuccess(text) {
+async function onQrSuccess(text) {
     if (!escaneando) return;
     escaneando = false;
-
-    cerrarEscanerQR();
 
     const id = parseInt(text.trim(), 10);
     if (isNaN(id)) {
@@ -214,24 +212,23 @@ function onQrSuccess(text) {
         return;
     }
 
+    await cerrarEscanerQR(); // ✅ espera a que la cámara pare
     buscarUsuarioPorId(id);
-
 }
 
 function onQrError(err) {
     // No hacemos nada, se ejecuta muchas veces mientras la cámara está activa
 }
 
-function cerrarEscanerQR() {
+async function cerrarEscanerQR() {
     const qrScreen = document.getElementById('qrScreen');
     qrScreen.style.display = 'none';
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = '';
 
     if (html5QrCode) {
-        html5QrCode.stop().then(() => {
-            html5QrCode.clear();
-            html5QrCode = null;
-        });
+        await html5QrCode.stop();
+        html5QrCode.clear();
+        html5QrCode = null;
     }
 }
 
