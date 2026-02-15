@@ -190,7 +190,7 @@ function abrirEscanerQR() {
 
         html5QrCode.start(
             { facingMode: "environment" }, // cámara trasera
-            { fps: 10, qrbox: 250 },       // tamaño y velocidad
+            { fps: 10, qrbox: { width: 300, height: 300 } },       // tamaño y velocidad
             onQrSuccess,
             onQrError
         );
