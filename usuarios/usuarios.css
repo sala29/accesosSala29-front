@@ -207,13 +207,13 @@ button {
     transition: all 0.35s ease, box-shadow 0.35s ease;
 }
 
-
 .qr-campo img {
-    border: 2px solid #2aa3ff;
-    padding: 12px;           /* más margen blanco alrededor */
-    background: #FFFFFF;     /* fondo blanco, no oscuro */
-    border-radius: 8px;      /* poco redondeo, no tocar esquinas */
-    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+    border: none;
+    padding: 12px;
+    background: #002d54;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(42,163,255,0.3),
+                0 0 60px rgba(42,163,255,0.1);
 }
 
 .editar-link {
