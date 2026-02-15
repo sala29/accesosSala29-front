@@ -206,6 +206,13 @@ async function onQrSuccess(text) {
     if (!escaneando) return;
     escaneando = false;
 
+    // 👇 FEEDBACK VISUAL inmediato
+    const reader = document.getElementById('qr-reader');
+    reader.style.opacity = '0.4';
+    const h2 = document.querySelector('.qr-header h2');
+    h2.innerText = '✅ QR leído: ' + text;
+
+    console.log('QR leído:', text); // también en consola
     const id = parseInt(text.trim(), 10);
     if (isNaN(id)) {
         alert('QR inválido');
