@@ -17,7 +17,6 @@ const params = new URLSearchParams(window.location.search);
 const eventId = params.get('eventId');
 const nombreEvento = params.get('nombre');
 
-
 if (!eventId) {
     alert('Evento no especificado');
     window.location.href = '../dashboard.html';
@@ -44,7 +43,6 @@ function cerrarSheet() {
     setTimeout(() => {
         overlay.style.display = 'none';
         usuarioActual = null;
-
         document.getElementById('dniInput').value = '';
         document.getElementById('idInput').value = '';
     }, 300);
@@ -93,7 +91,7 @@ document.getElementById('buscarDniBtn').addEventListener('click', async () => {
     const dni = input.value.trim().toUpperCase();
     if (!dni) return alert('Introduce un DNI');
 
-    input.value = ''; // 👈 LIMPIAR CAMPO
+    input.value = '';
 
     try {
         const res = await fetch(`${API_BASE}/usuario/dni/${dni}`, {
@@ -116,12 +114,11 @@ document.getElementById('buscarDniBtn').addEventListener('click', async () => {
     }
 });
 
-
 /* =========================
    BUSCAR POR ID
 ========================= */
 document.getElementById('idInput').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/\D/g, ''); // elimina todo menos dígitos
+    e.target.value = e.target.value.replace(/\D/g, '');
 });
 
 document.getElementById('buscarIdBtn').addEventListener('click', async () => {
@@ -129,8 +126,7 @@ document.getElementById('buscarIdBtn').addEventListener('click', async () => {
     const id = input.value.trim();
     if (!/^\d+$/.test(id)) return alert('Introduce un ID válido');
 
-
-    input.value = ''; // 👈 LIMPIAR CAMPO
+    input.value = '';
 
     try {
         const res = await fetch(`${API_BASE}/usuario/${id}`, {
@@ -154,19 +150,12 @@ document.getElementById('buscarIdBtn').addEventListener('click', async () => {
 });
 
 document.getElementById('dniInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        document.getElementById('buscarDniBtn').click();
-    }
+    if (e.key === 'Enter') document.getElementById('buscarDniBtn').click();
 });
 
 document.getElementById('idInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        document.getElementById('buscarIdBtn').click();
-    }
+    if (e.key === 'Enter') document.getElementById('buscarIdBtn').click();
 });
-
-
-
 
 
 /* =========================
@@ -189,8 +178,8 @@ function abrirEscanerQR() {
         }
 
         html5QrCode.start(
-            { facingMode: "environment" }, // cámara trasera
-            { fps: 10, qrbox: { width: 300, height: 300 } },       // tamaño y velocidad
+            { facingMode: "environment" },
+            { fps: 10, qrbox: { width: 260, height: 260 } },
             onQrSuccess,
             onQrError
         );
@@ -206,25 +195,22 @@ async function onQrSuccess(text) {
     if (!escaneando) return;
     escaneando = false;
 
-    // 👇 FEEDBACK VISUAL inmediato
-    const reader = document.getElementById('qr-reader');
-    reader.style.opacity = '0.4';
-    const h2 = document.querySelector('.qr-header h2');
-    h2.innerText = '✅ QR leído: ' + text;
+    // FIX: actualizamos el subtítulo propio (no el h2 del reader)
+    const sub = document.querySelector('.qr-topbar-sub');
+    if (sub) sub.innerText = '✅ Código leído correctamente';
 
-    console.log('QR leído:', text); // también en consola
     const id = parseInt(text.trim(), 10);
     if (isNaN(id)) {
         alert('QR inválido');
         return;
     }
 
-    await cerrarEscanerQR(); // ✅ espera a que la cámara pare
+    await cerrarEscanerQR();
     buscarUsuarioPorId(id);
 }
 
-function onQrError(err) {
-    // No hacemos nada, se ejecuta muchas veces mientras la cámara está activa
+function onQrError() {
+    // silencioso
 }
 
 async function cerrarEscanerQR() {
@@ -232,11 +218,21 @@ async function cerrarEscanerQR() {
     qrScreen.style.display = 'none';
     document.body.style.overflow = '';
 
+    // FIX: resetear subtítulo para la próxima apertura
+    const sub = document.querySelector('.qr-topbar-sub');
+    if (sub) sub.innerText = 'Apunta al código del socio';
+
     if (html5QrCode) {
-        await html5QrCode.stop();
+        try {
+            await html5QrCode.stop();
+        } catch (e) { /* ya estaba parado */ }
         html5QrCode.clear();
         html5QrCode = null;
     }
+
+    // FIX: limpiar el DOM que deja la librería para la próxima vez
+    const reader = document.getElementById('qr-reader');
+    reader.innerHTML = '';
 }
 
 document.getElementById('cancelarQrBtn').addEventListener('click', cerrarEscanerQR);
@@ -283,10 +279,8 @@ function renderUsuario(u) {
     document.getElementById('uId').innerText = u.id;
     document.getElementById('uNacimiento').innerText = u.fecha_nacimiento
         ? new Date(u.fecha_nacimiento).toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        })
+            day: '2-digit', month: '2-digit', year: 'numeric'
+          })
         : '—';
     document.getElementById('uEmail').innerText = u.email || '—';
     document.getElementById('uTelefono').innerText = u.telefono || '—';
@@ -306,7 +300,6 @@ function renderUsuario(u) {
     const accesoBtn = document.getElementById('accesoBtn');
     const verificarBtn = document.getElementById('verificarBtn');
 
-    // Mostrar/ocultar botones según estado
     if (u.bloqueado) {
         accesoBtn.style.display = 'none';
         verificarBtn.style.display = 'none';
@@ -318,7 +311,6 @@ function renderUsuario(u) {
         accesoBtn.style.display = 'block';
     }
 
-    // 🔹 Listener seguro para ACCESO (siempre actualizado)
     if (accesoBtn) {
         accesoBtn.onclick = async () => {
             if (!usuarioActual) return;
@@ -376,9 +368,7 @@ function ocultarFeedback() {
 document.getElementById('verificarBtn').addEventListener('click', async () => {
     if (!usuarioActual) return;
 
-    const ok = confirm(
-        '¿Confirmas que la identidad coincide con el DNI y la foto del usuario?'
-    );
+    const ok = confirm('¿Confirmas que la identidad coincide con el DNI y la foto del usuario?');
     if (!ok) return;
 
     try {
@@ -404,4 +394,3 @@ document.getElementById('verificarBtn').addEventListener('click', async () => {
         mostrarFeedback('Error de conexión', 'bad');
     }
 });
-

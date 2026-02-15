@@ -63,9 +63,7 @@
 
 </div>
 
-
-<!-- ── TODO LO DEMÁS SIN TOCAR ── -->
-
+<!-- ── SIN TOCAR ── -->
 <div id="sheetOverlay" class="sheet-overlay"></div>
 
 <div id="userSheet" class="sheet">
@@ -97,10 +95,37 @@
     </div>
 </div>
 
+<!-- ── QR SCREEN REDISEÑADA ── -->
 <div id="qrScreen" class="qr-screen" style="display:none">
-    <div class="qr-header"><h2>Escanear QR</h2></div>
-    <div id="qr-reader"></div>
-    <button id="cancelarQrBtn" class="cancelar-qr">Cancelar</button>
+
+    <!-- Cabecera fija: nunca la toca la librería -->
+    <div class="qr-topbar">
+        <span class="qr-topbar-title">Escanear QR</span>
+        <span class="qr-topbar-sub">Apunta al código del socio</span>
+    </div>
+
+    <!-- Zona cámara: la librería inyecta aquí su video -->
+    <div class="qr-viewport">
+        <div id="qr-reader"></div>
+
+        <!-- Marco de esquinas encima del video, siempre visible -->
+        <div class="qr-frame">
+            <span class="qr-corner tl"></span>
+            <span class="qr-corner tr"></span>
+            <span class="qr-corner bl"></span>
+            <span class="qr-corner br"></span>
+            <div class="qr-scan-line"></div>
+        </div>
+    </div>
+
+    <!-- Pie fijo: z-index alto para no quedar detrás del video -->
+    <div class="qr-footer">
+        <button id="cancelarQrBtn" class="cancelar-qr">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            Cancelar
+        </button>
+    </div>
+
 </div>
 
 <script src="https://unpkg.com/html5-qrcode"></script>

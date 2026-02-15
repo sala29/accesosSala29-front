@@ -85,7 +85,6 @@ html, body {
 /* ================= BOTÓN ESCANER ================= */
 
 .scan-btn {
-    /* tamaño relativo a la card, nunca desborda */
     width: clamp(100px, 30vh, 200px);
     height: clamp(100px, 30vh, 200px);
     border-radius: 50%;
@@ -120,7 +119,6 @@ html, body {
     gap: 0;
 }
 
-/* Bloque individual (label + fila) */
 .search-block {
     display: flex;
     flex-direction: column;
@@ -136,7 +134,6 @@ html, body {
     color: rgba(255,255,255,.4);
 }
 
-/* Fila input + botón */
 .search-row {
     display: flex;
     gap: 10px;
@@ -155,21 +152,17 @@ html, body {
     padding: 0 16px;
     outline: none;
     transition: all 0.25s cubic-bezier(.4,0,.2,1);
-    /* quita flechas del input number */
     -moz-appearance: textfield;
 }
 .search-row input::-webkit-outer-spin-button,
 .search-row input::-webkit-inner-spin-button { -webkit-appearance: none; }
-
 .search-row input::placeholder { color: rgba(255,255,255,.2); }
-
 .search-row input:focus {
     border-color: rgba(43,108,255,.7);
     background: rgba(43,108,255,.07);
     box-shadow: 0 0 0 3px rgba(43,108,255,.15);
 }
 
-/* Botón flecha */
 .search-btn {
     flex-shrink: 0;
     width: 60px;
@@ -186,16 +179,10 @@ html, body {
     transition: all 0.25s cubic-bezier(.4,0,.2,1);
 }
 
-.search-btn svg {
-    width: 26px;
-    height: 26px;
-    display: block;
-}
-
+.search-btn svg { width: 26px; height: 26px; display: block; }
 .search-btn:hover  { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(43,108,255,.55); }
 .search-btn:active { transform: scale(.95); box-shadow: 0 4px 12px rgba(43,108,255,.3); }
 
-/* Separador entre los dos bloques */
 .search-divider {
     height: 1px;
     background: rgba(255,255,255,.06);
@@ -219,9 +206,7 @@ html, body {
 
 .sheet {
     position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 0; right: 0; bottom: 0;
     height: 90%;
     background: linear-gradient(180deg, #0b1020, #070a14);
     border-radius: 24px 24px 0 0;
@@ -234,8 +219,7 @@ html, body {
 .sheet.open { transform: translateY(0); }
 
 .sheet-handle {
-    width: 48px;
-    height: 5px;
+    width: 48px; height: 5px;
     background: #2a3cff;
     border-radius: 10px;
     margin: 10px auto;
@@ -268,34 +252,21 @@ html, body {
 
 /* ================= HEADER USUARIO ================= */
 
-.sheet-header {
-    text-align: center;
-    padding-bottom: 24px;
-}
+.sheet-header { text-align: center; padding-bottom: 24px; }
 
 .avatar {
-    width: 120px;
-    height: 120px;
+    width: 120px; height: 120px;
     margin: 0 auto 12px;
     border-radius: 50%;
     overflow: hidden;
     background: #111;
     border: 3px solid #2a3cff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 0 0 4px rgba(43,108,255,.15), 0 12px 30px rgba(0,0,0,.6);
 }
 
-.avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
+.avatar img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .avatar:hover img { transform: scale(1.05); }
-
 .placeholder { font-size: 64px; color: #2a3cff; }
 .muted { opacity: .6; font-size: 14px; }
 
@@ -330,19 +301,12 @@ html, body {
 
 /* ================= ACCIONES ================= */
 
-.acciones {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
+.acciones { margin-top: 30px; display: flex; flex-direction: column; gap: 14px; }
 
 .btn-principal {
     background: linear-gradient(135deg, #1b2bff, #3b5bff);
-    border: none;
-    color: white;
-    padding: 18px;
-    font-size: 18px;
+    border: none; color: white;
+    padding: 18px; font-size: 18px;
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(43,108,255,.4);
     cursor: pointer;
@@ -369,12 +333,9 @@ html, body {
 /* ================= FEEDBACK ================= */
 
 .feedback {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 600;
-    display: none;
+    margin-top: 12px; padding: 12px;
+    border-radius: 12px; text-align: center;
+    font-weight: 600; display: none;
     animation: fadeUpSheet 0.3s ease;
 }
 
@@ -386,19 +347,19 @@ html, body {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ================= ESCANER QR ================= */
+/* ================================================
+   ESCANER QR — rediseño completo
+   ================================================ */
 
 .qr-screen {
     position: fixed;
     inset: 0;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background: #000;
-    z-index: 9999;
+    background: radial-gradient(circle at top, #0b1b3a 0%, #03060f 60%);
     overflow: hidden;
-    padding-bottom: env(safe-area-inset-bottom);
-    animation: fadeInQr 0.25s ease;
+    animation: fadeInQr 0.2s ease;
 }
 
 @keyframes fadeInQr {
@@ -406,53 +367,172 @@ html, body {
     to   { opacity: 1; }
 }
 
-.qr-header {
-    padding: 12px;
-    color: #2b6cff;
-    text-align: center;
-    font-size: 22px;
-}
-
-#qr-reader {
-    flex: 1;
+/* — Cabecera — siempre encima, nunca pisada por el video */
+.qr-topbar {
+    flex-shrink: 0;
+    z-index: 10;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    position: relative;
-    min-height: 300px;
-    width: 100%;
+    gap: 4px;
+    padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px 16px;
+    background: linear-gradient(to bottom, rgba(5,10,28,.95) 70%, transparent);
 }
 
-#qr-reader::before {
-    content: "";
+.qr-topbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.qr-topbar-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,.4);
+    letter-spacing: 0.3px;
+}
+
+/* — Zona de cámara — ocupa todo el espacio entre cabecera y pie */
+.qr-viewport {
+    flex: 1 1 0;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* El video que inyecta html5-qrcode ocupa todo el viewport */
+#qr-reader {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 250px;
-    height: 250px;
-    transform: translate(-50%, -50%);
-    border: 3px solid #2b6cff;
-    border-radius: 16px;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Suprimimos todo el UI que mete la librería */
+#qr-reader img,
+#qr-reader button,
+#qr-reader select,
+#qr-reader input,
+#qr-reader span,
+#qr-reader p,
+#qr-reader div > div:not(#qr-reader__scan_region) {
+    display: none !important;
+}
+
+#qr-reader__scan_region {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#qr-reader__scan_region video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+/* — Marco de esquinas encima del video — */
+.qr-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Oscuridad alrededor del área de escaneo */
+.qr-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        /* recorte: 4 rectángulos oscuros alrededor del cuadrado central */
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55));
+    /* usamos clip-path para dejar el centro transparente */
+    /* fallback simple: box-shadow interior */
+    box-shadow: inset 0 0 0 9999px rgba(3,6,15,.55);
+    border-radius: 0;
+}
+
+/* El cuadrado central limpio */
+.qr-frame::after {
+    content: '';
+    position: absolute;
+    width: min(70vw, 260px);
+    height: min(70vw, 260px);
+    background: transparent;
+    box-shadow: 0 0 0 9999px rgba(3,6,15,.55);
+    border-radius: 18px;
+}
+
+/* Esquinas azules */
+.qr-corner {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-color: #2b6cff;
+    border-style: solid;
+    z-index: 6;
+}
+
+/* Posicionamos las esquinas relativas al cuadrado central */
+.qr-corner.tl { top: calc(50% - min(35vw,130px)); left: calc(50% - min(35vw,130px)); border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+.qr-corner.tr { top: calc(50% - min(35vw,130px)); right: calc(50% - min(35vw,130px)); border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+.qr-corner.bl { bottom: calc(50% - min(35vw,130px)); left: calc(50% - min(35vw,130px)); border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+.qr-corner.br { bottom: calc(50% - min(35vw,130px)); right: calc(50% - min(35vw,130px)); border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+
+/* Línea de escaneo animada */
+.qr-scan-line {
+    position: absolute;
+    left: calc(50% - min(35vw,130px) + 4px);
+    right: calc(50% - min(35vw,130px) + 4px);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #2b6cff, transparent);
+    border-radius: 2px;
+    z-index: 6;
+    animation: scanMove min(70vw,260px) 2s ease-in-out infinite;
+    top: calc(50% - min(35vw,130px));
+}
+
+@keyframes scanMove {
+    0%   { transform: translateY(0); opacity: 1; }
+    45%  { opacity: 1; }
+    50%  { transform: translateY(min(70vw,260px)); opacity: 0; }
+    51%  { transform: translateY(0); opacity: 0; }
+    55%  { opacity: 1; }
+    100% { transform: translateY(min(70vw,260px)); opacity: 1; }
+}
+
+/* — Pie fijo — z-index alto para estar siempre encima del video */
+.qr-footer {
+    flex-shrink: 0;
+    z-index: 10;
+    padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: linear-gradient(to top, rgba(5,10,28,.95) 70%, transparent);
 }
 
 .cancelar-qr {
-    padding: 18px;
-    padding-bottom: calc(18px + env(safe-area-inset-bottom));
-    font-size: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 17px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
     border: none;
-    background: #b11226;
+    background: linear-gradient(135deg, #b11226, #7a0c1a);
     color: white;
     border-radius: 18px;
-    margin: 12px 20px;
-    flex-shrink: 0;
-    box-shadow: 0 10px 28px rgba(177,18,38,.5);
+    box-shadow: 0 10px 28px rgba(177,18,38,.45);
     cursor: pointer;
-    font-family: 'Segoe UI', sans-serif;
     transition: all 0.25s cubic-bezier(.4,0,.2,1);
 }
 
-.cancelar-qr:hover { transform: translateY(-2px); }
+.cancelar-qr:hover  { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(177,18,38,.6); }
+.cancelar-qr:active { transform: scale(.97); }
 
 /* ================= DESKTOP ================= */
 
