@@ -40,7 +40,16 @@
             <input type="email" id="email" placeholder="Email *" required>
             <input type="tel" id="telefono" maxlength="9" placeholder="Teléfono">
             <input type="date" id="fechaNacimiento" required>
-            <button type="submit" class="primary">Continuar</button>
+            <label class="terms-label">
+                <input type="checkbox" id="aceptaTerminos">
+                <span>
+                    He leído y acepto los
+                    <a href="#" class="terms-link" data-tab="terminos">Términos y condiciones</a>
+                    y la
+                    <a href="#" class="terms-link" data-tab="privacidad">Política de privacidad</a>
+                </span>
+            </label>
+            <button type="submit" class="primary" id="btnContinuar" disabled>Continuar</button>
             <button type="button" class="secondary" id="volverInicio1">Volver</button>
         </form>
     </section>
@@ -127,5 +136,153 @@
 </div>
 
 <script src="usuarios.js"></script>
+
+<div id="modalTerminos" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+
+        <button class="modal-close" id="btnCerrarModal" aria-label="Cerrar">&times;</button>
+
+        <h2 id="modalTitle" class="modal-title">Sala29</h2>
+
+        <!-- Pestañas -->
+        <div class="modal-tabs" role="tablist">
+            <button class="tab-btn active" role="tab" data-tab="terminos" aria-selected="true">
+                Términos y condiciones
+            </button>
+            <button class="tab-btn" role="tab" data-tab="privacidad" aria-selected="false">
+                Política de privacidad
+            </button>
+        </div>
+
+        <!-- Contenido pestaña 1: Términos -->
+        <div class="tab-content active" id="tab-terminos">
+            <h3>1. Información general</h3>
+            <p>
+                Los presentes Términos y Condiciones regulan el uso de los servicios ofrecidos por
+                <strong>Sala29</strong>, asociación sin ánimo de lucro inscrita en el registro de asociaciones
+                de Cataluña con CIF <strong>XXXX</strong>, con domicilio en
+                <strong>C. Industria, 27, 08291 Ripollet, Barcelona</strong> y correo de contacto
+                <strong>29sala29@gmail.com</strong>.
+            </p>
+
+            <h3>2. Objeto</h3>
+            <p>
+                Sala29 es una asociación cultural sin ánimo de lucro cuyo objeto es la promoción de
+                actividades culturales, sociales y formativas entre sus socios y la comunidad. El acceso
+                a los servicios digitales de la asociación implica la aceptación plena de estos términos.
+            </p>
+
+            <h3>3. Requisitos de registro</h3>
+            <p>
+                Para registrarse como usuario deberás facilitar datos verídicos, completos y actualizados.
+                El registro está dirigido a personas mayores de 14 años. Los menores de 18 años deberán
+                contar con el consentimiento de su representante legal.
+            </p>
+
+            <h3>4. Uso correcto de los servicios</h3>
+            <p>
+                El usuario se compromete a utilizar los servicios de forma lícita, respetando la
+                normativa vigente, los derechos de terceros y las normas internas de Sala29. Queda
+                prohibido el uso fraudulento, abusivo o contrario a los fines de la asociación.
+            </p>
+
+            <h3>5. Modificaciones</h3>
+            <p>
+                Sala29 se reserva el derecho de modificar estos Términos en cualquier momento. Los
+                cambios serán notificados a los usuarios registrados y entrarán en vigor en el plazo
+                indicado en cada comunicación.
+            </p>
+
+            <h3>6. Legislación aplicable</h3>
+            <p>
+                Estos Términos se rigen por la legislación española. Para cualquier controversia, las
+                partes se someten a los juzgados y tribunales de Barcelona, con renuncia expresa a
+                cualquier otro fuero que pudiera corresponderles.
+            </p>
+
+            <h3>7. Contacto</h3>
+            <p>
+                Para cualquier consulta relacionada con estos Términos, puedes contactarnos en
+                <a href="mailto:29sala29@gmail.com">29sala29@gmail.com</a>.
+            </p>
+        </div>
+
+        <!-- Contenido pestaña 2: Privacidad -->
+        <div class="tab-content" id="tab-privacidad">
+            <h3>1. Responsable del tratamiento</h3>
+            <p>
+                <strong>Sala29</strong> — Asociación sin ánimo de lucro<br>
+                CIF: <strong>XXXX</strong><br>
+                Domicilio: <strong>C. Industria, 27, 08291 Ripollet, Barcelona</strong><br>
+                Email: <a href="mailto:29sala29@gmail.com">29sala29@gmail.com</a>
+            </p>
+
+            <h3>2. Datos que recogemos</h3>
+            <p>
+                Recogemos los siguientes datos personales con tu consentimiento explícito:
+                nombre completo, DNI, correo electrónico, teléfono y fecha de nacimiento.
+                Estos datos son necesarios para gestionar tu alta como socio/usuario de Sala29.
+            </p>
+
+            <h3>3. Finalidad del tratamiento</h3>
+            <p>
+                Los datos facilitados se utilizarán exclusivamente para:
+            </p>
+            <ul>
+                <li>Gestionar tu registro y acceso como socio o usuario de Sala29.</li>
+                <li>Comunicarte información relevante sobre actividades y servicios de la asociación.</li>
+                <li>Cumplir con las obligaciones legales aplicables.</li>
+            </ul>
+
+            <h3>4. Base jurídica</h3>
+            <p>
+                El tratamiento se basa en el consentimiento del interesado (art. 6.1.a RGPD) y,
+                en su caso, en la ejecución de la relación asociativa (art. 6.1.b RGPD).
+            </p>
+
+            <h3>5. Conservación de datos</h3>
+            <p>
+                Tus datos se conservarán mientras seas socio o usuario activo de Sala29 y, tras la
+                baja, durante el tiempo legalmente exigido (mínimo 5 años conforme a la normativa
+                fiscal y contable vigente).
+            </p>
+
+            <h3>6. Comunicación a terceros</h3>
+            <p>
+                Sala29 no cederá tus datos a terceros salvo obligación legal. No realizamos
+                transferencias internacionales de datos.
+            </p>
+
+            <h3>7. Tus derechos</h3>
+            <p>
+                Puedes ejercer en cualquier momento tus derechos de <strong>acceso, rectificación,
+                supresión, limitación, portabilidad y oposición</strong> escribiendo a
+                <a href="mailto:29sala29@gmail.com">29sala29@gmail.com</a>, adjuntando copia de
+                tu DNI. También tienes derecho a presentar una reclamación ante la
+                <strong>Agencia Española de Protección de Datos</strong> (www.aepd.es).
+            </p>
+
+            <h3>8. Seguridad</h3>
+            <p>
+                Sala29 aplica medidas técnicas y organizativas adecuadas para proteger tus datos
+                contra acceso no autorizado, pérdida o destrucción, conforme al RGPD (UE) 2016/679
+                y la LOPDGDD (LO 3/2018).
+            </p>
+
+            <h3>9. Contacto DPD</h3>
+            <p>
+                Para cualquier consulta sobre privacidad: <a href="mailto:29sala29@gmail.com">29sala29@gmail.com</a>
+            </p>
+        </div>
+
+        <!-- Botón aceptar dentro del modal -->
+        <div class="modal-footer">
+            <button class="primary modal-accept-btn" id="btnAceptarDesdeModal">
+                Acepto y cierro
+            </button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

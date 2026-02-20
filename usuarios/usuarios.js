@@ -54,6 +54,84 @@ function validarEdadMinima(fecha) {
     return nacimiento <= limite;
 }
 
+(function () {
+    const modal        = document.getElementById('modalTerminos');
+    const btnCerrar    = document.getElementById('btnCerrarModal');
+    const btnAceptar   = document.getElementById('btnAceptarDesdeModal');
+    const checkbox     = document.getElementById('aceptaTerminos');
+    const btnContinuar = document.getElementById('btnContinuar');
+    const termsLinks   = document.querySelectorAll('.terms-link');
+    const tabBtns      = document.querySelectorAll('.tab-btn');
+    const tabContents  = document.querySelectorAll('.tab-content');
+
+    // ── Abrir modal ──────────────────────────────────────────
+    function abrirModal(tab) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        cambiarTab(tab || 'terminos');
+    }
+
+    // ── Cerrar modal ─────────────────────────────────────────
+    function cerrarModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // ── Cambiar pestaña ──────────────────────────────────────
+    function cambiarTab(tabId) {
+        tabBtns.forEach(btn => {
+            const active = btn.dataset.tab === tabId;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-selected', active);
+        });
+        tabContents.forEach(content => {
+            content.classList.toggle('active', content.id === 'tab-' + tabId);
+        });
+    }
+
+    // ── Eventos pestañas ─────────────────────────────────────
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => cambiarTab(btn.dataset.tab));
+    });
+
+    // ── Abrir desde enlace del checkbox ──────────────────────
+    termsLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            abrirModal(link.dataset.tab);
+        });
+    });
+
+    // ── Cerrar con X ─────────────────────────────────────────
+    btnCerrar.addEventListener('click', cerrarModal);
+
+    // ── Aceptar desde modal → marca checkbox automáticamente ─
+    btnAceptar.addEventListener('click', () => {
+        if (checkbox) {
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change'));
+        }
+        cerrarModal();
+    });
+
+    // ── Cerrar al hacer clic en el overlay (fuera del box) ───
+    modal.addEventListener('click', e => {
+        if (e.target === modal) cerrarModal();
+    });
+
+    // ── Cerrar con Escape ────────────────────────────────────
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) cerrarModal();
+    });
+
+    // ── Habilitar/deshabilitar botón Continuar ───────────────
+    if (checkbox && btnContinuar) {
+        checkbox.addEventListener('change', () => {
+            btnContinuar.disabled = !checkbox.checked;
+        });
+    }
+})();
+
 /* =========================
    DATOS TEMPORALES Y TOKEN
    ========================= */
