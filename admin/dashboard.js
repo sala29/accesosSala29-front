@@ -44,6 +44,7 @@ async function cargarUsuarios() {
                     ${user.bloqueado ? `<button onclick="desbloquear(${user.id})">Desbloquear</button>` : `<button onclick="bloquear(${user.id})">Bloquear</button>`}
                     <button onclick="editarUsuario(${user.id})">Editar</button>
                     <button onclick="eliminarUsuario(${user.id})">Eliminar</button>
+                    <button onclick="enviarQR(${user.id})">Enviar QR</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -87,6 +88,30 @@ async function eliminarUsuario(id) {
         headers: { 'Authorization': 'Bearer ' + token }
     });
     cargarUsuarios();
+}
+
+async function enviarQR(id) {
+    if (!confirm('¿Enviar el QR por email a este usuario?')) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/usuarios/${id}/enviar-qr`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.error || 'Error al enviar el QR');
+            return;
+        }
+
+        alert(data.mensaje);
+
+    } catch (err) {
+        console.error(err);
+        alert('Error de conexión al enviar el QR');
+    }
 }
 
 // EDITAR USUARIO (modal completo)
