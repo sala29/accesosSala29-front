@@ -383,7 +383,7 @@ editarLinks.forEach(link => {
             document.getElementById('subirGaleria').addEventListener('click', () => {
                 const inputFile = document.createElement('input');
                 inputFile.type = 'file';
-                inputFile.accept = 'image/*';
+                inputFile.accept = 'image/png, image/jpeg, image/jpg, image/webp, image/heic';
                 inputFile.onchange = e => {
                     const file = e.target.files[0];
                     const reader = new FileReader();
@@ -408,6 +408,15 @@ editarLinks.forEach(link => {
                     const snapBtn = document.createElement('button');
                     snapBtn.innerText = '📸 Tomar foto';
                     modal.appendChild(snapBtn);
+
+                    // Después de crear snapBtn, añade:
+                    const cerrarBtn = document.createElement('button');
+                    cerrarBtn.innerText = '✖ Cerrar';
+                    cerrarBtn.onclick = () => {
+                        stream.getTracks().forEach(track => track.stop());
+                        modal.remove();
+                    };
+                    modal.appendChild(cerrarBtn);
 
                     document.body.appendChild(modal);
 
@@ -434,6 +443,11 @@ editarLinks.forEach(link => {
                 const nuevoValor = document.getElementById('urlFoto').value.trim();
                 if (!nuevoValor) return alert('Debes subir o pegar una foto');
 
+                // ✅ Añade esto
+                const btnGuardar = document.getElementById('guardarEditar');
+                btnGuardar.disabled = true;
+                btnGuardar.innerText = '⏳';
+
                 try {
                     const token = localStorage.getItem('token');
                     const res = await fetch(`${API_BASE}/usuarios/${userId}`, {
@@ -456,6 +470,8 @@ editarLinks.forEach(link => {
                         mensajeFinalPerfil.innerText = data.error || 'Error al actualizar';
                     }
                 } catch (err) {
+                    btnGuardar.disabled = false;
+                    btnGuardar.innerText = '✔';
                     mensajeFinalPerfil.style.color = 'red';
                     mensajeFinalPerfil.innerText = 'Error de conexión al actualizar';
                 }
