@@ -743,3 +743,119 @@ input:-webkit-autofill:active {
     text-align: center;
     letter-spacing: 0.03em;
 }
+
+/* =========================
+   MODAL EDITAR FOTO
+   ========================= */
+.foto-edit-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: 20px;
+}
+
+.foto-edit-box {
+    background: linear-gradient(180deg, #0f2034, #070b1a);
+    border: 1px solid rgba(42,163,255,0.25);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.9), 0 0 40px rgba(42,163,255,0.15);
+    padding: 28px 24px;
+    width: 90%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: slideup 0.3s ease;
+}
+
+.foto-edit-box h3 {
+    color: #2aa3ff;
+    text-align: center;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.foto-edit-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2aa3ff;
+    align-self: center;
+    box-shadow: 0 0 20px rgba(42,163,255,0.3);
+}
+
+.foto-edit-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.foto-edit-opciones button {
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    background: rgba(42,163,255,0.12);
+    border: 1px solid rgba(42,163,255,0.25);
+    color: #fff;
+    transition: background 0.2s, transform 0.15s;
+    text-align: left;
+}
+
+.foto-edit-opciones button:hover {
+    background: rgba(42,163,255,0.22);
+    transform: translateX(4px);
+}
+
+.foto-edit-estado {
+    text-align: center;
+    font-size: 0.85rem;
+    min-height: 20px;
+    color: #aaa;
+}
+
+.foto-edit-acciones {
+    display: flex;
+    gap: 10px;
+}
+
+.foto-edit-acciones button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-foto-guardar {
+    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+    transition: opacity 0.2s;
+}
+
+.btn-foto-guardar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-foto-cancelar {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    color: rgba(255,255,255,0.6);
+    transition: background 0.2s;
+}
+
+.btn-foto-cancelar:hover {
+    background: rgba(255,255,255,0.07) !important;
+}

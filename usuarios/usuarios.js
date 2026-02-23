@@ -377,7 +377,6 @@ async function mostrarPerfilUsuario(id) {
         mostrar('perfil');
 
         document.getElementById('nombreUsuario').innerText = u.nombre || '—';
-        document.getElementById('nombreHeader').innerText = u.nombre || '—';
         document.getElementById('dniUsuario').innerText = u.dni || '—';
         document.getElementById('idUsuario').innerText = u.id;
         document.getElementById('verificadoUsuario').innerText =
@@ -550,32 +549,43 @@ editarLinks.forEach(link => {
         campoActual = link.dataset.campo;
 
         if (campoActual === 'foto') {
-            editarContainer.innerHTML = `
-                <div class="editar-foto-container">
-                    <button id="subirGaleria">📁 Abrir galería</button>
-                    <button id="tomarFoto">📸 Tomar foto</button>
-                    <p id="estadoFoto" style="color:#aaa;font-size:0.85em;">Ninguna foto seleccionada</p>
-                    <div class="editar-btns">
-                        <button id="guardarEditar" disabled>✔</button>
-                        <button id="cancelarEditar">✖</button>
+
+            // Crear modal profesional
+            const fotoActual = document.getElementById('fotoUsuario').src;
+            let urlSeleccionada = null;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'foto-edit-overlay';
+            overlay.innerHTML = `
+                <div class="foto-edit-box">
+                    <h3>✏️ Cambiar foto de perfil</h3>
+                    <img class="foto-edit-preview" id="fotoEditPreview" src="${fotoActual}" alt="Preview">
+                    <div class="foto-edit-opciones">
+                        <button id="fotoEditGaleria">📁 Elegir de la galería</button>
+                        <button id="fotoEditCamara">📸 Tomar foto</button>
+                    </div>
+                    <div class="foto-edit-estado" id="fotoEditEstado"></div>
+                    <div class="foto-edit-acciones">
+                        <button class="btn-foto-cancelar" id="fotoEditCancelar">Cancelar</button>
+                        <button class="btn-foto-guardar" id="fotoEditGuardar" disabled>Guardar</button>
                     </div>
                 </div>
             `;
-            editarContainer.style.display = 'block';
+            document.body.appendChild(overlay);
 
-            let archivoSeleccionado = null; // guardamos el File aquí
+            const preview   = overlay.querySelector('#fotoEditPreview');
+            const estado    = overlay.querySelector('#fotoEditEstado');
+            const btnGuardar = overlay.querySelector('#fotoEditGuardar');
 
+            // ── Subir a Cloudinary ───────────────────────────
             async function subirACloudinary(archivo) {
+                estado.style.color = '#aaa';
+                estado.innerText = 'Subiendo imagen...';
+                btnGuardar.disabled = true;
+
                 const formData = new FormData();
                 formData.append('file', archivo);
                 formData.append('upload_preset', 'sala29_fotos');
-
-                const estadoFoto = document.getElementById('estadoFoto');
-                const btnGuardar = document.getElementById('guardarEditar');
-
-                estadoFoto.style.color = '#aaa';
-                estadoFoto.innerText = 'Subiendo imagen...';
-                btnGuardar.disabled = true;
 
                 try {
                     const res = await fetch('https://api.cloudinary.com/v1_1/dx3qrpzfi/image/upload', {
@@ -585,22 +595,23 @@ editarLinks.forEach(link => {
                     const data = await res.json();
 
                     if (data.secure_url) {
-                        archivoSeleccionado = data.secure_url;
-                        estadoFoto.style.color = '#5dff8f';
-                        estadoFoto.innerText = '✔ Foto lista para guardar';
+                        urlSeleccionada = data.secure_url;
+                        preview.src = urlSeleccionada;
+                        estado.style.color = '#5dff8f';
+                        estado.innerText = '✔ Foto lista para guardar';
                         btnGuardar.disabled = false;
                     } else {
-                        estadoFoto.style.color = 'red';
-                        estadoFoto.innerText = 'Error al subir la foto';
+                        estado.style.color = 'red';
+                        estado.innerText = 'Error al subir la foto';
                     }
                 } catch (err) {
-                    estadoFoto.style.color = 'red';
-                    estadoFoto.innerText = 'Error de conexión con Cloudinary';
+                    estado.style.color = 'red';
+                    estado.innerText = 'Error de conexión con Cloudinary';
                 }
             }
 
-            // Galería
-            document.getElementById('subirGaleria').addEventListener('click', () => {
+            // ── Galería ──────────────────────────────────────
+            overlay.querySelector('#fotoEditGaleria').addEventListener('click', () => {
                 const inputFile = document.createElement('input');
                 inputFile.type = 'file';
                 inputFile.accept = 'image/png, image/jpeg, image/jpg, image/webp, image/heic';
@@ -611,24 +622,31 @@ editarLinks.forEach(link => {
                 inputFile.click();
             });
 
-            // Cámara
-            document.getElementById('tomarFoto').addEventListener('click', () => {
+            // ── Cámara ───────────────────────────────────────
+            overlay.querySelector('#fotoEditCamara').addEventListener('click', () => {
                 abrirCamaraProfesional(blob => subirACloudinary(blob));
             });
 
-            // Cancelar
-            document.getElementById('cancelarEditar').addEventListener('click', () => {
-                editarContainer.style.display = 'none';
+            // ── Cancelar ─────────────────────────────────────
+            overlay.querySelector('#fotoEditCancelar').addEventListener('click', () => {
+                overlay.remove();
                 campoActual = null;
             });
 
-            // Guardar → solo guarda la URL en tu backend
-            document.getElementById('guardarEditar').addEventListener('click', async () => {
-                if (!archivoSeleccionado) return;
+            // ── Cerrar al hacer clic fuera ───────────────────
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                    campoActual = null;
+                }
+            });
 
-                const btnGuardar = document.getElementById('guardarEditar');
+            // ── Guardar ──────────────────────────────────────
+            overlay.querySelector('#fotoEditGuardar').addEventListener('click', async () => {
+                if (!urlSeleccionada) return;
+
                 btnGuardar.disabled = true;
-                btnGuardar.innerText = '⏳';
+                btnGuardar.innerText = '⏳ Guardando...';
 
                 try {
                     const token = localStorage.getItem('token');
@@ -638,26 +656,26 @@ editarLinks.forEach(link => {
                             'Content-Type': 'application/json',
                             'Authorization': token ? 'Bearer ' + token : ''
                         },
-                        body: JSON.stringify({ foto: archivoSeleccionado })
+                        body: JSON.stringify({ foto: urlSeleccionada })
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        document.getElementById('fotoUsuario').src = archivoSeleccionado;
-                        editarContainer.style.display = 'none';
+                        document.getElementById('fotoUsuario').src = urlSeleccionada;
+                        overlay.remove();
                         campoActual = null;
                         mensajeFinalPerfil.style.color = '#5dff8f';
                         mensajeFinalPerfil.innerText = 'Foto actualizada con éxito';
                     } else {
-                        mensajeFinalPerfil.style.color = 'red';
-                        mensajeFinalPerfil.innerText = data.error || 'Error al guardar';
+                        estado.style.color = 'red';
+                        estado.innerText = data.error || 'Error al guardar';
                         btnGuardar.disabled = false;
-                        btnGuardar.innerText = '✔';
+                        btnGuardar.innerText = 'Guardar';
                     }
                 } catch (err) {
-                    mensajeFinalPerfil.style.color = 'red';
-                    mensajeFinalPerfil.innerText = 'Error de conexión al guardar';
+                    estado.style.color = 'red';
+                    estado.innerText = 'Error de conexión al guardar';
                     btnGuardar.disabled = false;
-                    btnGuardar.innerText = '✔';
+                    btnGuardar.innerText = 'Guardar';
                 }
             });
         } else {
@@ -693,9 +711,6 @@ editarLinks.forEach(link => {
                     const data = await res.json();
                     if (res.ok) {
                         document.getElementById(campoActual + 'Usuario').innerText = nuevoValor;
-                        if (campoActual === 'nombre') {
-                            document.getElementById('nombreHeader').innerText = nuevoValor;
-                        }
                         editarContainer.style.display = 'none';
                         campoActual = null;
                         mensajeFinalPerfil.style.color = '#5dff8f';
