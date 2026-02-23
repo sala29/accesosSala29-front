@@ -41,6 +41,12 @@
             <input type="tel" id="telefono" maxlength="9" placeholder="Teléfono">
             <label for="fechaNacimiento" class="input-label">Fecha de nacimiento *</label>
             <input type="date" id="fechaNacimiento" required>
+            <label class="input-label">Foto de perfil (opcional)</label>
+            <div class="foto-registro-container">
+                <button type="button" class="secondary" id="btnFotoGaleria">📁 Galería</button>
+                <button type="button" class="secondary" id="btnFotoCamara">📸 Cámara</button>
+                <p id="estadoFotoRegistro" style="color:#aaa;font-size:0.85em;">Sin foto seleccionada</p>
+            </div>
             <label class="terms-label">
                 <input type="checkbox" id="aceptaTerminos">
                 <span>

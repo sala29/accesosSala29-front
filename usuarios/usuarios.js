@@ -138,6 +138,95 @@ function validarEdadMinima(fecha) {
 let datosRegistro = {};
 let userId = null;
 let userToken = null;
+let fotoRegistroUrl = null;
+
+/* =========================
+   FOTO EN REGISTRO
+   ========================= */
+async function subirFotoRegistroACloudinary(archivo) {
+    const formData = new FormData();
+    formData.append('file', archivo);
+    formData.append('upload_preset', 'sala29_fotos');
+
+    const estado = document.getElementById('estadoFotoRegistro');
+    estado.style.color = '#aaa';
+    estado.innerText = 'Subiendo foto...';
+
+    try {
+        const res = await fetch('https://api.cloudinary.com/v1_1/dx3qrpzfi/image/upload', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+
+        if (data.secure_url) {
+            fotoRegistroUrl = data.secure_url;
+            estado.style.color = '#5dff8f';
+            estado.innerText = '✔ Foto lista';
+        } else {
+            estado.style.color = 'red';
+            estado.innerText = 'Error al subir la foto';
+        }
+    } catch (err) {
+        estado.style.color = 'red';
+        estado.innerText = 'Error de conexión con Cloudinary';
+    }
+}
+
+// Galería
+document.getElementById('btnFotoGaleria').addEventListener('click', () => {
+    const inputFile = document.createElement('input');
+    inputFile.type = 'file';
+    inputFile.accept = 'image/png, image/jpeg, image/jpg, image/webp, image/heic';
+    inputFile.onchange = e => {
+        const file = e.target.files[0];
+        if (file) subirFotoRegistroACloudinary(file);
+    };
+    inputFile.click();
+});
+
+// Cámara
+document.getElementById('btnFotoCamara').addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.play();
+
+        const modalCam = document.createElement('div');
+        modalCam.className = 'modal-video';
+        modalCam.appendChild(video);
+
+        const snapBtn = document.createElement('button');
+        snapBtn.innerText = '📸 Tomar foto';
+        modalCam.appendChild(snapBtn);
+
+        const cerrarBtn = document.createElement('button');
+        cerrarBtn.innerText = '✖ Cerrar';
+        cerrarBtn.onclick = () => {
+            stream.getTracks().forEach(track => track.stop());
+            modalCam.remove();
+        };
+        modalCam.appendChild(cerrarBtn);
+
+        document.body.appendChild(modalCam);
+
+        snapBtn.onclick = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            canvas.toBlob(blob => {
+                stream.getTracks().forEach(track => track.stop());
+                modalCam.remove();
+                subirFotoRegistroACloudinary(blob);
+            }, 'image/jpeg', 0.85);
+        };
+    } catch (err) {
+        alert('No se pudo acceder a la cámara');
+    }
+});
 
 const cNombre = document.getElementById('cNombre');
 const cDni = document.getElementById('cDni');
@@ -181,7 +270,8 @@ document.getElementById('registroForm').addEventListener('submit', e => {
         dni,
         email,
         telefono,
-        fecha_nacimiento: fechaNacimiento
+        fecha_nacimiento: fechaNacimiento,
+        foto: fotoRegistroUrl || null
     };
 
     cNombre.innerText = nombre;
