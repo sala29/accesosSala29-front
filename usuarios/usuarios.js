@@ -370,30 +370,64 @@ editarLinks.forEach(link => {
                 <div class="editar-foto-container">
                     <button id="subirGaleria">📁 Abrir galería</button>
                     <button id="tomarFoto">📸 Tomar foto</button>
-                    <input type="url" id="urlFoto" placeholder="O pega una URL">
+                    <p id="estadoFoto" style="color:#aaa;font-size:0.85em;">Ninguna foto seleccionada</p>
                     <div class="editar-btns">
-                        <button id="guardarEditar">✔</button>
+                        <button id="guardarEditar" disabled>✔</button>
                         <button id="cancelarEditar">✖</button>
                     </div>
                 </div>
             `;
             editarContainer.style.display = 'block';
 
-            // Subir desde galería
+            let archivoSeleccionado = null; // guardamos el File aquí
+
+            async function subirACloudinary(archivo) {
+                const formData = new FormData();
+                formData.append('file', archivo);
+                formData.append('upload_preset', 'sala29_fotos');
+
+                const estadoFoto = document.getElementById('estadoFoto');
+                const btnGuardar = document.getElementById('guardarEditar');
+
+                estadoFoto.style.color = '#aaa';
+                estadoFoto.innerText = 'Subiendo imagen...';
+                btnGuardar.disabled = true;
+
+                try {
+                    const res = await fetch('https://api.cloudinary.com/v1_1/dx3qrpzfi/image/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await res.json();
+
+                    if (data.secure_url) {
+                        archivoSeleccionado = data.secure_url;
+                        estadoFoto.style.color = '#5dff8f';
+                        estadoFoto.innerText = '✔ Foto lista para guardar';
+                        btnGuardar.disabled = false;
+                    } else {
+                        estadoFoto.style.color = 'red';
+                        estadoFoto.innerText = 'Error al subir la foto';
+                    }
+                } catch (err) {
+                    estadoFoto.style.color = 'red';
+                    estadoFoto.innerText = 'Error de conexión con Cloudinary';
+                }
+            }
+
+            // Galería
             document.getElementById('subirGaleria').addEventListener('click', () => {
                 const inputFile = document.createElement('input');
                 inputFile.type = 'file';
                 inputFile.accept = 'image/png, image/jpeg, image/jpg, image/webp, image/heic';
                 inputFile.onchange = e => {
                     const file = e.target.files[0];
-                    const reader = new FileReader();
-                    reader.onload = () => document.getElementById('urlFoto').value = reader.result;
-                    reader.readAsDataURL(file);
+                    if (file) subirACloudinary(file);
                 };
                 inputFile.click();
             });
 
-            // Tomar foto
+            // Cámara
             document.getElementById('tomarFoto').addEventListener('click', async () => {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -401,49 +435,51 @@ editarLinks.forEach(link => {
                     video.srcObject = stream;
                     video.play();
 
-                    const modal = document.createElement('div');
-                    modal.className = 'modal-video';
-                    modal.appendChild(video);
+                    const modalCam = document.createElement('div');
+                    modalCam.className = 'modal-video';
+                    modalCam.appendChild(video);
 
                     const snapBtn = document.createElement('button');
                     snapBtn.innerText = '📸 Tomar foto';
-                    modal.appendChild(snapBtn);
+                    modalCam.appendChild(snapBtn);
 
-                    // Después de crear snapBtn, añade:
                     const cerrarBtn = document.createElement('button');
                     cerrarBtn.innerText = '✖ Cerrar';
                     cerrarBtn.onclick = () => {
                         stream.getTracks().forEach(track => track.stop());
-                        modal.remove();
+                        modalCam.remove();
                     };
-                    modal.appendChild(cerrarBtn);
+                    modalCam.appendChild(cerrarBtn);
 
-                    document.body.appendChild(modal);
+                    document.body.appendChild(modalCam);
 
                     snapBtn.onclick = () => {
                         const canvas = document.createElement('canvas');
                         canvas.width = video.videoWidth;
                         canvas.height = video.videoHeight;
                         canvas.getContext('2d').drawImage(video, 0, 0);
-                        const dataURL = canvas.toDataURL('image/png');
-                        document.getElementById('urlFoto').value = dataURL;
 
-                        stream.getTracks().forEach(track => track.stop());
-                        modal.remove();
+                        canvas.toBlob(blob => {
+                            stream.getTracks().forEach(track => track.stop());
+                            modalCam.remove();
+                            subirACloudinary(blob);
+                        }, 'image/jpeg', 0.85);
                     };
-                } catch (err) { alert('No se pudo acceder a la cámara'); }
+                } catch (err) {
+                    alert('No se pudo acceder a la cámara');
+                }
             });
 
+            // Cancelar
             document.getElementById('cancelarEditar').addEventListener('click', () => {
                 editarContainer.style.display = 'none';
                 campoActual = null;
             });
 
+            // Guardar → solo guarda la URL en tu backend
             document.getElementById('guardarEditar').addEventListener('click', async () => {
-                const nuevoValor = document.getElementById('urlFoto').value.trim();
-                if (!nuevoValor) return alert('Debes subir o pegar una foto');
+                if (!archivoSeleccionado) return;
 
-                // ✅ Añade esto
                 const btnGuardar = document.getElementById('guardarEditar');
                 btnGuardar.disabled = true;
                 btnGuardar.innerText = '⏳';
@@ -456,27 +492,28 @@ editarLinks.forEach(link => {
                             'Content-Type': 'application/json',
                             'Authorization': token ? 'Bearer ' + token : ''
                         },
-                        body: JSON.stringify({ foto: nuevoValor })
+                        body: JSON.stringify({ foto: archivoSeleccionado })
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        document.getElementById('fotoUsuario').src = nuevoValor;
+                        document.getElementById('fotoUsuario').src = archivoSeleccionado;
                         editarContainer.style.display = 'none';
                         campoActual = null;
                         mensajeFinalPerfil.style.color = '#5dff8f';
                         mensajeFinalPerfil.innerText = 'Foto actualizada con éxito';
                     } else {
                         mensajeFinalPerfil.style.color = 'red';
-                        mensajeFinalPerfil.innerText = data.error || 'Error al actualizar';
+                        mensajeFinalPerfil.innerText = data.error || 'Error al guardar';
+                        btnGuardar.disabled = false;
+                        btnGuardar.innerText = '✔';
                     }
                 } catch (err) {
+                    mensajeFinalPerfil.style.color = 'red';
+                    mensajeFinalPerfil.innerText = 'Error de conexión al guardar';
                     btnGuardar.disabled = false;
                     btnGuardar.innerText = '✔';
-                    mensajeFinalPerfil.style.color = 'red';
-                    mensajeFinalPerfil.innerText = 'Error de conexión al actualizar';
                 }
             });
-
         } else {
             const valorActual = document.getElementById(campoActual + 'Usuario').innerText;
             editarContainer.innerHTML = `
