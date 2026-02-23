@@ -186,46 +186,8 @@ document.getElementById('btnFotoGaleria').addEventListener('click', () => {
 });
 
 // Cámara
-document.getElementById('btnFotoCamara').addEventListener('click', async () => {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        const video = document.createElement('video');
-        video.srcObject = stream;
-        video.play();
-
-        const modalCam = document.createElement('div');
-        modalCam.className = 'modal-video';
-        modalCam.appendChild(video);
-
-        const snapBtn = document.createElement('button');
-        snapBtn.innerText = '📸 Tomar foto';
-        modalCam.appendChild(snapBtn);
-
-        const cerrarBtn = document.createElement('button');
-        cerrarBtn.innerText = '✖ Cerrar';
-        cerrarBtn.onclick = () => {
-            stream.getTracks().forEach(track => track.stop());
-            modalCam.remove();
-        };
-        modalCam.appendChild(cerrarBtn);
-
-        document.body.appendChild(modalCam);
-
-        snapBtn.onclick = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-
-            canvas.toBlob(blob => {
-                stream.getTracks().forEach(track => track.stop());
-                modalCam.remove();
-                subirFotoRegistroACloudinary(blob);
-            }, 'image/jpeg', 0.85);
-        };
-    } catch (err) {
-        alert('No se pudo acceder a la cámara');
-    }
+document.getElementById('btnFotoCamara').addEventListener('click', () => {
+    abrirCamaraProfesional(blob => subirFotoRegistroACloudinary(blob));
 });
 
 const cNombre = document.getElementById('cNombre');
@@ -415,6 +377,7 @@ async function mostrarPerfilUsuario(id) {
         mostrar('perfil');
 
         document.getElementById('nombreUsuario').innerText = u.nombre || '—';
+        document.getElementById('nombreHeader').innerText = u.nombre || '—';
         document.getElementById('dniUsuario').innerText = u.dni || '—';
         document.getElementById('idUsuario').innerText = u.id;
         document.getElementById('verificadoUsuario').innerText =
@@ -441,6 +404,137 @@ async function mostrarPerfilUsuario(id) {
         mensajeFinalPerfil.style.color = 'red';
         mensajeFinalPerfil.innerText = err.message || 'Error de conexión al cargar perfil';
     }
+}
+
+/* =========================
+   CÁMARA PROFESIONAL
+   ========================= */
+function abrirCamaraProfesional(onFotoCapturada) {
+    let stream = null;
+    let facingMode = 'user'; // frontal por defecto
+    let fotoBlob = null;
+
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'camara-overlay';
+
+    overlay.innerHTML = `
+        <div class="camara-box">
+            <button class="btn-camara-cerrar" id="camaraCerrar">✕</button>
+            <h3 id="camaraTitulo">📷 Tomar foto</h3>
+            <div class="camara-visor" id="camaraVisor">
+                <video id="camaraVideo" autoplay playsinline muted></video>
+                <div class="camara-guia">
+                    <div class="camara-guia-circulo"></div>
+                </div>
+            </div>
+            <div class="camara-controles" id="camaraControles">
+                <button class="btn-camara-secundario" id="camaraFlip" title="Cambiar cámara">🔄</button>
+                <button class="btn-camara-accion" id="camaraDisparar">📷</button>
+                <div style="width:44px"></div>
+            </div>
+            <div class="camara-preview-controles" id="camaraPreviewControles" style="display:none">
+                <button class="btn-camara-repetir" id="camaraRepetir">🔁 Repetir</button>
+                <button class="btn-camara-confirmar" id="camaraConfirmar">✔ Usar esta foto</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const video       = overlay.querySelector('#camaraVideo');
+    const visor       = overlay.querySelector('#camaraVisor');
+    const controles   = overlay.querySelector('#camaraControles');
+    const previewCtrl = overlay.querySelector('#camaraPreviewControles');
+    const titulo      = overlay.querySelector('#camaraTitulo');
+
+    // ── Iniciar stream ───────────────────────────────────────
+    async function iniciarStream() {
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+        }
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode }
+            });
+            video.srcObject = stream;
+        } catch (err) {
+            alert('No se pudo acceder a la cámara');
+            cerrar();
+        }
+    }
+
+    // ── Cerrar y limpiar ─────────────────────────────────────
+    function cerrar() {
+        if (stream) stream.getTracks().forEach(t => t.stop());
+        overlay.remove();
+    }
+
+    // ── Mostrar preview ──────────────────────────────────────
+    function mostrarPreview(blob) {
+        fotoBlob = blob;
+        const url = URL.createObjectURL(blob);
+
+        // Reemplazar video por imagen
+        video.style.display = 'none';
+        const preview = document.createElement('img');
+        preview.id = 'camaraPreviewImg';
+        preview.src = url;
+        visor.appendChild(preview);
+
+        // Ocultar guía
+        visor.querySelector('.camara-guia').style.display = 'none';
+
+        // Cambiar controles
+        controles.style.display = 'none';
+        previewCtrl.style.display = 'flex';
+        titulo.innerText = '¿Usar esta foto?';
+    }
+
+    // ── Volver a cámara ──────────────────────────────────────
+    function volverACamara() {
+        fotoBlob = null;
+        const img = overlay.querySelector('#camaraPreviewImg');
+        if (img) img.remove();
+
+        video.style.display = 'block';
+        visor.querySelector('.camara-guia').style.display = 'flex';
+
+        controles.style.display = 'flex';
+        previewCtrl.style.display = 'none';
+        titulo.innerText = '📷 Tomar foto';
+    }
+
+    // ── Eventos ──────────────────────────────────────────────
+    overlay.querySelector('#camaraCerrar').onclick = cerrar;
+
+    overlay.querySelector('#camaraFlip').onclick = () => {
+        facingMode = facingMode === 'user' ? 'environment' : 'user';
+        iniciarStream();
+    };
+
+    overlay.querySelector('#camaraDisparar').onclick = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        canvas.toBlob(blob => mostrarPreview(blob), 'image/jpeg', 0.9);
+    };
+
+    overlay.querySelector('#camaraRepetir').onclick = volverACamara;
+
+    overlay.querySelector('#camaraConfirmar').onclick = () => {
+        cerrar();
+        if (fotoBlob) onFotoCapturada(fotoBlob);
+    };
+
+    // Cerrar al hacer clic en el overlay fuera del box
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) cerrar();
+    });
+
+    // ── Iniciar ──────────────────────────────────────────────
+    iniciarStream();
 }
 
 /* =========================
@@ -518,46 +612,8 @@ editarLinks.forEach(link => {
             });
 
             // Cámara
-            document.getElementById('tomarFoto').addEventListener('click', async () => {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                    const video = document.createElement('video');
-                    video.srcObject = stream;
-                    video.play();
-
-                    const modalCam = document.createElement('div');
-                    modalCam.className = 'modal-video';
-                    modalCam.appendChild(video);
-
-                    const snapBtn = document.createElement('button');
-                    snapBtn.innerText = '📸 Tomar foto';
-                    modalCam.appendChild(snapBtn);
-
-                    const cerrarBtn = document.createElement('button');
-                    cerrarBtn.innerText = '✖ Cerrar';
-                    cerrarBtn.onclick = () => {
-                        stream.getTracks().forEach(track => track.stop());
-                        modalCam.remove();
-                    };
-                    modalCam.appendChild(cerrarBtn);
-
-                    document.body.appendChild(modalCam);
-
-                    snapBtn.onclick = () => {
-                        const canvas = document.createElement('canvas');
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-                        canvas.getContext('2d').drawImage(video, 0, 0);
-
-                        canvas.toBlob(blob => {
-                            stream.getTracks().forEach(track => track.stop());
-                            modalCam.remove();
-                            subirACloudinary(blob);
-                        }, 'image/jpeg', 0.85);
-                    };
-                } catch (err) {
-                    alert('No se pudo acceder a la cámara');
-                }
+            document.getElementById('tomarFoto').addEventListener('click', () => {
+                abrirCamaraProfesional(blob => subirACloudinary(blob));
             });
 
             // Cancelar
@@ -637,6 +693,9 @@ editarLinks.forEach(link => {
                     const data = await res.json();
                     if (res.ok) {
                         document.getElementById(campoActual + 'Usuario').innerText = nuevoValor;
+                        if (campoActual === 'nombre') {
+                            document.getElementById('nombreHeader').innerText = nuevoValor;
+                        }
                         editarContainer.style.display = 'none';
                         campoActual = null;
                         mensajeFinalPerfil.style.color = '#5dff8f';

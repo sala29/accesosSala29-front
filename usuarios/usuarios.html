@@ -86,6 +86,13 @@
         <button class="secondary btn-volver" id="volverInicioPerfil">Volver</button>
         <h2>Perfil de Usuario</h2>
         <div class="perfil-container">
+            <div class="perfil-header">
+                <div class="perfil-foto-wrapper">
+                    <img id="fotoUsuario" alt="Foto usuario">
+                    <a href="#" class="editar-link perfil-foto-editar" data-campo="foto">✏️</a>
+                </div>
+                <span class="perfil-nombre-header" id="nombreHeader"></span>
+            </div>
 
             <!-- INFO NO EDITABLE -->
             <div class="info-no-edit">
@@ -125,11 +132,6 @@
                     <span class="label">Teléfono:</span>
                     <span class="valor" id="telefonoUsuario"></span>
                     <a href="#" class="editar-link" data-campo="telefono">Editar</a>
-                </div>
-                <div class="campo-flex foto-campo">
-                    <span class="label">Foto:</span>
-                    <img id="fotoUsuario" alt="Foto usuario">
-                    <a href="#" class="editar-link" data-campo="foto">Editar</a>
                 </div>
             </div>
 

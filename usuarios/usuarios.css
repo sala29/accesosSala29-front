@@ -199,12 +199,13 @@ button {
 .campo-flex img {
     width: 70px;
     height: 70px;
-    border-radius: 16px;
-    object-fit: contain; /* ← cambiar cover por contain */
-    background-color: #f0f0f0; /* opcional: relleno si no llena todo */
-    border: 1px solid #2aa3ff;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #0f2538;
+    border: 2px solid #2aa3ff;
     margin-left: auto;
     transition: all 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 0 12px rgba(42,163,255,0.3);
 }
 
 .qr-campo img {
@@ -280,53 +281,6 @@ button {
     margin: 20px 0;
     transition: all 0.35s ease;
 }
-
-/* ================= BOTONES ESPECIALES PARA FOTO ================= */
-.editar-foto-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px; /* espacio entre botones y campo URL */
-}
-
-.editar-foto-container button {
-    padding: 14px;
-    border-radius: 16px;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.35s ease, box-shadow 0.35s ease;
-    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
-}
-
-.editar-foto-container button:hover {
-    box-shadow: 0 8px 28px rgba(42,163,255,0.6);
-    transform: translateY(-2px);
-}
-
-.editar-foto-container button:active {
-    transform: scale(0.97);
-}
-
-/* Campo URL de la foto */
-.editar-foto-container input[type="url"] {
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    border: none;
-    background: #0f2538;
-    color: #7aaad6;
-    font-size: 1rem;
-    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.3);
-    transition: all 0.35s ease, box-shadow 0.35s ease;
-}
-
-.editar-foto-container input[type="url"]:focus {
-    outline: none;
-    box-shadow: 0 0 16px rgba(42,163,255,0.7), inset 0 0 0 1px rgba(42,163,255,0.6);
-}
-
 
 .qr-campo {
     display: flex;
@@ -559,4 +513,233 @@ input:-webkit-autofill:active {
     margin-bottom: 4px;
     margin-top: 8px;
     padding-left: 2px;
+}
+
+/* =========================
+   MODAL CÁMARA PROFESIONAL
+   ========================= */
+.camara-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.camara-box {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 20px;
+    width: 90%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.camara-box h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.camara-visor {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+}
+
+.camara-visor video,
+.camara-visor img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.camara-visor .camara-guia {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.camara-guia-circulo {
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.8);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+}
+
+.camara-controles {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-camara-accion {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: transform 0.1s;
+    flex-shrink: 0;
+}
+
+.btn-camara-accion:active {
+    transform: scale(0.92);
+}
+
+.btn-camara-secundario {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-camara-secundario:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.camara-preview-controles {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-camara-confirmar {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #5dff8f;
+    color: #000;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-camara-confirmar:hover {
+    opacity: 0.85;
+}
+
+.btn-camara-repetir {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-camara-repetir:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-camara-cerrar {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.btn-camara-cerrar:hover {
+    color: #fff;
+}
+
+/* =========================
+   PERFIL HEADER CON FOTO
+   ========================= */
+.perfil-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 8px;
+}
+
+.perfil-foto-wrapper {
+    position: relative;
+    width: 85%;
+    aspect-ratio: 1;
+    max-width: 280px;
+}
+
+.perfil-foto-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2aa3ff;
+    box-shadow: 0 0 30px rgba(42,163,255,0.4), 0 0 60px rgba(42,163,255,0.15);
+    display: block;
+    background-color: #0f2538;
+}
+
+.perfil-foto-editar {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    background: #2aa3ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.perfil-foto-editar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(42,163,255,0.6);
+}
+
+.perfil-nombre-header {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.03em;
 }
