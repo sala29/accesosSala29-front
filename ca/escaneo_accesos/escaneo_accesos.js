@@ -1,5 +1,5 @@
 const token = localStorage.getItem('token');
-const API_BASE = "https://accesossala29.onrender.com";
+const API_BASE = "https://accesossala29-8vdj.onrender.com";
 
 let html5QrCode = null;
 let escaneando = false;
