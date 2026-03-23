@@ -39,6 +39,64 @@ const emailInput = document.getElementById('email');
 const telefonoInput = document.getElementById('telefono');
 const fechaNacimientoInput = document.getElementById('fechaNacimiento');
 
+(function() {
+  const dd   = document.getElementById('segDd');
+  const mm   = document.getElementById('segMm');
+  const aaaa = document.getElementById('segAaaa');
+  const hidden = document.getElementById('fechaNacimiento');
+
+  function updateHidden() {
+    const d = dd.value.padStart(2,'0');
+    const m = mm.value.padStart(2,'0');
+    const y = aaaa.value;
+    hidden.value = (dd.value && mm.value && y.length === 4) ? `${y}-${m}-${d}` : '';
+  }
+  function markEmpty(el) { el.dataset.empty = el.value === '' ? 'true' : 'false'; }
+  function clamp(val, min, max) {
+    const n = parseInt(val, 10);
+    return isNaN(n) ? '' : String(Math.min(Math.max(n, min), max));
+  }
+  function handleInput(el, min, max, next) {
+    let v = el.value.replace(/\D/g, '');
+    const maxLen = el === aaaa ? 4 : 2;
+    if (v.length > maxLen) v = v.slice(-maxLen);
+    if (el !== aaaa && v.length === 1 && parseInt(v[0],10) > (el === dd ? 3 : 1)) {
+      el.value = clamp('0'+v, min, max); markEmpty(el); updateHidden();
+      if (next) { next.focus(); next.select(); } return;
+    }
+    el.value = v; markEmpty(el);
+    if (v.length === maxLen) {
+      el.value = clamp(v, min, max); markEmpty(el); updateHidden();
+      if (next) { next.focus(); next.select(); }
+    } else { updateHidden(); }
+  }
+  dd.addEventListener('input', () => handleInput(dd, 1, 31, mm));
+  mm.addEventListener('input', () => handleInput(mm, 1, 12, aaaa));
+  aaaa.addEventListener('input', () => {
+    aaaa.value = aaaa.value.replace(/\D/g,'').slice(0,4);
+    markEmpty(aaaa); updateHidden();
+  });
+  function handleKeydown(e, prev, next) {
+    if (e.key==='Backspace' && e.target.value==='' && prev) { e.preventDefault(); prev.focus(); prev.select(); }
+    if (e.key==='ArrowLeft' && e.target.selectionStart===0 && prev) { e.preventDefault(); prev.focus(); prev.select(); }
+    if (e.key==='ArrowRight' && e.target.selectionStart===e.target.value.length && next) { e.preventDefault(); next.focus(); next.select(); }
+    if (e.key==='/') { e.preventDefault(); if (next) { next.focus(); next.select(); } }
+  }
+  dd.addEventListener('keydown',   e => handleKeydown(e, null, mm));
+  mm.addEventListener('keydown',   e => handleKeydown(e, dd, aaaa));
+  aaaa.addEventListener('keydown', e => handleKeydown(e, mm, null));
+  [dd, mm, aaaa].forEach(el => {
+    el.addEventListener('focus', () => el.select());
+    el.addEventListener('blur', () => {
+      if (el !== aaaa && el.value.length === 1) el.value = el.value.padStart(2,'0');
+      markEmpty(el); updateHidden();
+    });
+  });
+  document.getElementById('fechaWrapper').addEventListener('click', e => {
+    if (e.target === document.getElementById('fechaWrapper')) dd.focus();
+  });
+})();
+
 dniInput.addEventListener('input', () => {
     dniInput.value = dniInput.value.toUpperCase().replace(/[^0-9A-Z]/g, '').slice(0, 9);
 });

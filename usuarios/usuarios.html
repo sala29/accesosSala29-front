@@ -39,8 +39,15 @@
             <input type="text" id="dni" maxlength="9" placeholder="DNI *" required>
             <input type="email" id="email" placeholder="Email *" required>
             <input type="tel" id="telefono" maxlength="9" placeholder="Teléfono">
-            <label for="fechaNacimiento" class="input-label">Fecha de nacimiento *</label>
-            <input type="date" id="fechaNacimiento" required>
+            <label class="input-label">Fecha de nacimiento *</label>
+            <div class="fecha-custom-wrapper" id="fechaWrapper">
+                <input class="fecha-seg" id="segDd" type="text" inputmode="numeric" maxlength="2" size="2" placeholder="dd" data-empty="true" autocomplete="off">
+                <span class="fecha-sep">/</span>
+                <input class="fecha-seg" id="segMm" type="text" inputmode="numeric" maxlength="2" size="2" placeholder="mm" data-empty="true" autocomplete="off">
+                <span class="fecha-sep">/</span>
+                <input class="fecha-seg" id="segAaaa" type="text" inputmode="numeric" maxlength="4" size="4" placeholder="aaaa" data-empty="true" autocomplete="off">
+            </div>
+            <input type="hidden" id="fechaNacimiento">
             <label class="input-label">Foto de perfil (opcional)</label>
             <div class="foto-registro-container">
                 <button type="button" class="secondary" id="btnFotoGaleria">📁 Galería</button>
