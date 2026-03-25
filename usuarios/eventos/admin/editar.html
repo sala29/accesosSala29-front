@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Evento — SALA 29</title>
+    <link rel="stylesheet" href="../eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="checking-session" class="login-wrapper"><p>Cargando...</p></div>
+
+    <main id="admin-content" style="display:none">
+        <header class="header">
+            <span class="header-logo">🎵 SALA 29 — Admin</span>
+            <nav class="header-nav">
+                <a href="dashboard.html" class="btn btn-secondary btn-sm">← Dashboard</a>
+            </nav>
+        </header>
+
+        <div class="admin-container fade-in">
+            <h2>Editar evento</h2>
+            <form id="editar-evento-form" class="form-group">
+                <input name="title" id="edit-title" type="text" placeholder="Título" required />
+                <input name="date" id="edit-date" type="datetime-local" required />
+                <textarea name="description" id="edit-desc" rows="4"></textarea>
+                <input name="price" id="edit-price" type="number" step="0.01" required />
+                <div class="photo-uploader-container">
+                    <img id="photo-preview" src="" style="display:none; width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 10px;" />
+                    
+                    <label class="btn btn-secondary" style="display: block; width: 100%; cursor: pointer;">
+                        <span id="upload-status">📷 Subir foto</span>
+                        <input type="file" id="file-input" accept="image/*" style="display: none;">
+                    </label>
+                    
+                    <input type="hidden" name="photo_url" id="photo-url-hidden">
+                </div>
+                
+                <button type="submit" id="btn-update" class="btn btn-primary" style="width: 100%">Guardar cambios</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+
+        async function loadEventData() {
+            if (!eventId) return window.location.href = 'dashboard.html';
+            
+            const { data, error } = await _supabase.from('events').select('*').eq('id', eventId).single();
+
+            // Dentro de loadEventData en editar.html, añade esto al recibir los datos:
+            if (data.photo_url) {
+                document.getElementById('photo-preview').src = data.photo_url;
+                document.getElementById('photo-preview').style.display = 'block';
+                document.getElementById('photo-url-hidden').value = data.photo_url;
+                document.getElementById('upload-status').innerText = '📷 Cambiar foto';
+            }
+
+            if (data) {
+                document.getElementById('edit-title').value = data.title;
+                document.getElementById('edit-date').value = new Date(data.date).toISOString().slice(0, 16);
+                document.getElementById('edit-desc').value = data.description || '';
+                document.getElementById('edit-price').value = data.price || 0;
+                document.getElementById('edit-photo').value = data.photo_url || '';
+            }
+        }
+
+        document.getElementById('editar-evento-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const d = Object.fromEntries(formData);
+
+            const { error } = await _supabase.from('events').update({
+                title: d.title,
+                date: new Date(d.date).toISOString(),
+                description: d.description,
+                price: parseFloat(d.price) || 0,
+                photo_url: d.photo_url || null
+            }).eq('id', eventId);
+
+            if (error) alert('Error'); else window.location.href = 'dashboard.html';
+        });
+
+        checkAuth().then(loadEventData);
+    </script>
+</body>
+</html>

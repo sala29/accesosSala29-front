@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Evento — SALA 29</title>
+    <link rel="stylesheet" href="../eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="checking-session" class="login-wrapper"><p>Verificando sesión...</p></div>
+
+    <main id="admin-content" style="display:none">
+        <header class="header">
+            <span class="header-logo">🎵 SALA 29 — Admin</span>
+            <nav class="header-nav">
+                <a href="dashboard.html" class="btn btn-secondary btn-sm">← Dashboard</a>
+            </nav>
+        </header>
+
+        <div class="admin-container fade-in">
+            <h2>Nuevo evento</h2>
+            <form id="nuevo-evento-form" class="form-group">
+                <input name="title" type="text" placeholder="Título del evento" required />
+                <input name="date" type="datetime-local" required />
+                <textarea name="description" placeholder="Descripción del evento" rows="4" style="resize: none;"></textarea>
+                <input name="price" type="number" min="0" step="0.01" placeholder="Precio (0 si es gratis)" required />
+                <div class="photo-uploader-container">
+                    <img id="photo-preview" src="" style="display:none; width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 10px;" />
+                    
+                    <label class="btn btn-secondary" style="display: block; width: 100%; cursor: pointer;">
+                        <span id="upload-status">📷 Subir foto</span>
+                        <input type="file" id="file-input" accept="image/*" style="display: none;">
+                    </label>
+                    
+                    <input type="hidden" name="photo_url" id="photo-url-hidden">
+                </div>
+                
+                <button type="submit" id="btn-save" class="btn btn-primary" style="width: 100%">Crear evento</button>
+            </form>
+            <div id="mensaje" style="display:none"></div>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+    <script>
+        document.getElementById('nuevo-evento-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save');
+            btn.disabled = true;
+            btn.innerText = 'Creando...';
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            const { error } = await _supabase.from('events').insert({
+                title: data.title,
+                date: new Date(data.date).toISOString(),
+                description: data.description,
+                price: parseFloat(data.price) || 0,
+                photo_url: data.photo_url || null
+            });
+
+            if (error) {
+                alert('Error al crear: ' + error.message);
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>

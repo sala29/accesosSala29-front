@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Evento - SALA 29</title>
+    <link rel="stylesheet" href="eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="loading-state" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <p style="color: #9cc8f0;">Cargando evento...</p>
+    </div>
+
+    <main id="event-content" style="display: none;">
+        <header class="header">
+            <span class="header-logo">🎵 SALA 29</span>
+        </header>
+
+        <div class="detail-container fade-in">
+            <button class="detail-back" onclick="window.history.back()">← Volver</button>
+
+            <div id="event-image-container"></div>
+
+            <h1 id="event-title" class="detail-title"></h1>
+            <p id="event-date" class="detail-date"></p>
+            <p id="event-price" class="detail-price"></p>
+            <p id="event-desc" class="detail-desc"></p>
+
+            <div class="signup-box" id="signup-box-content">
+                </div>
+
+            <div class="register-banner" style="margin-top: 24px;">
+                <div class="register-banner-icon">🎫</div>
+                <div class="register-banner-text">
+                    <strong>¿Aún no eres socio de acceso?</strong>
+                    <span>Regístrate para poder acceder a Sala 29 el día del evento.</span>
+                </div>
+                <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                    Registrarse
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="detalle.js"></script>
+</body>
+</html>

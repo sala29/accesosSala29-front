@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso Admin — SALA 29</title>
+    <link rel="stylesheet" href="../eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="login-wrapper">
+    <div class="login-box fade-in">
+        <h1>Acceso Admin</h1>
+        <form id="login-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">Entrar</button>
+        </form>
+        <div id="error-msg" class="msg-error" style="text-align: center; display: none;"></div>
+    </div>
+    <script src="admin.js"></script>
+    <script>
+        // Lógica específica de esta página
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-msg');
+            
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                errorDiv.innerText = error.message;
+                errorDiv.style.display = 'block';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

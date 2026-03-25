@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SALA 29 — Admin Dashboard</title>
+    <link rel="stylesheet" href="../eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div id="checking-session" class="login-wrapper"><p>Verificando sesión...</p></div>
+
+    <main id="admin-content" style="display:none">
+        <header class="header">
+            <span class="header-logo">🎵 SALA 29 — Admin</span>
+            <nav class="header-nav">
+                <a href="nuevo.html" class="btn btn-primary btn-sm">+ Nuevo evento</a>
+                <a href="../index.html" class="btn btn-secondary btn-sm">Ver web</a>
+                <button onclick="handleLogout()" class="btn btn-danger btn-sm">Cerrar sesión</button>
+            </nav>
+        </header>
+
+        <div class="admin-container fade-in">
+            <h2>Eventos</h2>
+            <div id="admin-events-list">
+                </div>
+        </div>
+    </main>
+    <script src="admin.js"></script>
+</body>
+</html>

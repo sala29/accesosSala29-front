@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximos Eventos - Sala 29</title>
+    <link rel="stylesheet" href="eventos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <main>
+        <header class="header">
+            <span class="header-logo">🎵 SALA 29</span>
+            <nav class="header-nav">
+                <a href="/admin/login.html" class="btn btn-secondary btn-sm">Admin</a>
+            </nav>
+        </header>
+
+        <div class="home-hero fade-in">
+            <h1>PRÓXIMOS CONCIERTOS</h1>
+            <p>Consulta la agenda y apúntate a la lista</p>
+
+            <div class="register-banner">
+                <div class="register-banner-icon">🎫</div>
+                <div class="register-banner-text">
+                    <strong>¿Quieres acceder a Sala 29?</strong>
+                    <span>Para poder asistir a nuestros eventos deberás estar registrado como socio de acceso.</span>
+                </div>
+                <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                    Registrarse
+                </a>
+            </div>
+        </div>
+
+        <div id="events-grid" class="events-grid fade-in">
+            <div class="loading">Cargando eventos...</div>
+        </div>
+
+        <div style="max-width: 1100px; margin: 0 auto; padding: 0 24px 60px;">
+            <div class="register-banner register-banner-bottom">
+                <div class="register-banner-icon">🎫</div>
+                <div class="register-banner-text">
+                    <strong>¿Aún no eres socio?</strong>
+                    <span>Regístrate ahora y accede a todos nuestros eventos en Sala 29.</span>
+                </div>
+                <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                    Registrarse
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="eventos.js"></script>
+</body>
+</html>
