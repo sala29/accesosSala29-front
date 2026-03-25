@@ -1,0 +1,14 @@
+[[redirects]]
+  from = "/eventos/admin"
+  to = "/eventos/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/eventos/admin/*"
+  to = "/eventos/admin/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/eventos/*"
+  to = "/eventos/:splat"
+  status = 200
