@@ -25,7 +25,10 @@ function mostrar(id) {
    NAVEGACIÓN
    ========================= */
 document.getElementById('btnRegistro').onclick = () => mostrar('registro');
-document.getElementById('btnVerQr').onclick = () => mostrar('login');
+document.getElementById('btnVerQr').onclick = () => {
+    // Redirige a login
+    window.location.href = '../login/index.html';
+};
 document.getElementById('btnProximosEventos').addEventListener('click', () => {
     window.location.href = '../eventos/index.html';
 });
