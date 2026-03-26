@@ -26,6 +26,13 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
             body: JSON.stringify(loginData)
         });
 
+        // ¡NUEVO!: Si el estado es 404, abrimos el modal directamente y paramos aquí.
+        // El error de la consola saldrá igual (es inevitable), pero el pop-up funcionará perfecto.
+        if (res.status === 404) {
+            abrirModal();
+            return;
+        }
+
         const data = await res.json();
 
         if (res.ok) {
@@ -39,14 +46,11 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
                 window.location.href = '../eventos/index.html';
             }, 1500);
         } else {
-            if (data.error === "Usuario no encontrado") {
-                abrirModal();
-            } else {
-                mostrarError(data.error || "Datos incorrectos");
-            }
+            // Para cualquier otro tipo de error (ej. contraseña mal, 400, etc)
+            mostrarError(data.error || "Datos incorrectos");
         }
     } catch (err) {
-        mostrarError("Error de conexión");
+        mostrarError("Error al conectar con el servidor. Inténtalo de nuevo.");
     }
 };
 
