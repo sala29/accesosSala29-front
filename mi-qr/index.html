@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sala 29 · Mi QR de Acceso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="qr.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <main class="qr-container">
+        <button class="btn-volver" id="btnVolverEventos">⬅ Volver</button>
+        
+        <div class="qr-card">
+            <h2>Pase de Acceso</h2>
+            <p id="qrNombre" class="qr-name">Cargando...</p>
+            <p class="qr-subtitle">Socio Oficial Sala 29</p>
+            
+            <div id="qrCode" class="qr-box">
+                </div>
+                
+                <div class="qr-actions">
+                    <button id="btnCopyQR" class="btn-icon" title="Copiar al portapapeles">📋 Copiar</button>
+                    <button id="btnDownloadQR" class="btn-icon" title="Descargar imagen">⬇️ Descargar</button>
+                </div>
+            
+            <p class="qr-instrucciones">Muestra este código en la puerta para acceder al evento.</p>
+        </div>
+    </main>
+
+    <script src="qr.js"></script>
+</body>
+</html>

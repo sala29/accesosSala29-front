@@ -613,13 +613,14 @@ input:-webkit-autofill:focus {
 }
 
 /* ================= ADMIN FOOTER LINK ================= */
+/* ================= ADMIN FOOTER LINK ================= */
 .admin-footer-link {
     text-align: center;
     margin: 20px 0 40px;
 }
 
 .admin-footer-link a {
-    color: #56697a;
+    color: rgba(255, 255, 255, 0.8); /* Blanco suave como "Consulta la agenda" */
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
@@ -629,5 +630,5 @@ input:-webkit-autofill:focus {
 }
 
 .admin-footer-link a:hover {
-    color: #a5b4c4;
+    color: #fff; /* Blanco puro al pasar el ratón por encima */
 }

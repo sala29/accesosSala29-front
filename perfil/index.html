@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sala 29 · Mi Perfil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="perfil.css">
+</head>
+<body>
+    <div class="app">
+        <section id="screenPerfil" class="screen active">
+            <button class="secondary btn-volver" id="btnVolverEventos" style="margin-bottom: 20px; width: auto; padding: 8px 16px;">
+                ⬅ Volver a eventos
+            </button>
+
+            <h2>Mi Perfil</h2>
+            
+            <div class="foto-perfil-container">
+                <img id="perfilFoto" src="" alt="Foto Perfil">
+                <input type="file" id="fotoUpload" accept="image/*" style="display:none">
+                
+                <div class="foto-controles-flotantes" id="fotoControlesFlotantes">
+                    <button id="btnGuardarFotoFlotante" class="btn-foto-guardar">Guardar</button>
+                    <button id="btnCancelarFotoFlotante" class="btn-foto-cancelar">X</button>
+                </div>
+            </div>
+
+            <div class="perfil-datos">
+                <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
+                <p><strong>DNI:</strong> <span id="dniUsuario"></span></p>
+                <p>
+                    <strong>Email:</strong> <span id="emailUsuario"></span>
+                    <button class="btn-editar" data-campo="email">✏️</button>
+                </p>
+                <p>
+                    <strong>Teléfono:</strong> <span id="telefonoUsuario"></span>
+                    <button class="btn-editar" data-campo="telefono">✏️</button>
+                </p>
+                <p><strong>Fecha Nac:</strong> <span id="fechaUsuario"></span></p>
+            </div>
+
+            <div id="editarContainer" style="display: none; margin-top: 15px;">
+                <input type="text" id="nuevoValor" placeholder="Nuevo valor">
+                <button class="primary" id="btnGuardarEdicion" style="margin-top: 10px;">Guardar</button>
+            </div>
+            
+            <p class="mensaje" style="text-align: center; margin-top: 15px; font-weight: bold;"></p>
+        </section>
+    </div>
+
+    <script src="perfil.js"></script>
+</body>
+</html>

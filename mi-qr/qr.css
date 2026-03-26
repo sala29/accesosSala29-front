@@ -1,0 +1,85 @@
+html { background-color: #050b12; }
+* { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 0; }
+body {
+    min-height: 100dvh;
+    background: radial-gradient(circle at top, #0b1d2d, #050b12);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.qr-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn-volver {
+    background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8); padding: 10px 16px; border-radius: 12px;
+    cursor: pointer; transition: all 0.3s; margin-bottom: 20px; font-weight: bold;
+}
+.btn-volver:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.qr-card {
+    background: rgba(15, 37, 56, 0.6);
+    border: 1px solid rgba(42, 163, 255, 0.3);
+    border-radius: 20px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: fadeIn 0.4s ease;
+}
+
+.qr-card h2 { color: #2aa3ff; margin-bottom: 10px; font-size: 1.5rem; }
+.qr-name { font-size: 1.8rem; font-weight: bold; margin-bottom: 5px; }
+.qr-subtitle { color: #a5b4c4; font-size: 0.9rem; margin-bottom: 30px; }
+
+.qr-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    display: inline-block;
+    margin-bottom: 30px;
+    box-shadow: 0 0 20px rgba(42, 163, 255, 0.2);
+}
+
+.qr-instrucciones { color: #a5b4c4; font-size: 0.85rem; line-height: 1.5; }
+
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+/* ================= BOTONES ACCIÓN QR ================= */
+.qr-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-icon {
+    background: rgba(42, 163, 255, 0.1);
+    border: 1px solid rgba(42, 163, 255, 0.3);
+    color: #2aa3ff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    background: #2aa3ff;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(42, 163, 255, 0.4);
+}
+
+/* Ajuste opcional: Reduce un poco el margen debajo del QR para que los botones queden más juntos */
+.qr-box {
+    margin-bottom: 15px; 
+}
