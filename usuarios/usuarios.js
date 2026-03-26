@@ -26,6 +26,9 @@ function mostrar(id) {
    ========================= */
 document.getElementById('btnRegistro').onclick = () => mostrar('registro');
 document.getElementById('btnVerQr').onclick = () => mostrar('login');
+document.getElementById('btnProximosEventos').addEventListener('click', () => {
+    window.location.href = '../eventos/index.html';
+});
 document.getElementById('volverInicio1').onclick = () => mostrar('inicio');
 document.getElementById('volverRegistro').onclick = () => mostrar('registro');
 document.getElementById('volverInicioLogin').onclick = () => mostrar('inicio');
