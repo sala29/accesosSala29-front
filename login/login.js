@@ -83,3 +83,20 @@ document.getElementById('btnCerrarModalX').onclick = cerrarModal;
 document.getElementById('btnGoRegistro').onclick = () => {
     window.location.href = '../usuarios/usuarios.html';
 };
+
+// ================= ANIMACIÓN DEL MODAL =================
+function abrirModal() {
+    // Añadimos la clase 'open' que es la que tu CSS reconoce para mostrarlo
+    modalNoSocio.classList.add('open');
+}
+
+function cerrarModal() {
+    modalNoSocio.classList.remove('open');
+}
+
+document.getElementById('btnCerrarModal').onclick = cerrarModal;
+document.getElementById('btnCerrarModalX').onclick = cerrarModal;
+
+document.getElementById('btnGoRegistro').onclick = () => {
+    window.location.href = '../usuarios/usuarios.html';
+};
