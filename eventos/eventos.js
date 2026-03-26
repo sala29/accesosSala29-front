@@ -15,30 +15,34 @@ async function initAuth() {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
-    // 1. Si no hay token, mostramos el botón de Iniciar sesión
+    // 1. Si no hay token, mostramos botón de Login y MOSTRAMOS BANNERS
     if (!token || !userId) {
         renderLoginButton();
+        toggleBanners(false); 
         return;
     }
 
-    // 2. Si hay token, pedimos los datos al servidor para asegurar que es válido
     try {
-        const res = await fetch(`${API_BASE_USERS}/usuarios/${userId}`, {
+        const res = await fetch(`${API_BASE_USERS}/usuario/${userId}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (res.ok) {
             const userData = await res.json();
-            // Pintamos el menú pasando solo el primer nombre
             const primerNombre = userData.nombre.split(' ')[0];
+            
             renderUserMenu(primerNombre);
+            toggleBanners(true); // 
+
         } else {
-            // Si el token caducó o hay error (ej. 401), cerramos sesión por seguridad
-            cerrarSesionLocal();
+            console.warn("Sesión inválida o caducada. Código:", res.status);
+            cerrarSesionLocal(); 
+            // Al cerrar sesión se recarga la web y volverá a entrar por el "if (!token)", mostrando los banners.
         }
     } catch (err) {
         console.error("Error al verificar usuario:", err);
-        renderLoginButton(); // Si falla la red, mostramos iniciar sesión por si acaso
+        renderUserMenu("Socio");
+        toggleBanners(true); 
     }
 }
 
@@ -83,6 +87,23 @@ function renderUserMenu(nombre) {
     document.getElementById('btnLogout').onclick = () => {
         cerrarSesionLocal();
     };
+}
+
+// NUEVA FUNCIÓN: Ocultar o mostrar los banners de registro
+function toggleBanners(isLogged) {
+    // Buscamos todos los elementos que tengan la clase .register-banner
+    const banners = document.querySelectorAll('.register-banner');
+    
+    banners.forEach(banner => {
+        // Si está logueado, lo ocultamos ('none'). Si no, lo mostramos ('flex')
+        banner.style.display = isLogged ? 'none' : 'flex';
+        
+        // El banner de abajo está dentro de un div contenedor para centrarlo.
+        // Si no ocultamos también ese div padre, se quedará un margen en blanco feo abajo.
+        if (banner.parentElement && banner.parentElement.style.maxWidth === '1100px') {
+            banner.parentElement.style.display = isLogged ? 'none' : 'block';
+        }
+    });
 }
 
 function cerrarSesionLocal() {
