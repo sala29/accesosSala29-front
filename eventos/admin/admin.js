@@ -1,6 +1,6 @@
-// Configuración inicial
-const SUPABASE_URL = 'TU_URL';
-const SUPABASE_KEY = 'TU_KEY';
+// 1. Configuración de las credenciales
+const SUPABASE_URL = 'https://mzkibvrmdegbtvpnzcvr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16a2lidnJtZGVnYnR2cG56Y3ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3NjA0NzAsImV4cCI6MjA4NzMzNjQ3MH0.eudQq75zR-ZecHz5ay9nD8K9cv6NT4-C2jQTiYRlmD4';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- PROTECCIÓN DE RUTA ---
