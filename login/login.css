@@ -1,26 +1,29 @@
-/* ================================================= */
-/* CONFIGURACIÓN BASE (ESTILO SALA 29)              */
-/* ================================================= */
 html {
     background-color: #050b12;
 }
 
 * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 body {
     margin: 0;
     min-height: 100dvh;
-    /* Fondo degradado radial azul muy oscuro */
     background: radial-gradient(circle at top, #0b1d2d, #050b12);
     color: #fff;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+
+    overflow-x: hidden;
+    overflow-y: auto; /* PERMITE SCROLL EN MÓVIL */
+
+    padding-top: env(safe-area-inset-top);   
+    padding-bottom: env(safe-area-inset-bottom);
 }
+
 
 .app {
     width: 100%;
@@ -28,202 +31,886 @@ body {
     padding: 24px;
 }
 
-/* Animación de entrada */
+/* ================= SCREENS ================= */
 .screen {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 20px;
     animation: fade .35s ease;
 }
 
+.screen.active {
+    display: flex;
+}
+
+/* ================= HEADINGS ================= */
+.logo {
+    font-size: 3rem;
+    text-align: center;
+    letter-spacing: 4px;
+    color: #2aa3ff;
+}
+
+h2 {
+    text-align: center;
+    color: #2aa3ff;
+}
+
+/* ================= INPUTS ================= */
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #0f2538;
+    color: #7aaad6;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: all 0.35s ease;
+}
+
+input::placeholder {
+    color: #93c1ec;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 12px rgba(42,163,255,0.6), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+/* ================= BUTTONS ================= */
+button {
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.primary {
+    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+}
+
+.primary:hover {
+    box-shadow: 0 8px 28px rgba(42,163,255,0.6);
+    transform: translateY(-2px);
+}
+
+.primary:active {
+    transform: scale(0.97);
+}
+
+.secondary {
+    background: transparent;
+    border: 1px solid #2aa3ff;
+    color: #2aa3ff;
+}
+
+.secondary:hover {
+    background: rgba(42,163,255,0.08);
+}
+
+.secondary:active {
+    transform: scale(0.97);
+}
+
+/* ================= CONFIRM BOX ================= */
+.confirm-box {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.confirm-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.confirm-box li {
+    margin-bottom: 8px;
+}
+
+.mensaje {
+    text-align: center;
+    margin-top: 10px;
+    color: #5dff8f;
+}
+
+/* ================= ANIMATIONS ================= */
 @keyframes fade {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ================================================= */
-/* TEXTOS Y LOGO                                     */
-/* ================================================= */
-.logo {
-    font-size: 3.5rem;
-    text-align: center;
-    margin: 0;
-    color: #fff;
-    font-weight: 800;
-    letter-spacing: -2px;
-}
-
-h2 {
-    font-size: 1.6rem;
-    margin: 0;
-    text-align: center;
-    color: #9cc8f0; /* Azul claro suave */
-}
-
+/* ================= LOGIN ================= */
 .login-info {
-    font-size: 0.95rem;
-    color: #a5b4c4;
     text-align: center;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    color: #9cc8f0;
     margin-bottom: 10px;
 }
 
-/* ================================================= */
-/* FORMULARIO E INPUTS                               */
-/* ================================================= */
-.login-form {
+/* ================= PERFIL ================= */
+.perfil-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-input {
-    background: #0f2538; /* Fondo input oscuro */
-    border: 2px solid transparent;
-    border-radius: 12px;
-    padding: 16px;
-    color: #fff;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-input:focus {
-    outline: none;
-    border-color: #2aa3ff;
-    box-shadow: 0 0 15px rgba(42, 163, 255, 0.2);
-    background: #142e44;
-}
-
-/* Estilo para el placeholder (texto de fondo) */
-input::placeholder {
-    color: #56697a;
-}
-
-/* ================================================= */
-/* BOTONES                                           */
-/* ================================================= */
-button {
-    cursor: pointer;
-    border-radius: 14px;
-    padding: 16px;
-    font-size: 1rem;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
-    width: 100%;
-}
-
-button.primary {
-    background: #2aa3ff;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(42, 163, 255, 0.3);
-}
-
-button.primary:hover {
-    background: #58b9ff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 163, 255, 0.4);
-}
-
-button.secondary {
-    background: transparent;
-    color: #9cc8f0;
-    border: 1px solid rgba(42, 163, 255, 0.3);
-}
-
-button.secondary:hover {
-    background: rgba(42, 163, 255, 0.1);
-    border-color: #2aa3ff;
-}
-
-.mensaje {
-    text-align: center;
-    font-size: 0.9rem;
-    min-height: 1.5em;
-    font-weight: 600;
-}
-
-/* ================================================= */
-/* MODAL / POP-UP (NUEVO)                            */
-/* ================================================= */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px); /* Desenfoque de fondo */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 20px;
-}
-
-.modal-box {
-    background: #0b1d2d;
-    border: 1px solid rgba(42, 163, 255, 0.2);
-    padding: 35px 25px;
+    gap: 28px;
+    background: linear-gradient(180deg, #0f2034, #070b1a);
+    padding: 28px;
     border-radius: 28px;
-    max-width: 380px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.85);
+    transition: all 0.5s ease;
 }
 
-.modal-icon {
-    font-size: 3.5rem;
-    margin-bottom: 15px;
+.info-no-edit,
+.info-editable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.modal-box h2 {
+/* ================= CAMPOS FLEX ================= */
+.campo-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.15);
+    transition: all 0.45s ease, box-shadow 0.45s ease, transform 0.35s ease;
+}
+
+.campo-flex:hover {
+    background: rgba(42,163,255,0.08);
+    box-shadow: 0 0 20px rgba(42,163,255,0.45), inset 0 0 0 1px rgba(42,163,255,0.25);
+    transform: translateY(-2px);
+}
+
+.campo-flex .label {
+    font-weight: 600;
+    color: #2aa3ff;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.campo-flex .valor {
     color: #fff;
-    margin-bottom: 12px;
-    font-size: 1.8rem;
+    flex: 1;
+    word-break: break-word;
 }
 
-.modal-box p {
-    color: #a5b4c4;
-    line-height: 1.6;
-    margin-bottom: 30px;
+.campo-flex img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #0f2538;
+    border: 2px solid #2aa3ff;
+    margin-left: auto;
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 0 12px rgba(42,163,255,0.3);
+}
+
+.qr-campo img {
+    border: none;
+    padding: 12px;
+    background: #002d54;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(42,163,255,0.3),
+                0 0 60px rgba(42,163,255,0.1);
+}
+
+.editar-link {
+    font-size: 0.88rem;
+    color: #93c1ec;
+    text-decoration: underline;
+    margin-left: 12px;
+    flex-shrink: 0;
+    transition: all 0.35s ease, text-shadow 0.35s ease;
+}
+
+.editar-link:hover {
+    color: #2aa3ff;
+    text-shadow: 0 0 10px rgba(42,163,255,0.8);
+}
+
+/* ================= EDIT FORM ================= */
+.editar-form-container {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+    transition: all 0.45s ease;
+}
+
+.editar-form-container input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: #0f2538;
+    color: #7aaad6;
+    font-size: 1rem;
+    box-shadow: inset 0 0 0 1px rgba(42,163,255,0.3);
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.editar-form-container input:focus {
+    outline: none;
+    box-shadow: 0 0 16px rgba(42,163,255,0.7), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+.editar-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: flex-end;
+}
+
+.editar-btns button {
+    width: 48%;
+    border-radius: 16px;
+    font-size: 1rem;
+    transition: all 0.35s ease, box-shadow 0.35s ease;
+}
+
+.editar-btns button:hover {
+    box-shadow: 0 0 20px rgba(42,163,255,0.5);
+}
+
+/* ================= DIVIDER ================= */
+.perfil-divider {
+    border: none;
+    border-top: 1px solid rgba(42,163,255,0.2);
+    margin: 20px 0;
+    transition: all 0.35s ease;
+}
+
+.qr-campo {
+    display: flex;
+    flex-direction: column; /* título arriba, imagen abajo */
+    align-items: center;    /* centrar contenido horizontalmente */
+    gap: 12px;              /* espacio entre título y QR */
+}
+
+.qr-campo .label {
+    font-weight: 600;
+    color: #2aa3ff;
     font-size: 1rem;
 }
 
-.modal-actions {
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+input:-webkit-autofill:focus {
+    box-shadow: 
+        0 0 16px rgba(42,163,255,0.7),
+        inset 0 0 0 1px rgba(42,163,255,0.6),
+        0 0 0px 1000px #0f2538 inset;
+}
+
+
+
+.btn-volver {
+    align-self: flex-start;
+    margin-bottom: 16px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+}
+
+#screenPerfil h2 {
+    margin-top: 2;
+}
+
+
+
+/* ===== FIX AUTOFILL CHROME / SAFARI ===== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #7aaad6 !important;
+    -webkit-box-shadow: 
+        0 0 0px 1000px #0f2538 inset,
+        0 0 12px rgba(42,163,255,0.6);
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: #7aaad6;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px;
+        align-items: flex-start; /* mejor comportamiento cuando hay mucho contenido */
+    }
+
+    .app {
+        padding: 0;
+    }
+}
+
+#screenRegistro form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px; /* espacio entre inputs */
 }
 
-@keyframes popIn {
-    from { opacity: 0; transform: scale(0.8) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+#dni {
+    text-transform: uppercase;
 }
 
-/* --- Añadir esto al final de tu usuarios.css para el login --- */
-
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
+/* ===== CHECKBOX TÉRMINOS ===== */
+.terms-label {
     display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.92rem;
+    color: #9cc8f0;
+    line-height: 1.5;
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+
+.terms-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin: 0;
+    accent-color: #2aa3ff;
+    cursor: pointer;
+}
+
+.terms-link {
+    color: #2aa3ff;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.25s, text-shadow 0.25s;
+}
+
+.terms-link:hover {
+    color: #6dcaff;
+    text-shadow: 0 0 8px rgba(42,163,255,0.7);
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+    background: linear-gradient(180deg, #0f2034, #070b1a);
+    border: 1px solid rgba(42,163,255,0.25);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.9), 0 0 40px rgba(42,163,255,0.15);
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    animation: slideup 0.35s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #2aa3ff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.2s;
+}
+.modal-close:hover { background: rgba(42,163,255,0.12); transform: scale(1.1); }
+
+.modal-title {
+    text-align: center;
+    color: #2aa3ff;
+    font-size: 1.4rem;
+    padding: 24px 20px 12px;
+    margin: 0;
+}
+
+.modal-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(42,163,255,0.2);
+    padding: 0 20px;
+    gap: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #9cc8f0;
+    font-size: 0.88rem;
+    padding: 10px 8px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: color 0.25s, border-color 0.25s;
+}
+.tab-btn.active, .tab-btn:hover { color: #2aa3ff; border-bottom-color: #2aa3ff; }
+
+.tab-content {
+    display: none;
+    overflow-y: auto;
+    padding: 24px 28px;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #2aa3ff #0f2034;
+}
+.tab-content.active { display: block; }
+
+.tab-content h3 {
+    color: #2aa3ff;
+    font-size: 0.95rem;
+    margin: 20px 0 6px;
+}
+.tab-content h3:first-child { margin-top: 0; }
+
+.tab-content p, .tab-content li {
+    color: #9cc8f0;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin: 0 0 8px;
+}
+.tab-content ul { padding-left: 20px; margin: 0 0 8px; }
+.tab-content a { color: #2aa3ff; text-decoration: underline; }
+
+.modal-footer {
+    padding: 16px 28px 24px;
+    border-top: 1px solid rgba(42,163,255,0.15);
+}
+.modal-accept-btn { width: 100%; border-radius: 14px; }
+
+@keyframes slideup {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.input-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #2aa3ff;       
+    margin-bottom: 4px;
+    margin-top: 8px;
+    padding-left: 2px;
+}
+
+/* =========================
+   MODAL CÁMARA PROFESIONAL
+   ========================= */
+.camara-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 9999;
+}
+
+.camara-box {
+    background: #1a1a1a;
+    border-radius: 16px;
+    padding: 20px;
+    width: 90%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.camara-box h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.camara-visor {
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+}
+
+.camara-visor video,
+.camara-visor img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.camara-visor .camara-guia {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.camara-guia-circulo {
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.8);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+}
+
+.camara-controles {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-camara-accion {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    transition: transform 0.1s;
+    flex-shrink: 0;
+}
+
+.btn-camara-accion:active {
+    transform: scale(0.92);
+}
+
+.btn-camara-secundario {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-camara-secundario:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.camara-preview-controles {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-camara-confirmar {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #5dff8f;
+    color: #000;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-camara-confirmar:hover {
+    opacity: 0.85;
+}
+
+.btn-camara-repetir {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-camara-repetir:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-camara-cerrar {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.4rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.btn-camara-cerrar:hover {
+    color: #fff;
+}
+
+/* =========================
+   PERFIL HEADER CON FOTO
+   ========================= */
+.perfil-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 8px;
+}
+
+.perfil-foto-wrapper {
+    position: relative;
+    width: 85%;
+    aspect-ratio: 1;
+    max-width: 280px;
+}
+
+.perfil-foto-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2aa3ff;
+    box-shadow: 0 0 30px rgba(42,163,255,0.4), 0 0 60px rgba(42,163,255,0.15);
+    display: block;
+    background-color: #0f2538;
+}
+
+.perfil-foto-editar {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    background: #2aa3ff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.perfil-foto-editar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(42,163,255,0.6);
+}
+
+.perfil-nombre-header {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.03em;
+}
+
+/* =========================
+   MODAL EDITAR FOTO
+   ========================= */
+.foto-edit-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
     padding: 20px;
 }
 
-/* El modal-box ya lo tienes definido en tu CSS, 
-   pero aseguremonos de que sea visible */
-.modal-box {
-    display: block !important;
+.foto-edit-box {
+    background: linear-gradient(180deg, #0f2034, #070b1a);
+    border: 1px solid rgba(42,163,255,0.25);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.9), 0 0 40px rgba(42,163,255,0.15);
+    padding: 28px 24px;
+    width: 90%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: slideup 0.3s ease;
 }
 
-.mensaje {
+.foto-edit-box h3 {
+    color: #2aa3ff;
     text-align: center;
-    margin-top: 15px;
-    font-weight: 600;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.foto-edit-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2aa3ff;
+    align-self: center;
+    box-shadow: 0 0 20px rgba(42,163,255,0.3);
+}
+
+.foto-edit-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.foto-edit-opciones button {
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    background: rgba(42,163,255,0.12);
+    border: 1px solid rgba(42,163,255,0.25);
+    color: #fff;
+    transition: background 0.2s, transform 0.15s;
+    text-align: left;
+}
+
+.foto-edit-opciones button:hover {
+    background: rgba(42,163,255,0.22);
+    transform: translateX(4px);
+}
+
+.foto-edit-estado {
+    text-align: center;
+    font-size: 0.85rem;
+    min-height: 20px;
+    color: #aaa;
+}
+
+.foto-edit-acciones {
+    display: flex;
+    gap: 10px;
+}
+
+.foto-edit-acciones button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-foto-guardar {
+    background: linear-gradient(135deg, #1a6cff, #2aa3ff);
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 6px 20px rgba(42,163,255,0.35);
+    transition: opacity 0.2s;
+}
+
+.btn-foto-guardar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-foto-cancelar {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    color: rgba(255,255,255,0.6);
+    transition: background 0.2s;
+}
+
+.btn-foto-cancelar:hover {
+    background: rgba(255,255,255,0.07) !important;
+}
+
+/* ================= FECHA CUSTOM ================= */
+.fecha-custom-wrapper {
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    border: none;
+    background: #0f2538;
+    padding: 0 14px;
+    height: 52px;
+    cursor: text;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: box-shadow 0.35s ease;
+}
+
+.fecha-custom-wrapper:focus-within {
+    box-shadow: 0 0 12px rgba(42,163,255,0.6), inset 0 0 0 1px rgba(42,163,255,0.6);
+}
+
+.fecha-seg {
+    outline: none;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #7aaad6;
+    text-align: center;
+    caret-color: transparent;
+    cursor: text;
+    padding: 0;
+    border-radius: 4px;
+    transition: background 0.15s;
+    margin-bottom: 0;
+}
+
+.fecha-seg[data-empty="true"] {
+    color: #93c1ec;
+}
+
+.fecha-seg:focus {
+    background: rgba(42,163,255,0.18);
+    color: #fff;
+    box-shadow: none;
+}
+
+.fecha-sep {
+    color: #93c1ec;
+    padding: 0 3px;
+    user-select: none;
+    pointer-events: none;
 }

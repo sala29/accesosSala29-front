@@ -1,6 +1,6 @@
 const API_BASE = "https://accesossala29-8vdj.onrender.com";
 const mensajeLogin = document.getElementById('mensajeLogin');
-const modal = document.getElementById('modalNoSocio');
+const modalNoSocio = document.getElementById('modalNoSocio');
 
 document.getElementById('btnLoginPerfil').onclick = async () => {
     const dni = document.getElementById('loginDni').value.trim().toUpperCase();
@@ -40,7 +40,7 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
             }, 1500);
         } else {
             if (data.error === "Usuario no encontrado") {
-                modal.style.display = 'flex';
+                abrirModal();
             } else {
                 mostrarError(data.error || "Datos incorrectos");
             }
@@ -50,12 +50,32 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
     }
 };
 
-// Acciones del Modal y Volver
-document.getElementById('btnCerrarModal').onclick = () => modal.style.display = 'none';
-document.getElementById('btnGoRegistro').onclick = () => window.location.href = '../usuarios/usuarios.html';
+// ================= ERRORES Y VOLVER =================
 document.getElementById('btnVolver').onclick = () => window.location.href = '../eventos/index.html';
 
 function mostrarError(txt) {
     mensajeLogin.style.color = "#ff4d4d";
     mensajeLogin.innerText = txt;
 }
+
+// ================= ANIMACIÓN DEL MODAL (Igual que el tuyo) =================
+function abrirModal() {
+    modalNoSocio.classList.add('active');
+    setTimeout(() => {
+        modalNoSocio.querySelector('.modal-box').style.transform = 'translateY(0)';
+    }, 10);
+}
+
+function cerrarModal() {
+    modalNoSocio.querySelector('.modal-box').style.transform = 'translateY(100%)';
+    setTimeout(() => {
+        modalNoSocio.classList.remove('active');
+    }, 300);
+}
+
+document.getElementById('btnCerrarModal').onclick = cerrarModal;
+document.getElementById('btnCerrarModalX').onclick = cerrarModal;
+
+document.getElementById('btnGoRegistro').onclick = () => {
+    window.location.href = '../usuarios/usuarios.html';
+};

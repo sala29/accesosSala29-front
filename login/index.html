@@ -13,35 +13,31 @@
         <h1 class="logo">SALA 29</h1>
         <h2>Acceder a mi perfil</h2>
         <p class="login-info">
-            Identifícate con tu DNI y uno de los siguientes datos para verificar tu identidad.
+            Identifícate con tu DNI y uno de los siguientes datos.
         </p>
         
-        <div class="login-form" style="display: flex; flex-direction: column; gap: 20px;">
-            <input type="text" id="loginDni" placeholder="DNI *">
-            <input type="email" id="loginEmail" placeholder="Email">
-            <input type="tel" id="loginTelefono" placeholder="Teléfono">
-            <input type="date" id="loginFecha" placeholder="dd/mm/aaaa">
-            
-            <button class="primary" id="btnLoginPerfil">Iniciar sesión</button>
-            <button class="secondary" id="btnVolver">Volver</button>
-        </div>
-
+        <input type="text" id="loginDni" placeholder="DNI *">
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="tel" id="loginTelefono" placeholder="Teléfono">
+        <input type="date" id="loginFecha" placeholder="dd/mm/aaaa">
+        
+        <button class="primary" id="btnLoginPerfil">Iniciar sesión</button>
+        <button class="secondary" id="btnVolver">Volver</button>
+        
         <div id="mensajeLogin" class="mensaje"></div>
     </section>
 </div>
 
-<div id="modalNoSocio" class="modal-overlay" style="display: none;">
-    <div class="modal-box">
-        <div class="modal-icon" style="font-size: 3rem; margin-bottom: 10px;">👋</div>
-        <h2 class="modal-title" style="margin-bottom: 15px;">¡Hola!</h2>
-        <p style="color: #a5b4c4; line-height: 1.5; margin-bottom: 25px;">
+<div id="modalNoSocio" class="modal-overlay" role="dialog">
+    <div class="modal-box" style="text-align: center;">
+        <button class="modal-close" id="btnCerrarModalX">&times;</button>
+        <h2 class="modal-title" style="margin-bottom: 0;">¡Hola! 👋</h2>
+        <p style="color: #a5b4c4; line-height: 1.5; margin: 15px 0 25px 0; font-size: 0.95rem;">
             Parece que aún no constas como socio en <strong>Sala 29</strong>. <br><br>
             ¿Te gustaría darte de alta ahora o prefieres revisar los datos?
         </p>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <button class="primary" id="btnGoRegistro">Registrarme ahora</button>
-            <button class="secondary" id="btnCerrarModal">Revisar mis datos</button>
-        </div>
+        <button class="primary" id="btnGoRegistro">Registrarme ahora</button>
+        <button class="secondary" id="btnCerrarModal">Revisar mis datos</button>
     </div>
 </div>
 
