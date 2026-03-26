@@ -10,15 +10,13 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
 
     if (!dni) return mostrarError("El DNI es obligatorio");
 
-    // Preparamos el cuerpo siguiendo tu backend: dni, email, telefono, fecha_nacimiento
     const loginData = { dni };
     if (email) loginData.email = email;
     if (telefono) loginData.telefono = telefono;
     if (fecha) loginData.fecha_nacimiento = fecha;
 
-    // Validación: DNI + al menos uno más
     if (Object.keys(loginData).length < 2) {
-        return mostrarError("Introduce DNI y al menos un dato adicional");
+        return mostrarError("Introduce DNI y al menos otro dato");
     }
 
     try {
@@ -31,48 +29,33 @@ document.getElementById('btnLoginPerfil').onclick = async () => {
         const data = await res.json();
 
         if (res.ok) {
-            // Guardamos sesión
             localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.id); // Usamos data.id según tu backend
+            localStorage.setItem('userId', data.id);
             
             mensajeLogin.style.color = "#5dff8f";
-            mensajeLogin.innerText = "¡Acceso correcto! Entrando...";
+            mensajeLogin.innerText = "¡Bienvenido/a!";
             
             setTimeout(() => {
                 window.location.href = '../eventos/index.html';
             }, 1500);
         } else {
-            // DETECCIÓN SEGÚN TU BACKEND: "Usuario no encontrado"
             if (data.error === "Usuario no encontrado") {
-                abrirModal();
+                modal.style.display = 'flex';
             } else {
                 mostrarError(data.error || "Datos incorrectos");
             }
         }
     } catch (err) {
-        mostrarError("Error al conectar con el servidor");
+        mostrarError("Error de conexión");
     }
 };
 
-// --- FUNCIONES DEL MODAL ---
-function abrirModal() {
-    modal.style.display = 'flex';
-}
-
-document.getElementById('btnCerrarModal').onclick = () => {
-    modal.style.display = 'none';
-};
-
-document.getElementById('btnGoRegistro').onclick = () => {
-    // Redirige a la página principal de usuarios (donde está el registro)
-    window.location.href = '../usuarios/usuarios.html';
-};
+// Acciones del Modal y Volver
+document.getElementById('btnCerrarModal').onclick = () => modal.style.display = 'none';
+document.getElementById('btnGoRegistro').onclick = () => window.location.href = '../usuarios/usuarios.html';
+document.getElementById('btnVolver').onclick = () => window.location.href = '../eventos/index.html';
 
 function mostrarError(txt) {
     mensajeLogin.style.color = "#ff4d4d";
     mensajeLogin.innerText = txt;
 }
-
-document.getElementById('btnVolver').onclick = () => {
-    window.location.href = '../eventos/index.html';
-};
