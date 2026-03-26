@@ -7,6 +7,90 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const eventsGrid = document.getElementById('events-grid');
 
+// --- LÓGICA DE AUTENTICACIÓN Y MENÚ ---
+const API_BASE_USERS = "https://accesossala29-8vdj.onrender.com";
+const authNav = document.getElementById('auth-nav');
+
+async function initAuth() {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    // 1. Si no hay token, mostramos el botón de Iniciar sesión
+    if (!token || !userId) {
+        renderLoginButton();
+        return;
+    }
+
+    // 2. Si hay token, pedimos los datos al servidor para asegurar que es válido
+    try {
+        const res = await fetch(`${API_BASE_USERS}/usuarios/${userId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            const userData = await res.json();
+            // Pintamos el menú pasando solo el primer nombre
+            const primerNombre = userData.nombre.split(' ')[0];
+            renderUserMenu(primerNombre);
+        } else {
+            // Si el token caducó o hay error (ej. 401), cerramos sesión por seguridad
+            cerrarSesionLocal();
+        }
+    } catch (err) {
+        console.error("Error al verificar usuario:", err);
+        renderLoginButton(); // Si falla la red, mostramos iniciar sesión por si acaso
+    }
+}
+
+function renderLoginButton() {
+    authNav.innerHTML = `
+        <a href="../login/index.html" class="btn btn-secondary btn-sm" style="padding: 8px 16px; border-radius: 20px;">Iniciar sesión</a>
+    `;
+}
+
+function renderUserMenu(nombre) {
+    authNav.innerHTML = `
+        <div class="user-menu-container">
+            <button class="user-dropdown-btn" id="btnUserDropdown">
+                Hola, ${nombre} <span style="font-size: 0.7em;">▼</span>
+            </button>
+            <div class="dropdown-menu" id="userDropdownMenu">
+                <a href="#" class="dropdown-item">🎫 Ver QR acceso</a>
+                <a href="#" class="dropdown-item">✏️ Editar datos</a>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" id="btnLogout" style="color: #ff4d4d;">🚪 Cerrar sesión</button>
+            </div>
+        </div>
+    `;
+
+    // Lógica para abrir/cerrar el desplegable
+    const btnDropdown = document.getElementById('btnUserDropdown');
+    const menu = document.getElementById('userDropdownMenu');
+
+    btnDropdown.onclick = (e) => {
+        e.stopPropagation(); // Evita que se cierre instantáneamente
+        menu.classList.toggle('show');
+    };
+
+    // Cerrar al hacer clic en cualquier otro sitio de la pantalla
+    document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && e.target !== btnDropdown) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // Acción de cerrar sesión
+    document.getElementById('btnLogout').onclick = () => {
+        cerrarSesionLocal();
+    };
+}
+
+function cerrarSesionLocal() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    window.location.reload(); // Recarga la página para mostrar el botón de Iniciar sesión
+}
+
 // 3. Función principal para obtener datos
 async function fetchEvents() {
     try {
@@ -60,8 +144,14 @@ function renderEvents(events) {
 
 // 5. Detectar cuando el usuario vuelve a la pestaña (Visibility Change)
 document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') fetchEvents();
+    if (document.visibilityState === 'visible') {
+        initAuth();    // Comprobamos si la sesión sigue activa
+        fetchEvents(); // Recargamos los eventos por si hay novedades
+    }
 });
 
-// Ejecución inicial
-fetchEvents();
+// Ejecución inicial cuando el HTML ha terminado de cargar
+document.addEventListener('DOMContentLoaded', () => {
+    initAuth();
+    fetchEvents();
+});
