@@ -59,7 +59,7 @@ function renderUserMenu(nombre) {
                 Hola, ${nombre} <span style="font-size: 0.7em;">▼</span>
             </button>
             <div class="dropdown-menu" id="userDropdownMenu">
-                <a href="../perfil/index.htm" class="dropdown-item">🎫 Ver QR acceso</a>
+                <a href="../perfil/index.html" class="dropdown-item">🎫 Ver QR acceso</a>
                 <a href="../mi-qr/index.html" class="dropdown-item">✏️ Editar datos</a>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" id="btnLogout" style="color: #ff4d4d;">🚪 Cerrar sesión</button>
