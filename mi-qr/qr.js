@@ -3,110 +3,62 @@ const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Redirigir si no está logueado
-    if (!token || !userId) {
-        window.location.href = '../login/index.html';
-        return;
-    }
+    if (!token || !userId) return window.location.href = '../login/index.html';
 
-    // 2. Generar el QR
-    // Generamos el QR con el ID del usuario (o el string que necesites que lea tu escáner)
-    const qrText = `SALA29_USER_${userId}`; 
-    
-    new QRCode(document.getElementById("qrCode"), {
-        text: qrText,
-        width: 200,
-        height: 200,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
-
-    // 3. Obtener el nombre del usuario para mostrarlo bonito en la tarjeta
+    // Pedimos el nombre para ponerlo encima del QR
     try {
         const res = await fetch(`${API_BASE}/usuario/${userId}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
-
         if (res.ok) {
-            const user = await res.json();
-            document.getElementById('qrNombre').textContent = user.nombre;
-        } else {
-            document.getElementById('qrNombre').textContent = "Socio Sala 29";
+            const u = await res.json();
+            document.getElementById('nombreUsuario').innerText = u.nombre;
         }
-    } catch (err) {
-        document.getElementById('qrNombre').textContent = "Socio Sala 29";
-    }
+    } catch (err) {}
+
+    // GENERACIÓN DEL QR CON LOS COLORES DE TU WEB
+    // Para que no sea blanco y negro, usamos el azul de fondo y blanco para los puntos
+    new QRCode(document.getElementById("qrCodeWrapper"), {
+        text: `SALA29_USER_${userId}`,
+        width: 180,
+        height: 180,
+        colorDark : "#ffffff", // Puntos blancos
+        colorLight : "#002d54", // Fondo azul oscuro (clavado a tu CSS original)
+        correctLevel : QRCode.CorrectLevel.H
+    });
 });
 
-// Botón volver
-document.getElementById('btnVolverEventos').addEventListener('click', () => {
+// Lógica Botones
+document.getElementById('volverInicioPerfil').addEventListener('click', () => {
     window.location.href = '../eventos/index.html';
 });
 
-// ==========================================
-// 4. LÓGICA DE DESCARGA Y COPIA DEL QR
-// ==========================================
-
-// Función auxiliar para extraer la imagen que genera la librería
-function getQRImageSrc() {
-    const img = document.querySelector('#qrCode img');
-    if (img && img.src) return img.src;
-    
-    // Fallback por si el navegador usó el <canvas> en su lugar
-    const canvas = document.querySelector('#qrCode canvas');
-    if (canvas) return canvas.toDataURL("image/png");
-    
-    return null;
-}
-
-// Evento: Descargar QR
+// Descargar
 document.getElementById('btnDownloadQR').addEventListener('click', () => {
-    const imgSrc = getQRImageSrc();
-    if (!imgSrc) return alert("El QR aún se está generando, espera un segundo.");
-
-    // Creamos un enlace invisible, le ponemos la imagen y simulamos un clic
+    const img = document.querySelector('#qrCodeWrapper img');
+    const canvas = document.querySelector('#qrCodeWrapper canvas');
+    const src = img && img.src ? img.src : (canvas ? canvas.toDataURL("image/png") : null);
+    
+    if (!src) return;
     const link = document.createElement('a');
-    link.href = imgSrc;
-    link.download = `Acceso_Sala29_${userId}.png`; // Nombre del archivo que se descargará
-    document.body.appendChild(link);
+    link.href = src;
+    link.download = `QR_Sala29_${userId}.png`;
     link.click();
-    document.body.removeChild(link);
 });
 
-// Evento: Copiar QR al portapapeles
+// Copiar
 document.getElementById('btnCopyQR').addEventListener('click', async () => {
-    const imgSrc = getQRImageSrc();
-    if (!imgSrc) return alert("El QR aún se está generando, espera un segundo.");
-
-    const btn = document.getElementById('btnCopyQR');
-    const originalText = btn.innerHTML;
-
+    const canvas = document.querySelector('#qrCodeWrapper canvas');
+    if (!canvas) return alert("Tu navegador no soporta copiar el QR directamente.");
+    
     try {
-        // Transformamos la imagen base64 a un objeto "Blob" que el portapapeles pueda entender
-        const response = await fetch(imgSrc);
-        const blob = await response.blob();
-        
-        // Usamos la API moderna del portapapeles
-        await navigator.clipboard.write([
-            new ClipboardItem({ [blob.type]: blob })
-        ]);
-        
-        // Feedback visual temporal
-        btn.innerHTML = '✅ Copiado';
-        btn.style.background = '#5dff8f';
-        btn.style.color = '#000';
-        btn.style.borderColor = '#5dff8f';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.background = '';
-            btn.style.color = '';
-            btn.style.borderColor = '';
-        }, 2000);
-
+        canvas.toBlob(async (blob) => {
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            const btn = document.getElementById('btnCopyQR');
+            btn.innerHTML = '✅ Copiado';
+            setTimeout(() => btn.innerHTML = '📋 Copiar', 2000);
+        });
     } catch (err) {
-        console.error("Error al copiar al portapapeles:", err);
-        alert("Tu navegador no soporta copiar imágenes directamente. Usa el botón de descargar.");
+        alert("Error al copiar. Descarga la imagen.");
     }
 });

@@ -2,52 +2,57 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Sala 29 · Mi Perfil</title>
+    <title>Sala 29 · Perfil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="perfil.css">
 </head>
 <body>
     <div class="app">
         <section id="screenPerfil" class="screen active">
-            <button class="secondary btn-volver" id="btnVolverEventos" style="margin-bottom: 20px; width: auto; padding: 8px 16px;">
-                ⬅ Volver a eventos
-            </button>
-
-            <h2>Mi Perfil</h2>
+            <button class="secondary btn-volver" id="volverInicioPerfil">⬅ Volver</button>
+            <h2>Perfil de Usuario</h2>
             
-            <div class="foto-perfil-container">
-                <img id="perfilFoto" src="" alt="Foto Perfil">
-                <input type="file" id="fotoUpload" accept="image/*" style="display:none">
-                
-                <div class="foto-controles-flotantes" id="fotoControlesFlotantes">
-                    <button id="btnGuardarFotoFlotante" class="btn-foto-guardar">Guardar</button>
-                    <button id="btnCancelarFotoFlotante" class="btn-foto-cancelar">X</button>
+            <div class="perfil-container">
+                <div class="perfil-header">
+                    <div class="perfil-foto-wrapper">
+                        <img id="fotoUsuario" src="https://via.placeholder.com/150/0f2538/2aa3ff?text=S29" alt="Foto usuario">
+                        <a href="#" class="editar-link perfil-foto-editar" data-campo="foto">✏️</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="perfil-datos">
-                <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
-                <p><strong>DNI:</strong> <span id="dniUsuario"></span></p>
-                <p>
-                    <strong>Email:</strong> <span id="emailUsuario"></span>
-                    <button class="btn-editar" data-campo="email">✏️</button>
-                </p>
-                <p>
-                    <strong>Teléfono:</strong> <span id="telefonoUsuario"></span>
-                    <button class="btn-editar" data-campo="telefono">✏️</button>
-                </p>
-                <p><strong>Fecha Nac:</strong> <span id="fechaUsuario"></span></p>
-            </div>
+                <div class="info-no-edit">
+                    <div class="campo-flex">
+                        <span class="label">Nombre:</span>
+                        <span class="valor" id="nombreUsuario">...</span>
+                        <a href="#" class="editar-link" data-campo="nombre">Editar</a>
+                    </div>
+                    <div class="campo-flex">
+                        <span class="label">DNI:</span>
+                        <span class="valor" id="dniUsuario">...</span>
+                    </div>
+                </div>
 
-            <div id="editarContainer" style="display: none; margin-top: 15px;">
-                <input type="text" id="nuevoValor" placeholder="Nuevo valor">
-                <button class="primary" id="btnGuardarEdicion" style="margin-top: 10px;">Guardar</button>
+                <hr class="perfil-divider">
+
+                <div class="info-editable">
+                    <div class="campo-flex">
+                        <span class="label">Email:</span>
+                        <span class="valor" id="emailUsuario">...</span>
+                        <a href="#" class="editar-link" data-campo="email">Editar</a>
+                    </div>
+                    <div class="campo-flex">
+                        <span class="label">Teléfono:</span>
+                        <span class="valor" id="telefonoUsuario">...</span>
+                        <a href="#" class="editar-link" data-campo="telefono">Editar</a>
+                    </div>
+                </div>
+
+                <div id="editarContainer" class="editar-form-container"></div>
+
+                <div id="mensajeFinalPerfil" class="mensaje"></div>
             </div>
-            
-            <p class="mensaje" style="text-align: center; margin-top: 15px; font-weight: bold;"></p>
         </section>
     </div>
-
     <script src="perfil.js"></script>
 </body>
 </html>

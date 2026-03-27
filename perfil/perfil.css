@@ -1,43 +1,48 @@
 html { background-color: #050b12; }
 * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-body {
-    margin: 0; min-height: 100dvh;
-    background: radial-gradient(circle at top, #0b1d2d, #050b12);
-    color: #fff; display: flex; justify-content: center; align-items: center;
-    padding: 20px;
-}
+body { margin: 0; min-height: 100dvh; background: radial-gradient(circle at top, #0b1d2d, #050b12); color: #fff; display: flex; justify-content: center; align-items: center; padding: 24px; }
 .app { width: 100%; max-width: 420px; }
-.screen { display: flex; flex-direction: column; gap: 20px; animation: fade .35s ease; }
+.screen { display: none; flex-direction: column; gap: 20px; }
+.screen.active { display: flex; animation: fade .35s ease; }
+
 @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-h2 { text-align: center; margin: 0; font-size: 1.8rem; }
+h2 { text-align: center; color: #2aa3ff; margin-top: 0; }
+.mensaje { text-align: center; margin-top: 10px; color: #5dff8f; font-weight: bold; }
 
-button {
-    padding: 14px; border-radius: 12px; font-size: 1rem; border: none;
-    cursor: pointer; transition: all 0.35s ease; width: 100%; font-weight: bold;
-}
-button.primary { background: linear-gradient(135deg, #1a6cff, #2aa3ff); color: #fff; box-shadow: 0 6px 20px rgba(42,163,255,0.35); }
-button.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); }
-button.secondary:hover { background: rgba(255,255,255,0.05); color: #fff; }
+/* BOTONES */
+button { padding: 14px; border-radius: 12px; font-size: 1rem; border: none; cursor: pointer; transition: all 0.35s ease; width: 100%; font-weight: bold; }
+.primary { background: linear-gradient(135deg, #1a6cff, #2aa3ff); color: #fff; box-shadow: 0 6px 20px rgba(42,163,255,0.35); }
+.primary:hover { box-shadow: 0 8px 28px rgba(42,163,255,0.6); transform: translateY(-2px); }
+.secondary { background: transparent; border: 1px solid #2aa3ff; color: #2aa3ff; }
+.secondary:hover { background: rgba(42,163,255,0.08); }
+.btn-volver { align-self: flex-start; margin-bottom: 16px; padding: 10px 18px; font-size: 0.95rem; width: auto; }
 
-.foto-perfil-container { text-align: center; position: relative; margin: 0 auto 10px; width: 120px; height: 120px; }
-.foto-perfil-container img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #2aa3ff; cursor: pointer; transition: filter 0.3s; }
-.foto-perfil-container img:hover { filter: brightness(0.8); }
+/* PERFIL Y CAMPOS */
+.perfil-container { display: flex; flex-direction: column; gap: 28px; background: linear-gradient(180deg, #0f2034, #070b1a); padding: 28px; border-radius: 28px; box-shadow: 0 18px 60px rgba(0,0,0,0.85); }
+.perfil-header { display: flex; flex-direction: column; align-items: center; padding-bottom: 8px; }
+.perfil-foto-wrapper { position: relative; width: 120px; height: 120px; }
+.perfil-foto-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #2aa3ff; box-shadow: 0 0 30px rgba(42,163,255,0.4); background-color: #0f2538; }
+.perfil-foto-editar { position: absolute; bottom: 0; right: 0; width: 36px; height: 36px; background: #2aa3ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: transform 0.2s; margin-left: 0; }
 
-.foto-controles-flotantes { display: none; position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); gap: 5px; z-index: 10; }
-.foto-controles-flotantes.active { display: flex; }
-.btn-foto-guardar, .btn-foto-cancelar { padding: 6px 12px; font-size: 0.8rem; border-radius: 20px; width: auto; }
-.btn-foto-guardar { background: #1a6cff; color: #fff; }
-.btn-foto-cancelar { background: rgba(255,255,255,0.2); color: #fff; }
+.info-no-edit, .info-editable { display: flex; flex-direction: column; gap: 20px; }
+.campo-flex { display: flex; flex-wrap: wrap; align-items: center; padding: 16px 20px; background: rgba(255,255,255,0.03); border-radius: 16px; box-shadow: inset 0 0 0 1px rgba(42,163,255,0.15); transition: all 0.45s ease; }
+.campo-flex:hover { background: rgba(42,163,255,0.08); box-shadow: 0 0 20px rgba(42,163,255,0.45), inset 0 0 0 1px rgba(42,163,255,0.25); transform: translateY(-2px); }
+.campo-flex .label { font-weight: 600; color: #2aa3ff; margin-right: 12px; flex-shrink: 0; }
+.campo-flex .valor { color: #fff; flex: 1; word-break: break-word; }
 
-.perfil-datos { background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; }
-.perfil-datos p { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-.perfil-datos p:last-child { border-bottom: none; }
-.btn-editar { background: transparent; border: none; padding: 4px; font-size: 1rem; cursor: pointer; width: auto; box-shadow: none; filter: grayscale(1); transition: filter 0.2s; }
-.btn-editar:hover { filter: grayscale(0); transform: scale(1.1); }
+.editar-link { font-size: 0.88rem; color: #93c1ec; text-decoration: underline; margin-left: 12px; flex-shrink: 0; }
+.editar-link:hover { color: #2aa3ff; }
+.perfil-divider { border: none; border-top: 1px solid rgba(42,163,255,0.2); margin: 0; }
 
-input {
-    width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(15, 37, 56, 0.8); color: #fff; font-size: 1rem;
-}
-input:focus { outline: none; border-color: #2aa3ff; box-shadow: 0 0 10px rgba(42,163,255,0.3); }
+/* EDITAR FORMULARIO */
+.editar-form-container { display: none; flex-direction: column; gap: 16px; margin-top: 16px; }
+.editar-form-container input { width: 100%; padding: 16px; border-radius: 16px; border: none; background: #0f2538; color: #fff; font-size: 1rem; box-shadow: inset 0 0 0 1px rgba(42,163,255,0.3); }
+.editar-form-container input:focus { outline: none; box-shadow: 0 0 16px rgba(42,163,255,0.7), inset 0 0 0 1px rgba(42,163,255,0.6); }
+.editar-btns { display: flex; gap: 14px; justify-content: flex-end; }
+.editar-btns button { width: 48%; border-radius: 16px; }
+
+/* ESTILOS QR */
+.qr-campo { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.qr-campo .label { font-weight: 600; color: #2aa3ff; font-size: 1rem; }
+.qr-campo img, #qrCodeWrapper canvas, #qrCodeWrapper img { border: none; padding: 12px; background: #002d54; border-radius: 8px; box-shadow: 0 0 30px rgba(42,163,255,0.3), 0 0 60px rgba(42,163,255,0.1); }
