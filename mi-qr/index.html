@@ -5,7 +5,6 @@
     <title>Sala 29 · Mi QR de Acceso</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="qr.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <div class="app">
@@ -18,7 +17,9 @@
                     <span class="label" id="nombreUsuario" style="font-size: 1.3rem; margin-bottom: 5px; text-align: center; color: #fff;">Cargando...</span>
                     <span class="label" style="font-weight: normal; margin-bottom: 15px;">Socio Sala 29</span>
                     
-                    <div id="qrCodeWrapper"></div>
+                    <div id="qrCodeWrapper">
+                        <img id="qrCodeImg" src="" alt="Cargando QR..." style="display: none; width: 180px; height: 180px;">
+                    </div>
                 </div>
                 
                 <div class="editar-btns" style="justify-content: center; gap: 15px; margin-top: 30px; width: 100%;">
