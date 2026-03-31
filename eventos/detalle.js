@@ -7,6 +7,7 @@ const API_BASE_USERS = "https://accesossala29-8vdj.onrender.com";
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 let userData = null; // Guardaremos aquí los datos del usuario logueado
+let currentEvent = null; // Guardamos el evento para poder usar sus datos en los mensajes
 
 // Obtener ID de la URL (?id=...)
 const urlParams = new URLSearchParams(window.location.search);
@@ -28,6 +29,8 @@ async function fetchEventDetail() {
         console.error("Error al cargar el evento:", error);
         return;
     }
+
+    currentEvent = event; // Guardamos el evento de forma global
 
     // Dibujar datos del evento
     document.getElementById('event-title').innerText = event.title;
@@ -94,13 +97,20 @@ async function checkAuthAndRenderActions() {
                 .maybeSingle();
 
             if (signup) {
+                // Extraemos día y hora para el mensaje personalizado
+                const eventDateObj = new Date(currentEvent.date);
+                const dayMonth = eventDateObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', timeZone: 'Europe/Madrid' });
+                const time = eventDateObj.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
+
                 // Ya está apuntado
                 container.innerHTML = `
                     <div class="signup-box" style="text-align: center; background: rgba(93, 255, 143, 0.1); border-color: rgba(93, 255, 143, 0.3);">
                         <h3 style="color: #5dff8f; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
                             ✅ Ya estás en la lista
                         </h3>
-                        <p style="color: #ccc; margin-top: 10px; font-size: 0.95rem;">Presenta tu QR de acceso en la puerta el día del evento.</p>
+                        <p style="color: #ccc; margin-top: 10px; font-size: 0.95rem;">
+                            Te esperamos el día <strong>${dayMonth}</strong> a las <strong>${time}</strong> en Sala 29 para la live session de <strong>${currentEvent.title}</strong>.
+                        </p>
                         <a href="../mi-qr/index.html" class="btn btn-secondary" style="width: 100%; margin-top: 16px; border-color: #5dff8f; color: #5dff8f;">Ver mi QR</a>
                     </div>
                 `;
@@ -109,7 +119,7 @@ async function checkAuthAndRenderActions() {
                 container.innerHTML = `
                     <div class="signup-box" style="text-align: center;">
                         <h3 style="margin-top: 0; color: #fff;">Apuntarse a la lista</h3>
-                        <p style="color: #ccc; margin-bottom: 15px; font-size: 0.9rem;">Reserva tu plaza y garantiza tu entrada</p>
+                        <p style="color: #ccc; margin-bottom: 15px; font-size: 0.9rem;">Reserva tu acceso garantizado enseñando tu QR en puerta.</p>
                         <button class="btn btn-primary" style="width: 100%;" onclick="openModal()">Apuntarme ahora</button>
                     </div>
                 `;
