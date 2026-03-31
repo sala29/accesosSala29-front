@@ -666,3 +666,7 @@ input:-webkit-autofill:focus {
     opacity: 0;
     visibility: hidden;
 }
+
+html {
+  background-color: #050b12;
+}

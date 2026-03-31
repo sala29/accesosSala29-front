@@ -63,7 +63,7 @@
                 document.getElementById('edit-date').value = new Date(data.date).toISOString().slice(0, 16);
                 document.getElementById('edit-desc').value = data.description || '';
                 document.getElementById('edit-price').value = data.price || 0;
-                document.getElementById('edit-photo').value = data.photo_url || '';
+                document.getElementById('photo-url-hidden').value = data.photo_url || ''; 
             }
         }
 
