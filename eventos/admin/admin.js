@@ -6,7 +6,8 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // --- PROTECCIÓN DE RUTA ---
 async function checkAuth() {
     const { data: { session } } = await _supabase.auth.getSession();
-    const isLoginPage = window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/admin/');
+    const path = window.location.pathname;
+    const isLoginPage = path.includes('index.html') || path.endsWith('/admin/');
     
     if (!session && !isLoginPage) {
         window.location.href = 'index.html';
@@ -30,20 +31,20 @@ async function loadDashboardEvents() {
     const listContainer = document.getElementById('admin-events-list');
     if (!listContainer) return;
 
-    // Traemos eventos y también los user_id de la tabla de asistentes
+    // Traemos eventos y asistentes (usando el nombre exacto de tu tabla de relación)
     const { data: events, error } = await _supabase
         .from('events')
         .select('*, asistentes_eventos(user_id)') 
         .order('date', { ascending: true });
 
     if (error) {
-        listContainer.innerHTML = '<p>Error al cargar eventos.</p>';
+        listContainer.innerHTML = `<p style="color: #ff4d4d;">Error al cargar eventos: ${error.message}</p>`;
         return;
     }
 
     const now = new Date();
     const futuros = events.filter(e => new Date(e.date) >= now);
-    const pasados = events.filter(e => new Date(e.date) < now).reverse(); // Los pasados más recientes primero
+    const pasados = events.filter(e => new Date(e.date) < now).reverse();
 
     let html = '<h3>📅 Próximos Eventos</h3>';
     html += renderSection(futuros);
@@ -64,8 +65,9 @@ function renderSection(eventList, isPast = false) {
 
         const asistentes = event.asistentes_eventos || [];
         const count = asistentes.length;
-        // Creamos una cadena con los IDs para el alert
-        const idsString = asistentes.map(a => a.user_id).join('\\n');
+        
+        // Escapamos los IDs para evitar errores en el alert de JS
+        const idsList = asistentes.map(a => a.user_id).join(', ');
 
         return `
             <div class="admin-event-card ${isPast ? 'event-past' : ''}" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);">
@@ -75,15 +77,15 @@ function renderSection(eventList, isPast = false) {
                         <small style="color: #1a6cff;">${dateFormatted}</small>
                     </div>
                     <div style="text-align: right;">
-                        <button onclick="alert('IDs de asistentes:\\n${count > 0 ? idsString : 'Nadie apuntado aún'}')" 
+                        <button onclick="alert('IDs de asistentes: ${count > 0 ? idsList : 'Nadie apuntado aún'}')" 
                                 style="background: ${count > 0 ? '#5dff8f22' : 'transparent'}; color: ${count > 0 ? '#5dff8f' : '#666'}; border: 1px solid ${count > 0 ? '#5dff8f' : '#444'}; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
-                            👥 ${count} socio${count !== 1 ? 's' : ''} en lista
+                            👥 ${count} socio${count !== 1 ? 's' : ''}
                         </button>
                     </div>
                 </div>
                 
                 <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.85em;">✏️ Editar</a>
+                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.85em; text-decoration: none;">✏️ Editar</a>
                     <button onclick="deleteEvent('${event.id}')" style="padding: 6px 12px; font-size: 0.85em; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer;">🗑️ Borrar</button>
                 </div>
             </div>
@@ -95,16 +97,20 @@ function renderSection(eventList, isPast = false) {
 window.deleteEvent = async function(id) {
     if (!confirm('¿Estás seguro de que quieres borrar este evento? Se borrará también la lista de asistentes.')) return;
     
-    // Primero borramos los asistentes (por integridad de la base de datos)
+    // 1. Borrar asistentes primero para evitar errores de integridad (si no tienes cascada en Supabase)
     await _supabase.from('asistentes_eventos').delete().eq('event_id', id);
-    // Luego el evento
+    
+    // 2. Borrar el evento
     const { error } = await _supabase.from('events').delete().eq('id', id);
     
-    if (error) alert('Error al borrar: ' + error.message);
-    else loadDashboardEvents();
+    if (error) {
+        alert('Error al borrar: ' + error.message);
+    } else {
+        loadDashboardEvents();
+    }
 };
 
-// --- GESTIÓN DE FOTOS (NUEVO/EDITAR) ---
+// --- GESTIÓN DE FOTOS ---
 function initPhotoUploader() {
     const fileInput = document.getElementById('file-input');
     const photoPreview = document.getElementById('photo-preview');
@@ -117,11 +123,14 @@ function initPhotoUploader() {
         const file = e.target.files[0];
         if (!file) return;
 
+        const originalText = statusText.innerText;
         statusText.innerText = 'Subiendo...';
+        
         const ext = file.name.split('.').pop();
         const fileName = `${Date.now()}.${ext}`;
 
         const { error } = await _supabase.storage.from('eventos-fotos').upload(fileName, file);
+        
         if (error) {
             alert('Error al subir: ' + error.message);
             statusText.innerText = '📷 Reintentar';
@@ -129,19 +138,27 @@ function initPhotoUploader() {
         }
 
         const { data } = _supabase.storage.from('eventos-fotos').getPublicUrl(fileName);
-        photoUrlHidden.value = data.publicUrl;
-        photoPreview.src = data.publicUrl;
-        photoPreview.style.display = 'block';
+        
+        if (photoUrlHidden) photoUrlHidden.value = data.publicUrl;
+        if (photoPreview) {
+            photoPreview.src = data.publicUrl;
+            photoPreview.style.display = 'block';
+        }
         statusText.innerText = '📷 Cambiar foto';
     });
 }
 
+// --- INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', async () => {
     await checkAuth();
-    if (window.location.pathname.includes('dashboard.html')) {
+    
+    const path = window.location.pathname;
+    
+    if (path.includes('dashboard.html')) {
         loadDashboardEvents();
     }
-    if (window.location.pathname.includes('nuevo.html') || window.location.pathname.includes('editar.html')) {
+    
+    if (path.includes('nuevo.html') || path.includes('editar.html')) {
         initPhotoUploader();
     }
 });

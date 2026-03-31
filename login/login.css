@@ -914,3 +914,28 @@ input:-webkit-autofill:active {
     user-select: none;
     pointer-events: none;
 }
+
+/* Selecciona tu input de fecha */
+input[type="date"] {
+    font-family: inherit;
+    /* Aseguramos que el contenedor base sea flexible */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Fix específico para Chrome/Safari/Edge para centrar el texto interno */
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Opcional: Si el icono del calendario te descoloca la altura */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    margin: 0;
+    padding: 0;
+}

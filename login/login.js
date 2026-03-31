@@ -64,7 +64,7 @@ btnLogin.onclick = async () => {
     btnLogin.style.opacity = "0.7";
 
     try {
-        const res = await fetch(`${API_BASE}/login`, {
+        const res = await fetch(`${API_BASE}/usuarios/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
