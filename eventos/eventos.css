@@ -670,3 +670,36 @@ input:-webkit-autofill:focus {
 html {
   background-color: #050b12;
 }
+
+/* ================= MODAL DE CONFIRMACIÓN ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 11, 18, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-box {
+    background: #0b1d2d;
+    padding: 30px 24px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    border: 1px solid rgba(42, 163, 255, 0.2);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    text-align: center;
+}

@@ -1,7 +1,12 @@
-// 1. Configuración de las credenciales
+// 1. Configuración de credenciales y variables
 const SUPABASE_URL = 'https://mzkibvrmdegbtvpnzcvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16a2lidnJtZGVnYnR2cG56Y3ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3NjA0NzAsImV4cCI6MjA4NzMzNjQ3MH0.eudQq75zR-ZecHz5ay9nD8K9cv6NT4-C2jQTiYRlmD4';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const API_BASE_USERS = "https://accesossala29-8vdj.onrender.com";
+const userId = localStorage.getItem('userId');
+const token = localStorage.getItem('token');
+let userData = null; // Guardaremos aquí los datos del usuario logueado
 
 // Obtener ID de la URL (?id=...)
 const urlParams = new URLSearchParams(window.location.search);
@@ -24,103 +29,135 @@ async function fetchEventDetail() {
         return;
     }
 
-    renderDetail(event);
-}
-
-function renderDetail(event) {
-    // Ocultar loading, mostrar contenido
-    document.getElementById('loading-state').style.display = 'none';
-    document.getElementById('event-content').style.display = 'block';
-
-    // Rellenar datos básicos
+    // Dibujar datos del evento
     document.getElementById('event-title').innerText = event.title;
-    document.getElementById('event-desc').innerText = event.description || '';
-    
-    // Imagen
-    if (event.photo_url) {
-        document.getElementById('event-image-container').innerHTML = 
-            `<img src="${event.photo_url}" alt="${event.title}" class="detail-img">`;
-    }
+    document.getElementById('event-desc').innerText = event.description || 'Sin descripción';
+    document.getElementById('event-price').innerText = event.price === 0 ? 'Entrada gratuita' : `Donación ${event.price} €`;
 
-    // Fecha
     const dateFormatted = new Date(event.date).toLocaleDateString('es-ES', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid'
     });
     document.getElementById('event-date').innerText = `📅 ${dateFormatted}`;
 
-    // Precio
-    document.getElementById('event-price').innerText = 
-        event.price === 0 ? 'Entrada gratuita' : `Donación ${event.price} €`;
-
-    // Lógica del formulario de registro
-    const signupBox = document.getElementById('signup-box-content');
-    const eventoTerminado = new Date(event.date) < new Date();
-
-    if (eventoTerminado) {
-        signupBox.innerHTML = `<p class="event-closed">Este evento ya ha comenzado. No es posible apuntarse.</p>`;
-    } else {
-        signupBox.innerHTML = `
-            <h2>Apuntarse a la lista</h2>
-            <form id="signup-form">
-                <input type="text" id="dni-input" placeholder="DNI (ej: 12345678A)" required />
-                <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%">Apuntarme</button>
-            </form>
-            <div id="mensaje-container"></div>
-        `;
-
-        document.getElementById('signup-form').addEventListener('submit', handleSignup);
+    const imgContainer = document.getElementById('event-image-container');
+    if (event.photo_url) {
+        imgContainer.innerHTML = `<img src="${event.photo_url}" alt="Foto" class="detail-img">`;
     }
+
+    // Ocultar loader y mostrar contenido
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('event-content').style.display = 'block';
+
+    // Ahora comprobamos la sesión para pintar los botones correctos
+    await checkAuthAndRenderActions();
 }
 
-async function handleSignup(e) {
-    e.preventDefault();
-    const dniInput = document.getElementById('dni-input');
-    const btn = document.getElementById('btn-submit');
-    const msgContainer = document.getElementById('mensaje-container');
-    
-    const dniLimpio = dniInput.value.trim().toUpperCase();
-    const dniRegex = /^\d{8}[A-Z]$/;
+async function checkAuthAndRenderActions() {
+    const container = document.getElementById('action-container');
 
-    // Limpiar mensajes previos
-    msgContainer.innerHTML = '';
-
-    if (!dniRegex.test(dniLimpio)) {
-        showMensaje('DNI no válido. Formato: 8 números y una letra.', 'error');
+    // 1. Si no hay sesión iniciada, mostramos el banner de registro
+    if (!token || !userId) {
+        container.innerHTML = `
+            <div class="register-banner" style="display: flex;">
+                <div class="register-banner-icon">🎫</div>
+                <div class="register-banner-text">
+                    <strong>¿Quieres apuntarte a este evento?</strong>
+                    <span>Regístrate para poder acceder a Sala 29 el día del evento.</span>
+                </div>
+                <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                    Registrarse
+                </a>
+            </div>
+        `;
         return;
     }
 
-    btn.disabled = true;
-    btn.innerText = 'Enviando...';
+    // 2. Si hay sesión, obtenemos sus datos y comprobamos si ya está apuntado
+    container.innerHTML = '<div style="text-align: center;"><div class="loader-spinner" style="width: 30px; height: 30px; border-width: 3px; margin: 0 auto;"></div></div>';
 
+    try {
+        // Pedimos al backend los datos del socio
+        const res = await fetch(`${API_BASE_USERS}/usuario/${userId}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (res.ok) {
+            userData = await res.json();
+
+            // Comprobamos en Supabase si este usuario ya está en la lista de este evento
+            const { data: signup, error } = await _supabase
+                .from('asistentes_eventos')
+                .select('id')
+                .eq('event_id', eventId)
+                .eq('user_id', userId)
+                .maybeSingle();
+
+            if (signup) {
+                // Ya está apuntado
+                container.innerHTML = `
+                    <div class="signup-box" style="text-align: center; background: rgba(93, 255, 143, 0.1); border-color: rgba(93, 255, 143, 0.3);">
+                        <h3 style="color: #5dff8f; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            ✅ Ya estás en la lista
+                        </h3>
+                        <p style="color: #ccc; margin-top: 10px; font-size: 0.95rem;">Presenta tu QR de acceso en la puerta el día del evento.</p>
+                        <a href="../mi-qr/index.html" class="btn btn-secondary" style="width: 100%; margin-top: 16px; border-color: #5dff8f; color: #5dff8f;">Ver mi QR</a>
+                    </div>
+                `;
+            } else {
+                // Está logueado pero no apuntado
+                container.innerHTML = `
+                    <div class="signup-box" style="text-align: center;">
+                        <h3 style="margin-top: 0; color: #fff;">Apuntarse a la lista</h3>
+                        <p style="color: #ccc; margin-bottom: 15px; font-size: 0.9rem;">Reserva tu acceso garantizado enseñando tu QR en puerta.</p>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="openModal()">Apuntarme ahora</button>
+                    </div>
+                `;
+            }
+        } else {
+            throw new Error("Sesión inválida");
+        }
+    } catch (err) {
+        console.error("Error comprobando usuario:", err);
+        container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">Error al cargar la sesión. Recarga la página.</p>`;
+    }
+}
+
+// --- LÓGICA DEL MODAL ---
+window.openModal = function() {
+    const eventTitle = document.getElementById('event-title').innerText;
+    // Construimos el texto con los datos reales del usuario
+    document.getElementById('confirm-text').innerHTML = `
+        ¿Estás seguro de que el socio <strong>${userData.nombre}</strong> (DNI: ${userData.dni}) quiere apuntarse a la lista del evento <strong>${eventTitle}</strong>?
+    `;
+    document.getElementById('confirm-modal').classList.remove('hidden');
+};
+
+window.closeModal = function() {
+    document.getElementById('confirm-modal').classList.add('hidden');
+};
+
+document.getElementById('btn-confirm-signup').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-confirm-signup');
+    btn.disabled = true;
+    btn.innerText = 'Apuntando...';
+
+    // Insertamos el registro en la nueva tabla
     const { error } = await _supabase
-        .from('event_signups')
-        .insert({ event_id: eventId, dni: dniLimpio });
+        .from('asistentes_eventos')
+        .insert({ event_id: eventId, user_id: userId });
 
     if (error) {
-        if (error.code === '23505') {
-            showMensaje('Este DNI ya está apuntado a este evento.', 'error');
-        } else {
-            showMensaje('Error al apuntarse. Inténtalo de nuevo.', 'error');
-        }
+        console.error(error);
+        alert("Hubo un error al apuntarte. Por favor, inténtalo de nuevo.");
+        btn.disabled = false;
+        btn.innerText = 'Sí, apuntarme';
     } else {
-        showMensaje('✅ ¡Apuntado correctamente!', 'ok');
-        dniInput.value = '';
+        closeModal();
+        // Recargamos las acciones para que ahora salga el mensaje de "Ya estás apuntado"
+        await checkAuthAndRenderActions();
     }
-
-    btn.disabled = false;
-    btn.innerText = 'Apuntarme';
-}
-
-function showMensaje(texto, tipo) {
-    const msgContainer = document.getElementById('mensaje-container');
-    const clase = tipo === 'ok' ? 'signup-msg-ok' : 'signup-msg-error';
-    msgContainer.innerHTML = `<p class="${clase}">${texto}</p>`;
-}
-
-// Inicializar
-fetchEventDetail();
-
-// Recargar al volver a la pestaña
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') fetchEventDetail();
 });
+
+// Arrancar al cargar
+document.addEventListener('DOMContentLoaded', fetchEventDetail);
