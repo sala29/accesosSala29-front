@@ -121,9 +121,13 @@ function cerrarSesionLocal() {
 // 3. Función principal para obtener datos
 async function fetchEvents() {
     try {
+        // Obtenemos la fecha y hora actual exacta en el formato que entiende la base de datos
+        const ahora = new Date().toISOString();
+
         const { data: events, error } = await _supabase
             .from('events')
             .select('*')
+            .gte('date', ahora) // <-- AQUÍ ESTÁ LA MAGIA: Solo fechas mayores o iguales a "ahora"
             .order('date', { ascending: true });
 
         if (error) throw error;
