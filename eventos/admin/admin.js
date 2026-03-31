@@ -116,3 +116,77 @@ checkAuth().then(() => {
     }
 });
 
+/* =======================================================
+   CARGAR EVENTOS EN EL DASHBOARD
+   ======================================================= */
+async function loadDashboardEvents() {
+    const eventsList = document.getElementById('admin-events-list');
+    
+    // Si no estamos en la página del dashboard, no hacemos nada
+    if (!eventsList) return; 
+
+    eventsList.innerHTML = '<p>Cargando eventos...</p>';
+
+    // Pedimos los eventos a Supabase
+    const { data: events, error } = await _supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: true });
+
+    if (error) {
+        eventsList.innerHTML = '<p style="color:#ff4d4d;">Error al cargar los eventos desde la base de datos.</p>';
+        return;
+    }
+
+    if (!events || events.length === 0) {
+        eventsList.innerHTML = '<p>No hay eventos creados todavía.</p>';
+        return;
+    }
+
+    // Dibujamos cada evento con su botón de Editar y Borrar
+    eventsList.innerHTML = events.map(event => {
+        const dateObj = new Date(event.date);
+        const dateStr = dateObj.toLocaleDateString('es-ES') + ' a las ' + dateObj.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
+        
+        return `
+            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h3 style="margin: 0 0 5px 0; color: #2aa3ff;">${event.title}</h3>
+                    <p style="margin: 0; font-size: 0.9em; color: #ccc;">📅 ${dateStr} | 💰 ${event.price === 0 ? 'Gratis' : event.price + ' €'}</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 8px 16px; font-size: 0.9em; border-radius: 8px;">✏️ Editar</a>
+                    <button onclick="deleteEvent('${event.id}')" style="padding: 8px 16px; font-size: 0.9em; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer; transition: 0.3s;">🗑️ Borrar</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Función para borrar un evento
+window.deleteEvent = async function(id) {
+    if (!confirm('¿Estás seguro de que quieres borrar este evento para siempre?')) return;
+    
+    const { error } = await _supabase.from('events').delete().eq('id', id);
+    
+    if (error) {
+        alert('Error al borrar el evento: ' + error.message);
+    } else {
+        // Si se borra bien, recargamos la lista
+        loadDashboardEvents(); 
+    }
+};
+
+/* =======================================================
+   EJECUCIÓN AL CARGAR LA PÁGINA
+   ======================================================= */
+// Asegurarnos de que checkAuth termine y luego cargar los eventos si estamos en el dashboard
+document.addEventListener('DOMContentLoaded', async () => {
+    // Si tienes una función checkAuth(), asegúrate de que se ejecuta aquí
+    if (typeof checkAuth === 'function') {
+        await checkAuth();
+    }
+    
+    // Cargamos los eventos (solo hará efecto si existe el div admin-events-list)
+    loadDashboardEvents();
+});
