@@ -105,7 +105,7 @@ async function setupPhotoUploader() {
 }
 
 // Llama a esta función cuando se cargue la página de nuevo/editar
-if (window.location.pathname.includes('nuevo.html') || window.location.pathname.includes('editar.html')) {
+if (window.location.pathname.includes('nuevo') || window.location.pathname.includes('editar')) {
     setupPhotoUploader();
 }
 
