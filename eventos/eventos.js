@@ -19,6 +19,9 @@ async function initAuth() {
     if (!token || !userId) {
         renderLoginButton();
         toggleBanners(false); 
+        
+        // Ocultar pantalla de carga
+        document.getElementById('loader-overlay')?.classList.add('hidden');
         return;
     }
 
@@ -32,7 +35,7 @@ async function initAuth() {
             const primerNombre = userData.nombre.split(' ')[0];
             
             renderUserMenu(primerNombre);
-            toggleBanners(true); // 
+            toggleBanners(true); 
 
         } else {
             console.warn("Sesión inválida o caducada. Código:", res.status);
@@ -43,6 +46,9 @@ async function initAuth() {
         console.error("Error al verificar usuario:", err);
         renderUserMenu("Socio");
         toggleBanners(true); 
+    } finally {
+        // Pase lo que pase (éxito o error), ocultamos la pantalla de carga al terminar
+        document.getElementById('loader-overlay')?.classList.add('hidden');
     }
 }
 
