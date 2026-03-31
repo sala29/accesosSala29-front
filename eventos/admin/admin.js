@@ -20,50 +20,92 @@ async function checkAuth() {
     }
 }
 
-// --- DASHBOARD: LISTAR EVENTOS ---
-async function loadAdminEvents() {
+async function handleLogout() {
+    await _supabase.auth.signOut();
+    window.location.href = 'index.html';
+}
+
+// --- LÓGICA DEL DASHBOARD ---
+async function loadDashboardEvents() {
     const listContainer = document.getElementById('admin-events-list');
     if (!listContainer) return;
 
-    const { data: events } = await _supabase
+    // Traemos eventos y también los user_id de la tabla de asistentes
+    const { data: events, error } = await _supabase
         .from('events')
-        .select('*, event_signups(count)')
+        .select('*, asistentes_eventos(user_id)') 
         .order('date', { ascending: true });
 
-    if (!events || events.length === 0) {
-        listContainer.innerHTML = '<p style="color: #9cc8f0; text-align: center; margin-top: 60px;">No hay eventos todavía.</p>';
+    if (error) {
+        listContainer.innerHTML = '<p>Error al cargar eventos.</p>';
         return;
     }
 
-    listContainer.innerHTML = events.map(event => `
-        <div class="admin-event-card">
-            <div class="admin-event-info">
-                <h3>${event.title}</h3>
-                <p class="date">📅 ${new Date(event.date).toLocaleString('es-ES')}</p>
-                <p class="count">👥 ${event.event_signups?.[0]?.count ?? 0} asistentes</p>
+    const now = new Date();
+    const futuros = events.filter(e => new Date(e.date) >= now);
+    const pasados = events.filter(e => new Date(e.date) < now).reverse(); // Los pasados más recientes primero
+
+    let html = '<h3>📅 Próximos Eventos</h3>';
+    html += renderSection(futuros);
+    
+    html += '<h3 style="margin-top: 40px; opacity: 0.6;">⌛ Eventos Pasados</h3>';
+    html += renderSection(pasados, true);
+
+    listContainer.innerHTML = html;
+}
+
+function renderSection(eventList, isPast = false) {
+    if (eventList.length === 0) return '<p style="opacity:0.5; padding: 20px;">No hay eventos en esta sección.</p>';
+
+    return eventList.map(event => {
+        const dateFormatted = new Date(event.date).toLocaleString('es-ES', {
+            day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+        });
+
+        const asistentes = event.asistentes_eventos || [];
+        const count = asistentes.length;
+        // Creamos una cadena con los IDs para el alert
+        const idsString = asistentes.map(a => a.user_id).join('\\n');
+
+        return `
+            <div class="admin-event-card ${isPast ? 'event-past' : ''}" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <h4 style="margin: 0; color: ${isPast ? '#999' : '#fff'};">${event.title}</h4>
+                        <small style="color: #1a6cff;">${dateFormatted}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <button onclick="alert('IDs de asistentes:\\n${count > 0 ? idsString : 'Nadie apuntado aún'}')" 
+                                style="background: ${count > 0 ? '#5dff8f22' : 'transparent'}; color: ${count > 0 ? '#5dff8f' : '#666'}; border: 1px solid ${count > 0 ? '#5dff8f' : '#444'}; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                            👥 ${count} socio${count !== 1 ? 's' : ''} en lista
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.85em;">✏️ Editar</a>
+                    <button onclick="deleteEvent('${event.id}')" style="padding: 6px 12px; font-size: 0.85em; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer;">🗑️ Borrar</button>
+                </div>
             </div>
-            <div class="admin-event-actions">
-                <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm">Editar</a>
-                <button onclick="handleDelete('${event.id}')" class="btn btn-danger btn-sm">Eliminar</button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
-// --- ACCIONES ---
-async function handleDelete(id) {
-    if (!confirm('¿Seguro?')) return;
-    await _supabase.from('events').delete().eq('id', id);
-    loadAdminEvents();
-}
+// Función para borrar un evento
+window.deleteEvent = async function(id) {
+    if (!confirm('¿Estás seguro de que quieres borrar este evento? Se borrará también la lista de asistentes.')) return;
+    
+    // Primero borramos los asistentes (por integridad de la base de datos)
+    await _supabase.from('asistentes_eventos').delete().eq('event_id', id);
+    // Luego el evento
+    const { error } = await _supabase.from('events').delete().eq('id', id);
+    
+    if (error) alert('Error al borrar: ' + error.message);
+    else loadDashboardEvents();
+};
 
-async function handleLogout() {
-    await _supabase.auth.signOut();
-    window.location.href = '../index.html';
-}
-
-// Función para manejar la subida de fotos a Supabase Storage
-async function setupPhotoUploader() {
+// --- GESTIÓN DE FOTOS (NUEVO/EDITAR) ---
+function initPhotoUploader() {
     const fileInput = document.getElementById('file-input');
     const photoPreview = document.getElementById('photo-preview');
     const photoUrlHidden = document.getElementById('photo-url-hidden');
@@ -76,27 +118,17 @@ async function setupPhotoUploader() {
         if (!file) return;
 
         statusText.innerText = 'Subiendo...';
-        
         const ext = file.name.split('.').pop();
         const fileName = `${Date.now()}.${ext}`;
 
-        // 1. Subir a Storage
-        const { error } = await _supabase.storage
-            .from('eventos-fotos')
-            .upload(fileName, file);
-
+        const { error } = await _supabase.storage.from('eventos-fotos').upload(fileName, file);
         if (error) {
-            alert('Error al subir la foto: ' + error.message);
-            statusText.innerText = '📷 Reintentar subida';
+            alert('Error al subir: ' + error.message);
+            statusText.innerText = '📷 Reintentar';
             return;
         }
 
-        // 2. Obtener URL pública
-        const { data } = _supabase.storage
-            .from('eventos-fotos')
-            .getPublicUrl(fileName);
-
-        // 3. Actualizar UI
+        const { data } = _supabase.storage.from('eventos-fotos').getPublicUrl(fileName);
         photoUrlHidden.value = data.publicUrl;
         photoPreview.src = data.publicUrl;
         photoPreview.style.display = 'block';
@@ -104,89 +136,12 @@ async function setupPhotoUploader() {
     });
 }
 
-// Llama a esta función cuando se cargue la página de nuevo/editar
-if (window.location.pathname.includes('nuevo') || window.location.pathname.includes('editar')) {
-    setupPhotoUploader();
-}
-
-// Inicialización automática al cargar
-checkAuth().then(() => {
-    if (window.location.pathname.includes('dashboard.html')) {
-        loadAdminEvents();
-    }
-});
-
-/* =======================================================
-   CARGAR EVENTOS EN EL DASHBOARD
-   ======================================================= */
-async function loadDashboardEvents() {
-    const eventsList = document.getElementById('admin-events-list');
-    
-    // Si no estamos en la página del dashboard, no hacemos nada
-    if (!eventsList) return; 
-
-    eventsList.innerHTML = '<p>Cargando eventos...</p>';
-
-    // Pedimos los eventos a Supabase
-    const { data: events, error } = await _supabase
-        .from('events')
-        .select('*')
-        .order('date', { ascending: true });
-
-    if (error) {
-        eventsList.innerHTML = '<p style="color:#ff4d4d;">Error al cargar los eventos desde la base de datos.</p>';
-        return;
-    }
-
-    if (!events || events.length === 0) {
-        eventsList.innerHTML = '<p>No hay eventos creados todavía.</p>';
-        return;
-    }
-
-    // Dibujamos cada evento con su botón de Editar y Borrar
-    eventsList.innerHTML = events.map(event => {
-        const dateObj = new Date(event.date);
-        const dateStr = dateObj.toLocaleDateString('es-ES') + ' a las ' + dateObj.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
-        
-        return `
-            <div style="background: rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                <div>
-                    <h3 style="margin: 0 0 5px 0; color: #2aa3ff;">${event.title}</h3>
-                    <p style="margin: 0; font-size: 0.9em; color: #ccc;">📅 ${dateStr} | 💰 ${event.price === 0 ? 'Gratis' : event.price + ' €'}</p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 8px 16px; font-size: 0.9em; border-radius: 8px;">✏️ Editar</a>
-                    <button onclick="deleteEvent('${event.id}')" style="padding: 8px 16px; font-size: 0.9em; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer; transition: 0.3s;">🗑️ Borrar</button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-// Función para borrar un evento
-window.deleteEvent = async function(id) {
-    if (!confirm('¿Estás seguro de que quieres borrar este evento para siempre?')) return;
-    
-    const { error } = await _supabase.from('events').delete().eq('id', id);
-    
-    if (error) {
-        alert('Error al borrar el evento: ' + error.message);
-    } else {
-        // Si se borra bien, recargamos la lista
-        loadDashboardEvents(); 
-    }
-};
-
-/* =======================================================
-   EJECUCIÓN AL CARGAR LA PÁGINA
-   ======================================================= */
-// Asegurarnos de que checkAuth termine y luego cargar los eventos si estamos en el dashboard
 document.addEventListener('DOMContentLoaded', async () => {
-    // Si tienes una función checkAuth(), asegúrate de que se ejecuta aquí
-    if (typeof checkAuth === 'function') {
-        await checkAuth();
+    await checkAuth();
+    if (window.location.pathname.includes('dashboard.html')) {
+        loadDashboardEvents();
     }
-    
-    // Cargamos los eventos (solo hará efecto si existe el div admin-events-list)
-    loadDashboardEvents();
+    if (window.location.pathname.includes('nuevo.html') || window.location.pathname.includes('editar.html')) {
+        initPhotoUploader();
+    }
 });

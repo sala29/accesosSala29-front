@@ -62,15 +62,18 @@ async function checkAuthAndRenderActions() {
     // 1. Si no hay sesión iniciada, mostramos el banner de registro
     if (!token || !userId) {
         container.innerHTML = `
-            <div class="register-banner" style="display: flex;">
+            <div class="register-banner" style="margin-top: 0;">
                 <div class="register-banner-icon">🎫</div>
                 <div class="register-banner-text">
-                    <strong>¿Quieres apuntarte a este evento?</strong>
-                    <span>Regístrate para poder acceder a Sala 29 el día del evento.</span>
+                    <strong>¿Quieres asistir?</strong>
+                    <span>Si ya eres socio inicia sesión, si no, regístrate para poder apuntarte a este evento.</span>
                 </div>
-                <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
-                    Registrarse
-                </a>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="../login/index.html" class="btn btn-secondary btn-sm">Iniciar sesión</a>
+                    <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                        Registrarse
+                    </a>
+                </div>
             </div>
         `;
         return;
