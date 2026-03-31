@@ -7,18 +7,17 @@
     <link rel="stylesheet" href="qr.css">
 </head>
 <body>
-    <div class="app">
-        <section class="screen active">
-            <button class="secondary btn-volver" id="volverInicioPerfil">⬅ Volver</button>
-            <h2>Mi Pase de Acceso</h2>
+    <div class="app" style="padding-top: 15px;"> <section class="screen active" style="gap: 10px;"> <button class="secondary btn-volver" id="volverInicioPerfil" style="margin-bottom: 0;">⬅ Volver</button>
             
-            <div class="perfil-container" style="align-items: center; padding-top: 40px;">
-                <div class="qr-campo">
+            <div class="perfil-container" style="align-items: center; padding-top: 25px;">
+                <div class="qr-campo" style="width: 100%;">
                     <span class="label" id="nombreUsuario" style="font-size: 1.3rem; margin-bottom: 5px; text-align: center; color: #fff;">Cargando...</span>
                     <span class="label" style="font-weight: normal; margin-bottom: 15px;">Socio Sala 29</span>
                     
-                    <div id="qrCodeWrapper">
-                        <img id="qrCodeImg" src="" alt="Cargando QR..." style="display: none; width: 180px; height: 180px;">
+                    <div id="qrCodeWrapper" style="display: flex; justify-content: center; align-items: center; min-height: 340px; width: 100%;">
+                        <span id="qrLoading" class="qr-loading-text">Cargando QR...</span>
+                        
+                        <img id="qrCodeImg" src="" alt="QR" style="display: none; width: 340px; height: 340px; max-width: 100%; object-fit: contain;">
                     </div>
                 </div>
                 

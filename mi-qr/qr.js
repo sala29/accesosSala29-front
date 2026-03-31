@@ -30,15 +30,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         
         if (resQr.ok) {
-            // Recibimos la imagen, la convertimos en un objeto visible para el navegador
+            // Recibimos la imagen
             const blob = await resQr.blob();
             imgQr.src = URL.createObjectURL(blob);
+            
+            // Ocultamos el texto de "Cargando QR..." y mostramos la imagen
+            document.getElementById('qrLoading').style.display = 'none';
             imgQr.style.display = 'block';
         } else {
-            document.getElementById('nombreUsuario').innerText = "Error al cargar el QR";
+            const loadingText = document.getElementById('qrLoading');
+            loadingText.innerText = "Error al generar el QR";
+            loadingText.style.color = "#ff5d5d";
+            loadingText.style.animation = "none";
         }
     } catch (err) {
         console.error("Error al obtener el QR del backend", err);
+        const loadingText = document.getElementById('qrLoading');
+        loadingText.innerText = "Error de conexión";
+        loadingText.style.color = "#ff5d5d";
+        loadingText.style.animation = "none";
     }
 });
 
