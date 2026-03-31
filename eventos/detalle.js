@@ -109,7 +109,7 @@ async function checkAuthAndRenderActions() {
                 container.innerHTML = `
                     <div class="signup-box" style="text-align: center;">
                         <h3 style="margin-top: 0; color: #fff;">Apuntarse a la lista</h3>
-                        <p style="color: #ccc; margin-bottom: 15px; font-size: 0.9rem;">Reserva tu plaza y garantiza tu entrada.</p>
+                        <p style="color: #ccc; margin-bottom: 15px; font-size: 0.9rem;">Reserva tu plaza y garantiza tu entrada</p>
                         <button class="btn btn-primary" style="width: 100%;" onclick="openModal()">Apuntarme ahora</button>
                     </div>
                 `;
@@ -128,7 +128,7 @@ window.openModal = function() {
     const eventTitle = document.getElementById('event-title').innerText;
     // Construimos el texto con los datos reales del usuario
     document.getElementById('confirm-text').innerHTML = `
-        ¿Listo para la sesión de <strong>${eventTitle}</strong>, ${userData.nombre}?  ¡No dejes que te lo
+        ¿Listo para la sesión de <strong>${eventTitle}</strong>, ${userData.nombre}? ¡No dejes que te lo cuenten!
     `;
     document.getElementById('confirm-modal').classList.remove('hidden');
 };
