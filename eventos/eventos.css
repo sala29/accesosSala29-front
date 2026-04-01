@@ -703,3 +703,23 @@ html {
     box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     text-align: center;
 }
+
+/* ================= BOTONES DEL BANNER ================= */
+.banner-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Diseño para móviles */
+@media (max-width: 600px) {
+  .banner-buttons {
+    flex-direction: column; /* Apila los botones verticalmente */
+    width: 100%;
+  }
+  
+  .banner-buttons .btn {
+    width: 100%; /* Fuerza a que ambos botones midan lo mismo */
+    text-align: center;
+  }
+}
