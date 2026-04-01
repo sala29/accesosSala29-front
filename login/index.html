@@ -19,12 +19,13 @@
         <input type="text" id="loginDni" placeholder="DNI *">
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="tel" id="loginTelefono" placeholder="Teléfono">
-        <div class="fecha-custom-wrapper" style="margin-bottom: 20px;">
-            <input type="text" id="loginDia" placeholder="DD" maxlength="2" inputmode="numeric" style="width: 30%; text-align: center; background: transparent; border: none; padding: 0; box-shadow: none; color: #fff;">
-            <span style="color: #666; font-size: 1.2rem;">/</span>
-            <input type="text" id="loginMes" placeholder="MM" maxlength="2" inputmode="numeric" style="width: 30%; text-align: center; background: transparent; border: none; padding: 0; box-shadow: none; color: #fff;">
-            <span style="color: #666; font-size: 1.2rem;">/</span>
-            <input type="text" id="loginAnio" placeholder="AAAA" maxlength="4" inputmode="numeric" style="width: 40%; text-align: center; background: transparent; border: none; padding: 0; box-shadow: none; color: #fff;">
+        
+        <div class="fecha-custom-wrapper">
+            <input type="text" id="loginDia" class="fecha-seg" placeholder="DD" maxlength="2" inputmode="numeric">
+            <span class="fecha-sep">/</span>
+            <input type="text" id="loginMes" class="fecha-seg" placeholder="MM" maxlength="2" inputmode="numeric">
+            <span class="fecha-sep">/</span>
+            <input type="text" id="loginAnio" class="fecha-seg" placeholder="AAAA" maxlength="4" inputmode="numeric">
         </div>
         
         <button class="primary" id="btnLoginPerfil">Iniciar sesión</button>
@@ -35,23 +36,21 @@
 </div>
 
 <div id="modalNoSocio" class="modal-overlay" role="dialog">
-    <div class="modal-box" style="text-align: center; padding: 40px 25px 30px; position: relative; border: 1px solid rgba(42,163,255,0.15); box-shadow: 0 15px 50px rgba(0,0,0,0.6);">
+    <div class="modal-box" style="text-align: center; padding: 40px 25px;">
+        <button id="btnCerrarModalX" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         
-        <button class="modal-close" id="btnCerrarModalX" style="position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #a5b4c4; background: none; border: none; cursor: pointer; transition: color 0.2s;">&times;</button>
-        
-        <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(42,163,255,0.15), rgba(42,163,255,0.02)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid rgba(42,163,255,0.25); box-shadow: 0 0 20px rgba(42,163,255,0.1);">
+        <div style="width: 64px; height: 64px; background: rgba(42,163,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid rgba(42,163,255,0.2);">
             <span style="font-size: 1.6rem; color: #2aa3ff;">👤</span>
         </div>
 
-        <h2 class="modal-title" style="margin: 0 0 12px 0; font-size: 1.45rem; font-weight: 500; letter-spacing: 0.5px; color: #ffffff;">No te encontramos</h2>
-        <p style="color: #a5b4c4; line-height: 1.6; margin: 0 0 32px 0; font-size: 0.95rem;">
-            Parece que aún no formas parte de <strong style="color: #fff; font-weight: 600;">Sala 29</strong>. <br>Únete a nosotros para acceder a nuestros eventos.
+        <h2 style="margin: 0 0 12px 0; color: #fff;">No te encontramos</h2>
+        <p style="color: #a5b4c4; margin-bottom: 30px;">
+            Parece que aún no formas parte de <strong>Sala 29</strong>.
         </p>
 
-        <div style="display: flex; flex-direction: column; gap: 14px;">
-            <button class="primary" id="btnGoRegistro" style="height: 52px; font-weight: 600; font-size: 1rem; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(42,163,255,0.2);">Registrarme ahora</button>
-            
-            <button class="secondary" id="btnCerrarModal" style="height: 52px; font-weight: 500; font-size: 1rem; color: #a5b4c4; border-color: rgba(255,255,255,0.08); background: transparent;">Revisar mis datos</button>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <button class="primary" id="btnGoRegistro" style="width: 100%;">Registrarse ahora</button>
+            <button class="secondary" id="btnCerrarModal" style="width: 100%;">Intentarlo de nuevo</button>
         </div>
     </div>
 </div>

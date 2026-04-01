@@ -866,16 +866,11 @@ input:-webkit-autofill:active {
 .fecha-custom-wrapper {
     display: flex;
     align-items: center;
-    border-radius: 12px;
-    border: none;
+    justify-content: center; /* Centra los numeritos */
     background: #0f2538;
-    padding: 0 14px;
+    border-radius: 12px;
     height: 52px;
-    cursor: text;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-    transition: box-shadow 0.35s ease;
+    padding: 0 10px;
 }
 
 .fecha-custom-wrapper:focus-within {
@@ -883,19 +878,18 @@ input:-webkit-autofill:active {
 }
 
 .fecha-seg {
-    outline: none;
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    font-family: inherit;
-    color: #7aaad6;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #fff !important;
     text-align: center;
-    caret-color: transparent;
-    cursor: text;
-    padding: 0;
-    border-radius: 4px;
-    transition: background 0.15s;
-    margin-bottom: 0;
+    width: 45px !important; /* Ancho para DD y MM */
+    font-size: 1rem;
+    padding: 0 !important;
+}
+
+#loginAnio {
+    width: 65px !important; /* Un poco más ancho para el año AAAA */
 }
 
 .fecha-seg[data-empty="true"] {
@@ -909,10 +903,9 @@ input:-webkit-autofill:active {
 }
 
 .fecha-sep {
-    color: #93c1ec;
-    padding: 0 3px;
-    user-select: none;
-    pointer-events: none;
+    color: #4a6a8a;
+    font-weight: bold;
+    margin: 0 5px;
 }
 
 /* Selecciona tu input de fecha */
