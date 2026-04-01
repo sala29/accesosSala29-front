@@ -881,11 +881,17 @@ input:-webkit-autofill:active {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    color: #fff !important;
+    color: #93c1ec !important;
     text-align: center;
     width: 45px !important; /* Ancho para DD y MM */
     font-size: 1rem;
     padding: 0 !important;
+    
+    /* === NUEVAS REGLAS PARA CENTRAR VERTICALMENTE === */
+    height: 100%;          /* El input ocupa todo el alto disponible */
+    line-height: 52px;     /* Fuerza al texto a centrarse en los 52px del wrapper */
+    margin: 0;             /* Previene márgenes fantasma en Safari/iOS */
+    outline: none;         /* Evita rebordes indeseados al hacer focus */
 }
 
 #loginAnio {
@@ -898,7 +904,7 @@ input:-webkit-autofill:active {
 
 .fecha-seg:focus {
     background: rgba(42,163,255,0.18);
-    color: #fff;
+    color: #93c1ec;
     box-shadow: none;
 }
 
