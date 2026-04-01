@@ -46,10 +46,10 @@ async function loadDashboardEvents() {
     const futuros = events.filter(e => new Date(e.date) >= now);
     const pasados = events.filter(e => new Date(e.date) < now).reverse();
 
-    let html = '<h3>📅 Próximos Eventos</h3>';
+    let html = '<h3 style="margin-bottom: 20px;">📅 Próximos Eventos</h3>';
     html += renderSection(futuros);
     
-    html += '<h3 style="margin-top: 40px; opacity: 0.6;">⌛ Eventos Pasados</h3>';
+    html += '<h3 style="margin-top: 40px; margin-bottom: 20px; opacity: 0.6;">⌛ Eventos Pasados</h3>';
     html += renderSection(pasados, true);
 
     listContainer.innerHTML = html;
@@ -70,23 +70,24 @@ function renderSection(eventList, isPast = false) {
         const idsList = asistentes.map(a => a.user_id).join(', ');
 
         return `
-            <div class="admin-event-card ${isPast ? 'event-past' : ''}" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div>
-                        <h4 style="margin: 0; color: ${isPast ? '#999' : '#fff'};">${event.title}</h4>
-                        <small style="color: #1a6cff;">${dateFormatted}</small>
-                    </div>
-                    <div style="text-align: right;">
-                        <button onclick="alert('IDs de asistentes: ${count > 0 ? idsList : 'Nadie apuntado aún'}')" 
-                                style="background: ${count > 0 ? '#5dff8f22' : 'transparent'}; color: ${count > 0 ? '#5dff8f' : '#666'}; border: 1px solid ${count > 0 ? '#5dff8f' : '#444'}; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
-                            👥 ${count} socio${count !== 1 ? 's' : ''}
-                        </button>
-                    </div>
+            <div class="admin-event-card ${isPast ? 'event-past' : ''}" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                
+                <div style="margin-bottom: 18px;">
+                    <h4 style="margin: 0 0 6px 0; font-size: 1.15rem; color: ${isPast ? '#999' : '#fff'};">${event.title}</h4>
+                    <small style="color: #1a6cff; font-size: 0.95rem;">${dateFormatted}</small>
                 </div>
                 
-                <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.85em; text-decoration: none;">✏️ Editar</a>
-                    <button onclick="deleteEvent('${event.id}')" style="padding: 6px 12px; font-size: 0.85em; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer;">🗑️ Borrar</button>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                    
+                    <button onclick="alert('IDs de asistentes: ${count > 0 ? idsList : 'Nadie apuntado aún'}')" 
+                            style="background: ${count > 0 ? '#5dff8f22' : 'transparent'}; color: ${count > 0 ? '#5dff8f' : '#666'}; border: 1px solid ${count > 0 ? '#5dff8f' : '#444'}; padding: 8px 16px; border-radius: 8px; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        👥 ${count} socio${count !== 1 ? 's' : ''}
+                    </button>
+                    
+                    <a href="editar.html?id=${event.id}" class="btn btn-secondary btn-sm" style="padding: 8px 16px; font-size: 0.95rem; text-decoration: none; border-radius: 8px;">✏️ Editar</a>
+                    
+                    <button onclick="deleteEvent('${event.id}')" style="padding: 8px 16px; font-size: 0.95rem; background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; border-radius: 8px; cursor: pointer;">🗑️ Borrar</button>
+                    
                 </div>
             </div>
         `;
