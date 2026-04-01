@@ -154,11 +154,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const path = window.location.pathname;
     
-    if (path.includes('dashboard.html')) {
+    if (path.includes('dashboard')) {
         loadDashboardEvents();
     }
     
-    if (path.includes('nuevo.html') || path.includes('editar.html')) {
+    if (path.includes('nuevo') || path.includes('editar')) {
         initPhotoUploader();
     }
 });
