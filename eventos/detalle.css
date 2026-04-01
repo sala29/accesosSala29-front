@@ -1,0 +1,203 @@
+/* ================= PREVENIR SCROLL HORIZONTAL ================= */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* Corta cualquier elemento que sobresalga */
+}
+
+/* ================= PÁGINA DETALLE ================= */
+.detail-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.detail-back {
+  background: transparent;
+  border: none;
+  color: #9cc8f0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 28px;
+  transition: color 0.25s;
+}
+
+.detail-back:hover {
+  color: #2aa3ff;
+}
+
+.detail-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.7);
+}
+
+.detail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.detail-date {
+  color: #9cc8f0;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.detail-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2aa3ff;
+  text-shadow: 0 0 12px rgba(42,163,255,0.4);
+  margin-bottom: 20px;
+}
+
+.detail-desc {
+  color: #9cc8f0;
+  line-height: 1.75;
+  margin-bottom: 36px;
+  font-size: 1rem;
+}
+
+.signup-box {
+  background: linear-gradient(180deg, #0f2034, #070b1a);
+  border: 1px solid rgba(42,163,255,0.2);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.6);
+}
+
+.signup-box h2 {
+  color: #2aa3ff;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.signup-box input {
+  margin-bottom: 14px;
+}
+
+.signup-msg-ok {
+  margin-top: 14px;
+  color: #5dff8f;
+  font-size: 0.95rem;
+}
+
+.signup-msg-error {
+  margin-top: 14px;
+  color: #ff6b6b;
+  font-size: 0.95rem;
+}
+
+.event-closed {
+  color: #9cc8f0;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.95rem;
+}
+
+/* ================= BANNER REGISTRO ================= */
+.register-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: linear-gradient(135deg, rgba(26,108,255,0.12), rgba(42,163,255,0.06));
+  border: 1px solid rgba(42,163,255,0.3);
+  border-radius: 20px;
+  padding: 22px 28px;
+  margin: 28px auto 0;
+  max-width: 780px;
+  text-align: left;
+  box-shadow: 0 0 40px rgba(42,163,255,0.08), inset 0 0 0 1px rgba(42,163,255,0.1);
+  transition: all 0.35s ease;
+}
+
+.register-banner:hover {
+  border-color: rgba(42,163,255,0.5);
+  box-shadow: 0 0 60px rgba(42,163,255,0.15), inset 0 0 0 1px rgba(42,163,255,0.2);
+}
+
+.register-banner-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.register-banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.register-banner-text strong {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.register-banner-text span {
+  color: #9cc8f0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.register-banner-btn {
+  flex-shrink: 0;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* ================= MODAL DE CONFIRMACIÓN ================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* CORRECCIÓN: Usar 100% en lugar de 100vw evita el scroll horizontal */
+    height: 100%; /* Cambiado a 100% para mejor soporte en móviles */
+    background: rgba(5, 11, 18, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-box {
+    background: #0b1d2d;
+    padding: 30px 24px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    border: 1px solid rgba(42, 163, 255, 0.2);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+/* ================= RESPONSIVE ESPECÍFICO DE DETALLE ================= */
+@media (max-width: 600px) {
+  .detail-container { 
+    padding: 24px 16px 40px; 
+  }
+  
+  .register-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .register-banner-btn {
+    width: 100%;
+  }
+}
