@@ -1,4 +1,4 @@
-const API_BASE = "https://accesossala29-8vdj.onrender.com";
+const API_BASE = "https://accesossala29.onrender.com";
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 const mensajeFinalPerfil = document.getElementById('mensajeFinalPerfil');

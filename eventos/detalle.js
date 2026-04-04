@@ -3,7 +3,7 @@ const SUPABASE_URL = 'https://mzkibvrmdegbtvpnzcvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16a2lidnJtZGVnYnR2cG56Y3ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3NjA0NzAsImV4cCI6MjA4NzMzNjQ3MH0.eudQq75zR-ZecHz5ay9nD8K9cv6NT4-C2jQTiYRlmD4';
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const API_BASE_USERS = "https://accesossala29-8vdj.onrender.com";
+const API_BASE_USERS = "https://accesossala29.onrender.com";
 const userId = localStorage.getItem('userId');
 const token = localStorage.getItem('token');
 let userData = null; // Guardaremos aquí los datos del usuario logueado

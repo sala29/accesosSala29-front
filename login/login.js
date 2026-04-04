@@ -1,4 +1,4 @@
-const API_BASE = "https://accesossala29-8vdj.onrender.com";
+const API_BASE = "https://accesossala29.onrender.com";
 const mensajeLogin = document.getElementById('mensajeLogin');
 const modalNoSocio = document.getElementById('modalNoSocio');
 const btnLogin = document.getElementById('btnLoginPerfil');

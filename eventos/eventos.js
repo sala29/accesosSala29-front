@@ -8,7 +8,7 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const eventsGrid = document.getElementById('events-grid');
 
 // --- LÓGICA DE AUTENTICACIÓN Y MENÚ ---
-const API_BASE_USERS = "https://accesossala29-8vdj.onrender.com";
+const API_BASE_USERS = "https://accesossala29.onrender.com";
 const authNav = document.getElementById('auth-nav');
 
 async function initAuth() {
