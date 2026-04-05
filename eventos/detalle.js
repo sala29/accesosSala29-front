@@ -70,7 +70,7 @@ async function checkAuthAndRenderActions() {
                 </div>
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <a href="../login/index.html" class="btn btn-secondary btn-sm">Iniciar sesión</a>
-                    <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
+                    <a href="https://sala29.29sala29.workers.dev/usuarios/usuarios" target="_blank" rel="noopener noreferrer" class="btn btn-primary register-banner-btn">
                         Registrarse
                     </a>
                 </div>
