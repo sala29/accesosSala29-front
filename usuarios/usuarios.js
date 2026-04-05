@@ -305,6 +305,19 @@ document.getElementById('registroForm').addEventListener('submit', e => {
     cEmail.innerText = email;
     cFecha.innerText = fechaNacimiento;
 
+    // Lógica nueva para mostrar la foto o el placeholder en confirmación
+    const imgConf = document.getElementById('confFoto');
+    const phConf = document.getElementById('confFotoPlaceholder');
+    
+    if (fotoRegistroUrl) {
+        imgConf.src = fotoRegistroUrl;
+        imgConf.style.display = 'block';
+        phConf.style.display = 'none';
+    } else {
+        imgConf.style.display = 'none';
+        phConf.style.display = 'flex';
+    }
+
     mostrar('confirmacion');
 });
 
@@ -447,7 +460,19 @@ async function mostrarPerfilUsuario(id) {
             u.verificado ? '✔ Verificado' : '⚠ No verificado';
         document.getElementById('emailUsuario').innerText = u.email || '—';
         document.getElementById('telefonoUsuario').innerText = u.telefono || '—';
-        document.getElementById('fotoUsuario').src = u.foto || 'icon-persona.png';
+
+        // Lógica nueva para mostrar la foto o el placeholder en perfil
+        const imgPerfil = document.getElementById('fotoUsuario');
+        const phPerfil = document.getElementById('fotoPlaceholder');
+        
+        if (u.foto) {
+            imgPerfil.src = u.foto;
+            imgPerfil.style.display = 'block';
+            phPerfil.style.display = 'none';
+        } else {
+            imgPerfil.style.display = 'none';
+            phPerfil.style.display = 'flex';
+        }
 
         document.getElementById("volverInicioPerfil").onclick = () => mostrar("inicio");
 
@@ -724,7 +749,14 @@ editarLinks.forEach(link => {
                     });
                     const data = await res.json();
                     if (res.ok) {
-                        document.getElementById('fotoUsuario').src = urlSeleccionada;
+                        // Lógica nueva al guardar la foto con éxito
+                        const imgPerfil = document.getElementById('fotoUsuario');
+                        const phPerfil = document.getElementById('fotoPlaceholder');
+                        
+                        imgPerfil.src = urlSeleccionada;
+                        imgPerfil.style.display = 'block';
+                        phPerfil.style.display = 'none';
+                        
                         overlay.remove();
                         campoActual = null;
                         mensajeFinalPerfil.style.color = '#5dff8f';
