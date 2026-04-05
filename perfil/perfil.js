@@ -18,7 +18,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('dniUsuario').innerText = u.dni;
             document.getElementById('emailUsuario').innerText = u.email;
             document.getElementById('telefonoUsuario').innerText = u.telefono || 'No indicado';
-            if (u.foto) document.getElementById('fotoUsuario').src = u.foto;
+            
+            const img = document.getElementById('fotoUsuario');
+            const placeholder = document.getElementById('fotoPlaceholder');
+            
+            if (u.foto) {
+                img.src = u.foto;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                placeholder.style.display = 'flex';
+            }
         } else {
             window.location.href = '../login/index.html';
         }
@@ -44,7 +55,14 @@ document.querySelectorAll('.editar-link').forEach(link => {
                 const reader = new FileReader();
                 reader.onload = async (event) => {
                     const base64 = event.target.result;
-                    document.getElementById('fotoUsuario').src = base64;
+                    
+                    const img = document.getElementById('fotoUsuario');
+                    const placeholder = document.getElementById('fotoPlaceholder');
+                    
+                    img.src = base64;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    
                     await guardarCambio('foto', base64);
                 };
                 reader.readAsDataURL(file);
