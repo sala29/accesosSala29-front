@@ -13,13 +13,14 @@
         <h1 class="logo">SALA 29</h1>
         <h2>Acceder a mi perfil</h2>
         <p class="login-info">
-            Identifícate con tu DNI y uno de los siguientes datos.
+            Identifícate con tu <strong>DNI</strong> y <strong>alguno</strong> de los siguientes datos.
         </p>
         
         <input type="text" id="loginDni" placeholder="DNI *">
         <input type="email" id="loginEmail" placeholder="Email">
         <input type="tel" id="loginTelefono" placeholder="Teléfono">
         
+        <label class="input-label">Fecha de nacimiento</label>
         <div class="fecha-custom-wrapper">
             <input type="text" id="loginDia" class="fecha-seg" placeholder="DD" maxlength="2" inputmode="numeric">
             <span class="fecha-sep">/</span>
@@ -27,11 +28,6 @@
             <span class="fecha-sep">/</span>
             <input type="text" id="loginAnio" class="fecha-seg" placeholder="AAAA" maxlength="4" inputmode="numeric">
         </div>
-        
-        <button class="primary" id="btnLoginPerfil">Iniciar sesión</button>
-        <button class="secondary" id="btnVolver">Volver</button>
-        
-        <div id="mensajeLogin" class="mensaje"></div>
     </section>
 </div>
 
