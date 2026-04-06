@@ -35,7 +35,7 @@ body {
 .screen {
     display: none;
     flex-direction: column;
-    gap: 12px;
+    gap: 6px;
     animation: fade .35s ease;
 }
 
@@ -946,4 +946,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #a5b4c4;
     margin-bottom: -5px; /* Acerca el título a las cajitas de fecha */
     margin-top: 5px;
+}
+
+/* Espacio extra antes del botón de login */
+#btnLoginPerfil {
+    margin-top: 20px; /* Ajusta este número si quieres más o menos espacio */
 }
