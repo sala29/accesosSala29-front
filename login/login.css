@@ -35,7 +35,7 @@ body {
 .screen {
     display: none;
     flex-direction: column;
-    gap: 6px;
+    gap: 16px;
     animation: fade .35s ease;
 }
 
@@ -511,9 +511,9 @@ input:-webkit-autofill:active {
 .input-label {
     display: block;
     font-size: 0.85rem;
-    color: #2aa3ff;       
-    margin-bottom: 4px;
-    margin-top: 8px;
+    color: #2aa3ff;   
+    margin-top: 0 !important;
+    margin-bottom: -10px !important;
     padding-left: 2px;
 }
 
@@ -951,4 +951,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* Espacio extra antes del botón de login */
 #btnLoginPerfil {
     margin-top: 20px; /* Ajusta este número si quieres más o menos espacio */
+}
+
+/* Quita los márgenes duplicados de los campos */
+.screen > input, 
+.fecha-custom-wrapper {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
 }
