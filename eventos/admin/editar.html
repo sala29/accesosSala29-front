@@ -23,7 +23,7 @@
             <form id="editar-evento-form" class="form-group">
                 <input name="title" id="edit-title" type="text" placeholder="Título" required />
                 <input name="date" id="edit-date" type="datetime-local" required />
-                <textarea name="description" id="edit-desc" rows="4"></textarea>
+                <textarea name="description" id="edit-desc" rows="20"></textarea>
                 <input name="price" id="edit-price" type="number" step="0.01" required />
                 <div class="photo-uploader-container" style="margin-bottom: 15px;">
                     <img id="photo-preview" src="" alt="Vista previa" style="display: none; width: 100%; border-radius: 8px; margin-bottom: 10px;">
@@ -60,8 +60,14 @@
             }
 
             if (data) {
+                // 1. Calculamos la fecha ajustada a la zona horaria local
+                const eventDate = new Date(data.date);
+                const tzOffset = eventDate.getTimezoneOffset() * 60000;
+                const localISOTime = new Date(eventDate.getTime() - tzOffset).toISOString().slice(0, 16);
+
+                // 2. Rellenamos el formulario
                 document.getElementById('edit-title').value = data.title;
-                document.getElementById('edit-date').value = new Date(data.date).toISOString().slice(0, 16);
+                document.getElementById('edit-date').value = localISOTime; // <-- AQUÍ PONEMOS LA FECHA CORREGIDA
                 document.getElementById('edit-desc').value = data.description || '';
                 document.getElementById('edit-price').value = data.price || 0;
                 document.getElementById('photo-url-hidden').value = data.photo_url || ''; 
